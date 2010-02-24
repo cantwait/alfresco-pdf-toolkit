@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- pdfsplit -->
+	<bean id="pdf-split"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitActionExecuter"
+		parent="action-executer">
+		<property name="nodeService">
+			<ref bean="NodeService" />
+		</property>
+		<property name="dictionaryService">
+			<ref bean="dictionaryService" />
+		</property>
+		<property name="contentService">
+			<ref bean="ContentService" />
+		</property>
+		<property name="fileFolderService">
+			<ref bean="FileFolderService" />
+		</property>
+	</bean>
+
+	<!-- pdfappend -->
+	<bean id="pdf-append"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFAppendActionExecuter"
+		parent="action-executer">
+		<property name="nodeService">
+			<ref bean="NodeService" />
+		</property>
+		<property name="dictionaryService">
+			<ref bean="dictionaryService" />
+		</property>
+		<property name="contentService">
+			<ref bean="ContentService" />
+		</property>
+		<property name="fileFolderService">
+			<ref bean="FileFolderService" />
+		</property>
+	</bean>
+
+	<!-- pdfsplitatapge -->
+	<bean id="pdf-split-at-page"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitAtPageActionExecuter"
+		parent="action-executer">
+		<property name="nodeService">
+			<ref bean="NodeService" />
+		</property>
+		<property name="dictionaryService">
+			<ref bean="dictionaryService" />
+		</property>
+		<property name="contentService">
+			<ref bean="ContentService" />
+		</property>
+		<property name="fileFolderService">
+			<ref bean="FileFolderService" />
+		</property>
+	</bean>
+
+</beans>

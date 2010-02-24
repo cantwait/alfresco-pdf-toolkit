@@ -1,0 +1,9 @@
+<alfresco-config>
+	<config evaluator="string-compare" condition="Action Wizards">
+		<action-handlers>
+				<handler name="pdf-split" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFSplitActionHandler" />
+				<handler name="pdf-append" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFAppendActionHandler" />
+				<handler name="pdf-split-at-page" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFSplitAtPageActionHandler" />
+		</action-handlers>
+	</config>
+</alfresco-config>
