@@ -24,6 +24,7 @@
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfsplitatpage-messages</value>
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfappend-messages</value>
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfsplit-messages</value>
+				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfwatermark-messages</value>
 			</list>
 		</property>
 	</bean>
