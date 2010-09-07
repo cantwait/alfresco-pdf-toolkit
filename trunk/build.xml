@@ -7,7 +7,7 @@
 	<property name="project.dir" value="."/>
 	<property name="build.dir" value="${project.dir}/build"/>
 	<property name="config.dir" value="${project.dir}/config"/>
-	<property name="sdk.dir" value="${user.home}/${sdk.path}"/>
+	<property name="sdk.dir" value="${sdk.path}"/>
 	<property name="jar.file" value="${build.dir}/lib/${lib.name}.jar"/>
 	<property name="amp.file" value="${build.dir}/dist/${amp.name}.amp"/>
 
@@ -26,10 +26,19 @@
 	</path>
 
 	<target name="compile">
+		
+		<!-- Capture the path as a delimited property using the refid attribute -->
+		<property name="myclasspath" refid="class.path"/>
+		<!-- Emit the property to the ant console -->
+		<echo message="Classpath = ${myclasspath}"/>
+
 		<mkdir dir="${build.dir}/classes" />
 		<javac classpathref="class.path" srcdir="${project.dir}/src" destdir="${build.dir}/classes" debug="${developer.mode}"/>
 		<copy todir="${build.dir}/classes">
 			<fileset dir="${project.dir}/src" excludes="**/*.java" includes="**/*.properties"/>
+		</copy>
+		<copy todir="${build.dir}/lib">
+			<fileset dir="${project.dir}/lib" includes="**/*.jar"/>
 		</copy>
 	</target>
 
