@@ -5,6 +5,7 @@
 				<handler name="pdf-append" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFAppendActionHandler" />
 				<handler name="pdf-split-at-page" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFSplitAtPageActionHandler" />
 				<handler name="pdf-watermark" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFWatermarkActionHandler" />
+				<handler name="pdf-encryption" class="org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.PDFEncryptionActionHandler" />
 		</action-handlers>
 	</config>
 </alfresco-config>
