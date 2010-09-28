@@ -124,12 +124,59 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
+											<td><h:outputText value="#{customMsg.pdfwatermark_type}" /></td>
+											<td>
+												<h:selectOneRadio id="watermarkType"
+													value="#{WizardManager.bean.actionProperties.WatermarkType}">
+													<f:selectItems value="#{WizardManager.bean.actionProperties.TypeOptions}" />
+												</h:selectOneRadio>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
 											<td><h:outputText value="#{customMsg.pdfwatermark_image}" />:</td>
 											<td><r:ajaxFileSelector id="fileSelector"
 												label="#{customMsg.pdfwatermark_image_selector}"
 												value="#{WizardManager.bean.actionProperties.WatermarkImage}"
 												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
 												styleClass="selector" /></td>
+										</tr>
+										<tr>
+											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfwatermark_text}" />:</td>
+											<td><h:inputTextarea id="textArea" rows="4" cols="30" 
+												value="#{WizardManager.bean.actionProperties.WatermarkText}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfwatermark_font}" />:</td>
+											<td>
+												<h:selectOneMenu
+													id="WatermarkFont"
+ 													value="#{WizardManager.bean.actionProperties.WatermarkFont}">
+  													<f:selectItems value="#{WizardManager.bean.actionProperties.FontOptions}" />
+												</h:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfwatermark_size}" />:</td>
+											<td>
+												<h:selectOneMenu
+													id="WatermarkSize"
+ 													value="#{WizardManager.bean.actionProperties.WatermarkSize}">
+  													<f:selectItems value="#{WizardManager.bean.actionProperties.SizeOptions}" />
+												</h:selectOneMenu>
+											</td>
 										</tr>
 										<tr>
 											<td colspan="2" class="paddingRow"></td>
@@ -146,7 +193,7 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
-											<td><h:outputText value="#{customMsg.pdfwatermark_watermark_pages}" />:</td>
+											<td><h:outputText value="#{customMsg.pdfwatermark_pages}" />:</td>
 											<td>
 												<h:selectOneMenu
 													id="WatermarkPages"
@@ -159,7 +206,7 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
-											<td><h:outputText value="#{customMsg.pdfwatermark_watermark_position}" />:</td>
+											<td><h:outputText value="#{customMsg.pdfwatermark_position}" />:</td>
 											<td>
 												<h:selectOneMenu
 													id="WatermarkPosition"
@@ -172,7 +219,7 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
-											<td><h:outputText value="#{customMsg.pdfwatermark_watermark_depth}" />:</td>
+											<td><h:outputText value="#{customMsg.pdfwatermark_depth}" />:</td>
 											<td>
 												<h:selectOneRadio
  													value="#{WizardManager.bean.actionProperties.WatermarkDepth}">
