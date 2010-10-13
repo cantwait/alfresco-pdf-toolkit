@@ -189,7 +189,7 @@ public class PDFSignatureActionExecuter extends ActionExecuterAbstractBase
         
 		try {
 			// get a keystore instance
-			KeyStore ks = KeyStore.getInstance("pkcs12");
+			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
 
 			// open the reader to the key and load it
 			ContentReader keyReader = getReader(privateKey);
