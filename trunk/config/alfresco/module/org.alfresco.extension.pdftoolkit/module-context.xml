@@ -26,6 +26,7 @@
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfsplit-messages</value>
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfwatermark-messages</value>
 				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfencryption-messages</value>
+				<value>org.alfresco.extension.pdftoolkit.web.bean.actions.handlers.pdfsignature-messages</value>
 			</list>
 		</property>
 	</bean>

@@ -92,4 +92,22 @@
 			<ref bean="FileFolderService" />
 		</property>
 	</bean>
+	
+	<!-- pdfsignature -->
+	<bean id="pdf-signature"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter"
+		parent="action-executer">
+		<property name="nodeService">
+			<ref bean="NodeService" />
+		</property>
+		<property name="dictionaryService">
+			<ref bean="dictionaryService" />
+		</property>
+		<property name="contentService">
+			<ref bean="ContentService" />
+		</property>
+		<property name="fileFolderService">
+			<ref bean="FileFolderService" />
+		</property>
+	</bean>
 </beans>
