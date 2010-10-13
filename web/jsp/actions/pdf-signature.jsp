@@ -32,7 +32,7 @@
 <%@ page isELIgnored="false"%>
 <%@ page import="org.alfresco.web.ui.common.PanelGenerator"%>
 
-<r:page titleId="title_action_pdf_encryption">
+<r:page titleId="title_action_pdf_signature">
 
 	<f:view>
 
@@ -41,7 +41,7 @@
 		<f:loadBundle basename="alfresco.messages.pdf-toolkit"
 			var="customMsg" />
 
-		<h:form acceptcharset="UTF-8" id="pdf-encryption-action">
+		<h:form acceptcharset="UTF-8" id="pdf-signature-action">
 
 			<%-- Main outer table --%>
 			<table cellspacing="0" cellpadding="2">
@@ -124,142 +124,98 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_visibility}" /></td>
+											<td>
+												<h:selectOneRadio id="visibility"
+													value="#{WizardManager.bean.actionProperties.SignatureVisibility}">
+													<f:selectItems value="#{WizardManager.bean.actionProperties.VisibilityOptions}" />
+												</h:selectOneRadio>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_private_key}" />:</td>
+											<td><r:ajaxFileSelector id="fileSelector"
+												label="#{customMsg.pdfsignature_private_key}"
+												value="#{WizardManager.bean.actionProperties.PrivateKey}"
+												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
+												styleClass="selector" /></td>
+										</tr>
+										<tr>
+											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_key_password}" />:</td>
+											<td><h:inputSecret id="password" size="30"
+												value="#{WizardManager.bean.actionProperties.KeyPassword}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_reason}" />:</td>
+											<td><h:inputText id="reason" size="40" 
+												value="#{WizardManager.bean.actionProperties.Reason}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_location}" />:</td>
+											<td><h:inputText id="location" size="30" 
+												value="#{WizardManager.bean.actionProperties.Location}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_location_x}" />:</td>
+											<td><h:inputText id="location_x" size="4" 
+												value="#{WizardManager.bean.actionProperties.LocationX}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_location_y}" />:</td>
+											<td><h:inputText id="location_y" size="4" 
+												value="#{WizardManager.bean.actionProperties.LocationY}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_width}" />:</td>
+											<td><h:inputText id="width" size="4" 
+												value="#{WizardManager.bean.actionProperties.Width}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_height}" />:</td>
+											<td><h:inputText id="height" size="4" 
+												value="#{WizardManager.bean.actionProperties.Height}"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>							
+										<tr>
 											<td><h:outputText value="#{msg.destination}" />:</td>
 											<td><r:ajaxFolderSelector id="spaceSelector"
 												label="#{msg.select_destination_prompt}"
 												value="#{WizardManager.bean.actionProperties.destinationLocation}"
 												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
 												styleClass="selector" /></td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>		
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_userpassword}:" /></td>
-											<td><h:inputText
-												value="#{WizardManager.bean.actionProperties.UserPassword}"
-												size="20" maxlength="128" /></td>
-										</tr>		
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>		
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_ownerpassword}:" /></td>
-											<td><h:inputText
-												value="#{WizardManager.bean.actionProperties.OwnerPassword}"
-												size="20" maxlength="128" /></td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowprint}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowPrint}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>								
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowcopy}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowCopy}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowcontentmodification}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowContentModification}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowannotationmodification}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowAnnotationModification}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowformfill}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowFormFill}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowscreenreader}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowScreenReader}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowdegradedprint}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowDegradedPrint}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_allowassembly}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.AllowAssembly}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_excludemetadata}:" /></td>
-											<td><h:selectBooleanCheckbox
- 												title="emailUpdates"
-  												value="#{WizardManager.bean.actionProperties.ExcludeMetadata}">
-												</h:selectBooleanCheckbox>
-											<td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfencryption_encryptionlevel}" />:</td>
-											<td>
-												<h:selectOneMenu
-													id="EncryptionLevel"
- 													value="#{WizardManager.bean.actionProperties.EncryptionLevel}">
-  													<f:selectItems value="#{WizardManager.bean.actionProperties.LevelOptions}" />
-												</h:selectOneMenu>
-											</td>
 										</tr>
 										<tr>
 											<td class="paddingRow"></td>
