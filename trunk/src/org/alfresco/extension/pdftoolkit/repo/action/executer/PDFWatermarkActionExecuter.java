@@ -2,9 +2,9 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
+import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -16,6 +16,10 @@ import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
+import org.alfresco.repo.action.scheduled.FreeMarkerWithLuceneExtensionsModelFactory;
+import org.alfresco.repo.template.FreeMarkerProcessor;
+import org.alfresco.repo.template.TemplateNode;
+import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
@@ -42,12 +46,11 @@ import com.itextpdf.text.pdf.PdfStamper;
 public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase 
 
 {
-
     /**
      * The logger
      */
     private static Log logger = LogFactory
-            .getLog(PDFAppendActionExecuter.class);
+            .getLog(PDFWatermarkActionExecuter.class);
 
     /**
      * Action constants
@@ -69,7 +72,10 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     private DictionaryService dictionaryService;
     private ContentService contentService;
     private FileFolderService fileFolderService;
-
+    private ServiceRegistry serviceRegistry;
+    private FreeMarkerProcessor freemarkerProcessor;
+    private FreeMarkerWithLuceneExtensionsModelFactory modelFactory;
+    
     /**
      * Position and page constants
      */
@@ -91,21 +97,16 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     public static final String TYPE_IMAGE = "image";
     public static final String TYPE_TEXT = "text";
     
-    public static final String TEXT_OPTION_DATE = "<date>";
-    public static final String TEXT_OPTION_TITLE = "<title>";
-    public static final String TEXT_OPTION_NAME = "<name>";
-    public static final String TEXT_OPTION_MODIFIED = "<modified>";
-    public static final String TEXT_OPTION_CREATED = "<created>";
-    public static final String TEXT_OPTION_OWNER = "<owner>";
-    public static final String TEXT_OPTION_USER = "<user>";
-    public static final String TEXT_OPTION_MODIFIER = "<modifier>";
-    
     public static final String FONT_OPTION_HELVETICA = BaseFont.HELVETICA;
     public static final String FONT_OPTION_COURIER = BaseFont.COURIER; 
     public static final String FONT_OPTION_TIMES_ROMAN = BaseFont.TIMES_ROMAN;
     
     private static final float pad = 15;
     
+    public PDFWatermarkActionExecuter() {
+    	
+        freemarkerProcessor = new FreeMarkerProcessor();
+    }
     /**
      * Set the node service
      * 
@@ -151,6 +152,15 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     }
 
     /**
+     * Set a service registry to use, this will do away with all of the 
+     * individual service registrations
+     * @param serviceRegistry
+     */
+    public void setServiceRegistry(ServiceRegistry serviceRegistry) {
+    	this.serviceRegistry = serviceRegistry;
+    }
+    
+    /**
      * Add parameter definitions
      */
     @Override
@@ -189,6 +199,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     @Override
     protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
     {
+    
         if (this.nodeService.exists(actionedUponNodeRef) == false)
         {
             // node doesn't exist - can't do anything
@@ -426,9 +437,13 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         	BaseFont bf = BaseFont.createFont((String)options.get(PARAM_WATERMARK_FONT), 
         			BaseFont.CP1250, BaseFont.EMBEDDED);
         	        
-        	//get watermark text and do substitution
-        	watermarkText = (String)options.get(PARAM_WATERMARK_TEXT);
-        	watermarkText = subText(watermarkText, actionedUponNodeRef);
+        	
+        	//get watermark text and process template with model
+        	String templateText = (String)options.get(PARAM_WATERMARK_TEXT);
+        	Map model = buildWatermarkTemplateModel(actionedUponNodeRef);
+        	StringWriter watermarkWriter = new StringWriter();
+        	freemarkerProcessor.processString(templateText, model, watermarkWriter);
+        	watermarkText = watermarkWriter.getBuffer().toString();
         	
         	//tokenize watermark text to support multiple lines and copy tokens
         	//to vector for re-use
@@ -442,7 +457,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         		Rectangle r = reader.getPageSizeWithRotation(i);
             	
             	// if this is an under-text stamp, use getUnderContent.
-            	// if this is an over-text stamp, usse getOverContent.
+            	// if this is an over-text stamp, use getOverContent.
             	if(depth.equals(DEPTH_OVER))
             	{
             		pcb = stamp.getOverContent(i);
@@ -481,6 +496,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         {
         	if(stamp != null) {try {stamp.close();} catch(Exception ex){}}
             e.printStackTrace();
+            throw new AlfrescoRuntimeException("", e);
         }
         finally 
         {
@@ -513,27 +529,27 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     	if(position.equals(POSITION_BOTTOMLEFT))
     	{
     		centerX = width / 2 + pad;
-    		startY = 0 + pad;
+    		startY = 0 + pad + height;
     	}
     	else if(position.equals(POSITION_BOTTOMRIGHT))
     	{
     		centerX = r.getWidth() - (width / 2) - pad;
-    		startY = 0 + pad;
+    		startY = 0 + pad + height;
     	}
     	else if(position.equals(POSITION_TOPLEFT))
     	{
     		centerX = width / 2 + pad;
-    		startY = r.getHeight() - height - pad;
+    		startY = r.getHeight() - (pad * 2);
     	}
     	else if(position.equals(POSITION_TOPRIGHT))
     	{
     		centerX = r.getWidth() - (width / 2) - pad;
-    		startY = r.getHeight() - height - pad;
+    		startY = r.getHeight() - (pad * 2);
     	}
     	else if(position.equals(POSITION_CENTER))
     	{
     		centerX = r.getWidth() / 2;
-    		startY = (r.getHeight() / 2) - (height / 2);
+    		startY = (r.getHeight() / 2) + (height / 2);
     	}
     	
     	//apply text to PDF
@@ -542,63 +558,11 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
 		for(int t = 0; t < tokens.size(); t++)
 		{
 			pcb.showTextAligned(PdfContentByte.ALIGN_CENTER, tokens.get(t).toString(),
-					centerX, startY + (size * t), 0);
+					centerX, startY - (size * t), 0);
 		}
 		            		
 		pcb.endText();
     	
-    }
-    
-    /**
-     * Takes the input text and substitutes tags for their values.  Used to embed dates,
-     * names and other metadata into the watermark.  Right now this is just a bunch of text
-     * substitutions.  I would like to fix this up to let the user use a Freemarker template
-     * instead.  Maybe for the next version.
-     * @param text
-     * @return
-     */
-    private String subText(String text, NodeRef ref) {
-    	
-    	//use ISO standard date format for now.  Might support more later if requested
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	
-    	//modified date
-    	if(fileFolderService.getFileInfo(ref).getModifiedDate() != null)
-    	{
-    		text = text.replace(TEXT_OPTION_MODIFIED, sdf.format(fileFolderService.getFileInfo(ref).getModifiedDate()));
-    	}
-    	
-    	//created date
-    	if(fileFolderService.getFileInfo(ref).getCreatedDate() != null)
-    	{
-    		text = text.replace(TEXT_OPTION_CREATED, sdf.format(fileFolderService.getFileInfo(ref).getCreatedDate()));
-    	}
-    	
-    	//file name
-    	if(fileFolderService.getFileInfo(ref).getName() != null)
-    	{
-    		text = text.replace(TEXT_OPTION_NAME, fileFolderService.getFileInfo(ref).getName());
-    	}
-    	
-    	//some stuff is only in the properties
-    	Map fp = fileFolderService.getFileInfo(ref).getProperties();
-    	Iterator<QName> it = fp.keySet().iterator();
-    	while(it.hasNext()) {
-    		QName name = it.next();
-        	if(name != null && fp.get(name) != null && name.getLocalName().equals("title")) 
-        	{
-        		text = text.replace(TEXT_OPTION_TITLE, fp.get(name).toString());
-        	}
-        	if(name != null && fp.get(name) != null  && name.getLocalName().equals("modifier")) 
-        	{
-        		text = text.replace(TEXT_OPTION_MODIFIER, fp.get(name).toString());
-        	}
-    	}
-    	
-    	//today's date
-    	text = text.replace(TEXT_OPTION_DATE, sdf.format(new java.util.Date()));
-    	
-    	return text;
     }
     
     /**
@@ -724,5 +688,27 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
                 .getNodeRef(), ContentModel.PROP_CONTENT, true);
 
         return contentWriter;
+    }
+    
+    /**
+     * Builds a freemarker model which supports a subset of the default model.
+     * 
+     * @param ref
+     * @return
+     */
+    private Map<String, Object> buildWatermarkTemplateModel(NodeRef ref)
+    {
+       Map<String, Object> model = new HashMap<String, Object>();
+       
+       NodeRef person = serviceRegistry.getPersonService().getPerson(serviceRegistry.getAuthenticationService().getCurrentUserName());
+       model.put("person", new TemplateNode(person, serviceRegistry, null));
+       NodeRef homespace = (NodeRef)nodeService.getProperty(person, ContentModel.PROP_HOMEFOLDER);
+       model.put("userhome", new TemplateNode(homespace, serviceRegistry, null));
+       model.put("document", new TemplateNode(ref, serviceRegistry, null));
+       NodeRef parent = serviceRegistry.getNodeService().getPrimaryParent(ref).getParentRef();
+       model.put("space", new TemplateNode(parent, serviceRegistry, null));
+       model.put("date", new Date());
+       
+       return model;
     }
 }
