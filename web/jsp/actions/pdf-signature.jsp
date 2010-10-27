@@ -144,6 +144,18 @@
 												styleClass="selector" /></td>
 										</tr>
 										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_key_type}" /></td>
+											<td>
+												<h:selectOneRadio id="keyType"
+													value="#{WizardManager.bean.actionProperties.KeyType}">
+													<f:selectItems value="#{WizardManager.bean.actionProperties.KeyTypeOptions}" />
+												</h:selectOneRadio>
+											</td>
+										</tr>
+										<tr>
 											<td colspan="2" class="paddingRow"></td>
 										</tr>
 										<tr>

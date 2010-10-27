@@ -61,12 +61,16 @@ public class PDFSignatureActionExecuter extends ActionExecuterAbstractBase
     public static final String PARAM_LOCATION_Y = "location-y";
     public static final String PARAM_WIDTH = "width";
     public static final String PARAM_HEIGHT = "height";
+    public static final String PARAM_KEY_TYPE = "key-type";
     
     private static final String FILE_MIMETYPE = "application/pdf";
     
     public static final String VISIBILITY_HIDDEN = "hidden";
     public static final String VISIBILITY_VISIBLE = "visible";
 
+    public static final String KEY_TYPE_PKCS12 = "pkcs12";
+    public static final String KEY_TYPE_DEFAULT = "default";
+    
     private NodeService nodeService;
     private DictionaryService dictionaryService;
     private ContentService contentService;
@@ -179,6 +183,7 @@ public class PDFSignatureActionExecuter extends ActionExecuterAbstractBase
         String reason = (String)ruleAction.getParameterValue(PARAM_REASON);
         String visibility = (String)ruleAction.getParameterValue(PARAM_VISIBILITY);
         String password = (String)ruleAction.getParameterValue(PARAM_KEY_PASSWORD);
+        String keyType = (String)ruleAction.getParameterValue(PARAM_KEY_TYPE);
         int locationX = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_LOCATION_X));
         int locationY = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_LOCATION_Y));
         int height = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_HEIGHT));
@@ -186,10 +191,17 @@ public class PDFSignatureActionExecuter extends ActionExecuterAbstractBase
         
         File tempDir = null;
         ContentWriter writer = null;
+        KeyStore ks = null;
         
 		try {
-			// get a keystore instance
-			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+			// get a keystore instance by
+			if(keyType == null || keyType.equalsIgnoreCase(KEY_TYPE_DEFAULT)) {
+				ks = KeyStore.getInstance(KeyStore.getDefaultType());
+			}else if (keyType.equalsIgnoreCase(KEY_TYPE_PKCS12)) {
+				ks = KeyStore.getInstance("pkcs12");
+			} else {
+				throw new Exception("Unknown key type " + keyType + " specified");
+			}
 
 			// open the reader to the key and load it
 			ContentReader keyReader = getReader(privateKey);
