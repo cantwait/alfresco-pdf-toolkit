@@ -17,8 +17,10 @@ import org.alfresco.web.bean.wizard.IWizardBean;
 public class PDFSignatureActionHandler extends BaseActionHandler 
 {
 	protected static final HashMap<String, String> OPTIONS_VISIBLE = new HashMap<String, String>();
+	protected static final HashMap<String, String> OPTIONS_KEY_TYPE = new HashMap<String, String>();
 	
 	protected static final String PROP_PRIVATE_KEY = "PrivateKey";
+	protected static final String PROP_KEY_TYPE = "KeyType";
 	protected static final String PROP_VISIBILITY = "SignatureVisibility";
 	protected static final String PROP_LOCATION = "Location";
 	protected static final String PROP_REASON = "Reason";
@@ -29,6 +31,7 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	protected static final String PROP_HEIGHT = "Height";
 	
 	protected static final String PROP_OPTIONS_VISIBLE = "VisibilityOptions";
+	protected static final String PROP_OPTIONS_KEY_TYPE = "KeyTypeOptions";
 	
 	public String getJSPPath() 
 	{
@@ -47,6 +50,9 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 		NodeRef signatureFile = (NodeRef) actionProps.get(PROP_PRIVATE_KEY);
 		repoProps.put(PDFSignatureActionExecuter.PARAM_PRIVATE_KEY,
 				signatureFile);
+		
+		String keyType = (String)actionProps.get(PROP_KEY_TYPE);
+		repoProps.put(PDFSignatureActionExecuter.PARAM_KEY_TYPE, keyType);
 		
 		// add visibility, location, reason, password, location_x, location_y, height and width
 		String visibility = (String)actionProps.get(PROP_VISIBILITY);
@@ -77,11 +83,20 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	public void prepareForEdit(Map<String, Serializable> actionProps,
 			Map<String, Serializable> repoProps) 
 	{		
+		populateLists();
+		
+		//add lists
+		actionProps.put(PROP_OPTIONS_VISIBLE, OPTIONS_VISIBLE);
+		actionProps.put(PROP_OPTIONS_KEY_TYPE, OPTIONS_KEY_TYPE);
+		
 		NodeRef destNodeRef = (NodeRef) repoProps.get(PDFSignatureActionExecuter.PARAM_DESTINATION_FOLDER);
 		actionProps.put(PROP_DESTINATION, destNodeRef);
 
 		NodeRef certificateFile = (NodeRef) repoProps.get(PDFSignatureActionExecuter.PARAM_PRIVATE_KEY);
 		actionProps.put(PROP_PRIVATE_KEY, certificateFile);
+		
+		String keyType = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_KEY_TYPE);
+		actionProps.put(PROP_KEY_TYPE, keyType);
 		
 		// add visibility, location, reason, password, location_x, location_y, height and width
 		String visibility = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_VISIBILITY);
@@ -128,9 +143,11 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 		
 		//add lists
 		actionProps.put(PROP_OPTIONS_VISIBLE, OPTIONS_VISIBLE);
+		actionProps.put(PROP_OPTIONS_KEY_TYPE, OPTIONS_KEY_TYPE);
 		
 		//set defaults
 		actionProps.put(PROP_VISIBILITY, PDFSignatureActionExecuter.VISIBILITY_HIDDEN);
+		actionProps.put(PROP_KEY_TYPE, PDFSignatureActionExecuter.KEY_TYPE_DEFAULT);
 		
 		super.setupUIDefaults(actionProps);
 	}
@@ -141,11 +158,15 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	private void populateLists() {
 		
 		OPTIONS_VISIBLE.clear();
+		OPTIONS_KEY_TYPE.clear();
 		
 		// set up visibility options
 		OPTIONS_VISIBLE.put("Visible", PDFSignatureActionExecuter.VISIBILITY_VISIBLE);
 		OPTIONS_VISIBLE.put("Hidden", PDFSignatureActionExecuter.VISIBILITY_HIDDEN);
-
+		
+		//set up valid key type options
+		OPTIONS_KEY_TYPE.put("Default", PDFSignatureActionExecuter.KEY_TYPE_DEFAULT);
+		OPTIONS_KEY_TYPE.put("PKCS12", PDFSignatureActionExecuter.KEY_TYPE_PKCS12);
 	}
 }
 
