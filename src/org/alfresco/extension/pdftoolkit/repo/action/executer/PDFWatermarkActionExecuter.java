@@ -43,7 +43,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
-public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase 
+public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
 
 {
     /**
@@ -68,29 +68,12 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     
     private static final String FILE_MIMETYPE = "application/pdf";
 
-    private NodeService nodeService;
-    private DictionaryService dictionaryService;
-    private ContentService contentService;
-    private FileFolderService fileFolderService;
-    private ServiceRegistry serviceRegistry;
     private FreeMarkerProcessor freemarkerProcessor;
     private FreeMarkerWithLuceneExtensionsModelFactory modelFactory;
     
     /**
      * Position and page constants
-     */
-    public static final String PAGE_ALL = "all";
-    public static final String PAGE_ODD = "odd";
-    public static final String PAGE_EVEN = "even";
-    public static final String PAGE_FIRST = "first";
-    public static final String PAGE_LAST = "last";
-    
-    public static final String POSITION_CENTER = "center";
-    public static final String POSITION_TOPLEFT = "topleft";
-    public static final String POSITION_TOPRIGHT = "topright";
-    public static final String POSITION_BOTTOMLEFT = "bottomleft";
-    public static final String POSITION_BOTTOMRIGHT = "bottomright";
-    
+     */    
     public static final String DEPTH_UNDER = "under";
     public static final String DEPTH_OVER = "over";
     
@@ -106,58 +89,6 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     public PDFWatermarkActionExecuter() {
     	
         freemarkerProcessor = new FreeMarkerProcessor();
-    }
-    /**
-     * Set the node service
-     * 
-     * @param nodeService
-     *            set the node service
-     */
-    public void setNodeService(NodeService nodeService)
-    {
-        this.nodeService = nodeService;
-    }
-
-    /**
-     * Set the dictionary service
-     * 
-     * @param dictionaryService
-     *            the dictionary service
-     */
-    public void setDictionaryService(DictionaryService dictionaryService)
-    {
-        this.dictionaryService = dictionaryService;
-    }
-
-    /**
-     * Set the content service
-     * 
-     * @param contentService
-     *            the content service
-     */
-    public void setContentService(ContentService contentService)
-    {
-        this.contentService = contentService;
-    }
-
-    /**
-     * Sets the FileFolderService to use
-     * 
-     * @param fileFolderService
-     *            The FileFolderService
-     */
-    public void setFileFolderService(FileFolderService fileFolderService)
-    {
-        this.fileFolderService = fileFolderService;
-    }
-
-    /**
-     * Set a service registry to use, this will do away with all of the 
-     * individual service registrations
-     * @param serviceRegistry
-     */
-    public void setServiceRegistry(ServiceRegistry serviceRegistry) {
-    	this.serviceRegistry = serviceRegistry;
     }
     
     /**
@@ -200,7 +131,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
     {
     
-        if (this.nodeService.exists(actionedUponNodeRef) == false)
+        if (serviceRegistry.getNodeService().exists(actionedUponNodeRef) == false)
         {
             // node doesn't exist - can't do anything
             return;
@@ -305,7 +236,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         	File alfTempDir = TempFileProvider.getTempDir();
         	tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
             tempDir.mkdir();
-            File file = new File(tempDir, fileFolderService.getFileInfo(actionedUponNodeRef).getName());
+            File file = new File(tempDir, serviceRegistry.getFileFolderService().getFileInfo(actionedUponNodeRef).getName());
             
         	//get the PDF input stream and create a reader for iText
         	PdfReader reader = new PdfReader(actionedUponContentReader.getContentInputStream());
@@ -374,7 +305,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         	String filename = file.getName();
         	
             // Get a writer and prep it for putting it back into the repo
-            writer = getWriter(ruleAction, filename);
+            writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
 
@@ -421,7 +352,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         	File alfTempDir = TempFileProvider.getTempDir();
         	tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
             tempDir.mkdir();
-            File file = new File(tempDir, fileFolderService.getFileInfo(actionedUponNodeRef).getName());
+            File file = new File(tempDir, serviceRegistry.getFileFolderService().getFileInfo(actionedUponNodeRef).getName());
             
         	//get the PDF input stream and create a reader for iText
         	PdfReader reader = new PdfReader(actionedUponContentReader.getContentInputStream());
@@ -482,7 +413,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
         	String filename = file.getName();
         	
             // Get a writer and prep it for putting it back into the repo
-            writer = getWriter(ruleAction, filename);
+            writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
 
@@ -565,130 +496,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
     	
     }
     
-    /**
-     * Determines whether or not a watermark should be applied to a given page
-     * @param pages
-     * @param current
-     * @param numpages
-     * @return
-     */
-	private boolean checkPage(String pages, int current, int numpages)
-	{
-		
-		boolean markPage = false;
-		
-		if(pages.equals(PAGE_EVEN) || pages.equals(PAGE_ODD)) 
-		{
-			if(current % 2 == 0) 
-			{
-				markPage = true;
-			}
-		} 
-		else if (pages.equals(PAGE_ODD))
-		{
-			if(current % 2 != 0) 
-			{
-				markPage = true;
-			}
-		}
-		else if (pages.equals(PAGE_FIRST)) 
-		{
-			if(current == 1) 
-			{
-				markPage = true;
-			}
-		} 
-		else if (pages.equals(PAGE_LAST)) 
-		{
-			if(current == numpages) 
-			{
-				markPage = true;;
-			}
-		} 
-		else 
-		{
-			markPage = true;
-		}
-		
-		return markPage;
-	}
 
-    /**
-     * Gets the X value for centering the watermark image
-     * @param r
-     * @param img
-     * @return
-     */
-    private float getCenterX(Rectangle r, Image img)
-    {
-    	float x = 0;
-    	float pdfwidth = r.getWidth();
-    	float imgwidth = img.getWidth();
-    	
-    	x = (pdfwidth - imgwidth) / 2;
-    	
-    	return x;
-    }
-    
-    /**
-     * Gets the Y value for centering the watermark image
-     * @param r
-     * @param img
-     * @return
-     */
-    private float getCenterY(Rectangle r, Image img)
-    {
-    	float y = 0;
-    	float pdfheight = r.getHeight();
-    	float imgheight = img.getHeight();
-    	
-    	y = (pdfheight - imgheight) / 2;
-    	
-    	return y;
-    }
-    
-    /**
-     * @param actionedUponNodeRef
-     * @return
-     */
-    protected ContentReader getReader(NodeRef nodeRef)
-    {
-        // First check that the node is a sub-type of content
-        QName typeQName = this.nodeService.getType(nodeRef);
-        if (this.dictionaryService.isSubClass(typeQName,
-                ContentModel.TYPE_CONTENT) == false)
-        {
-            // it is not content, so can't transform
-            return null;
-        }
-
-        // Get the content reader
-        ContentReader contentReader = this.contentService.getReader(
-                nodeRef, ContentModel.PROP_CONTENT);
-
-        return contentReader;
-    }
-
-    /**
-     * @param ruleAction
-     * @param filename
-     * @return
-     */
-    protected ContentWriter getWriter(Action ruleAction, String filename)
-    {
-        // Get the details of the copy destination
-        NodeRef destinationParent = (NodeRef) ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER);
-
-        FileInfo fileInfo = this.fileFolderService.create(destinationParent,
-                filename, ContentModel.TYPE_CONTENT);
-
-        // get the writer and set it up
-        ContentWriter contentWriter = this.contentService.getWriter(fileInfo
-                .getNodeRef(), ContentModel.PROP_CONTENT, true);
-
-        return contentWriter;
-    }
     
     /**
      * Builds a freemarker model which supports a subset of the default model.
@@ -702,7 +510,7 @@ public class PDFWatermarkActionExecuter extends ActionExecuterAbstractBase
        
        NodeRef person = serviceRegistry.getPersonService().getPerson(serviceRegistry.getAuthenticationService().getCurrentUserName());
        model.put("person", new TemplateNode(person, serviceRegistry, null));
-       NodeRef homespace = (NodeRef)nodeService.getProperty(person, ContentModel.PROP_HOMEFOLDER);
+       NodeRef homespace = (NodeRef)serviceRegistry.getNodeService().getProperty(person, ContentModel.PROP_HOMEFOLDER);
        model.put("userhome", new TemplateNode(homespace, serviceRegistry, null));
        model.put("document", new TemplateNode(ref, serviceRegistry, null));
        NodeRef parent = serviceRegistry.getNodeService().getPrimaryParent(ref).getParentRef();

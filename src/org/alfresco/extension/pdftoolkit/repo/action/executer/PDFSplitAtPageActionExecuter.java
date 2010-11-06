@@ -35,25 +35,21 @@ import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
-import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
+import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.model.FileExistsException;
 import org.alfresco.service.cmr.model.FileFolderService;
 import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentReader;
+import org.alfresco.service.cmr.repository.ContentService;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.alfresco.service.namespace.QName;
-import org.alfresco.service.cmr.dictionary.DictionaryService;
-import org.alfresco.model.ContentModel;
-import org.alfresco.service.cmr.repository.ContentService;
-import org.alfresco.util.TempFileProvider;
-
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFMergerUtility;
@@ -66,7 +62,7 @@ import org.apache.pdfbox.util.Splitter;
  * 
  */
 
-public class PDFSplitAtPageActionExecuter extends ActionExecuterAbstractBase
+public class PDFSplitAtPageActionExecuter extends BasePDFActionExecuter
 
 {
 
@@ -82,9 +78,6 @@ public class PDFSplitAtPageActionExecuter extends ActionExecuterAbstractBase
     public static final String NAME = "pdf-split-at-page";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
     public static final String PARAM_SPLIT_AT_PAGE = "split-at-page";
-
-    private static final String FILE_EXTENSION = ".pdf";
-    private static final String FILE_MIMETYPE = "application/pdf";
 
     private NodeService nodeService;
     private DictionaryService dictionaryService;
@@ -353,7 +346,7 @@ public class PDFSplitAtPageActionExecuter extends ActionExecuterAbstractBase
                         String filename = file.getName();
 
                         // Get a writer and prep it for putting it back into the repo
-                        writer = getWriter(ruleAction, filename);
+                        writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
                         writer.setEncoding(reader.getEncoding()); // original encoding
                         writer.setMimetype(FILE_MIMETYPE);
 
@@ -454,74 +447,5 @@ public class PDFSplitAtPageActionExecuter extends ActionExecuterAbstractBase
                 extension);
 
         return filenameSansExt;
-    }
-
-    /**
-     * @param actionedUponNodeRef
-     * @return
-     */
-    protected ContentReader getReader(NodeRef actionedUponNodeRef)
-    {
-        // First check that the node is a sub-type of content
-        QName typeQName = this.nodeService.getType(actionedUponNodeRef);
-        if (this.dictionaryService.isSubClass(typeQName,
-                ContentModel.TYPE_CONTENT) == false)
-        {
-            // it is not content, so can't transform
-            return null;
-        }
-
-        // Get the content reader
-        ContentReader contentReader = this.contentService.getReader(
-                actionedUponNodeRef, ContentModel.PROP_CONTENT);
-
-        return contentReader;
-    }
-
-    /**
-     * @param ruleAction
-     * @param actionedUponNodeRef
-     * @return
-     */
-    protected ContentWriter getWriter(Action ruleAction,
-            NodeRef actionedUponNodeRef)
-    {
-        // Get the details of the copy destination
-        NodeRef destinationParent = (NodeRef) ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER);
-
-        // Need the Name of the file sans extension
-        String filename = getFilename(actionedUponNodeRef);
-
-        FileInfo fileInfo = this.fileFolderService.create(destinationParent,
-                filename, ContentModel.TYPE_CONTENT);
-
-        // get the writer and set it up
-        ContentWriter contentWriter = this.contentService.getWriter(fileInfo
-                .getNodeRef(), ContentModel.PROP_CONTENT, true);
-
-        return contentWriter;
-
-    }
-
-    /**
-     * @param ruleAction
-     * @param filename
-     * @return
-     */
-    protected ContentWriter getWriter(Action ruleAction, String filename)
-    {
-        // Get the details of the copy destination
-        NodeRef destinationParent = (NodeRef) ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER);
-
-        FileInfo fileInfo = this.fileFolderService.create(destinationParent,
-                filename, ContentModel.TYPE_CONTENT);
-
-        // get the writer and set it up
-        ContentWriter contentWriter = this.contentService.getWriter(fileInfo
-                .getNodeRef(), ContentModel.PROP_CONTENT, true);
-
-        return contentWriter;
     }
 }

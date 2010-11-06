@@ -7,21 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
-import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
-import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
-import org.alfresco.service.cmr.dictionary.DictionaryService;
-import org.alfresco.service.cmr.model.FileFolderService;
-import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentReader;
-import org.alfresco.service.cmr.repository.ContentService;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
-import org.alfresco.service.cmr.repository.NodeService;
-import org.alfresco.service.namespace.QName;
 import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +22,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase 
+public class PDFEncryptionActionExecuter extends BasePDFActionExecuter 
 {
 
     /**
@@ -44,13 +36,6 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
      */
     public static final String NAME = "pdf-encryption";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
-    
-    private static final String FILE_MIMETYPE = "application/pdf";
-
-    private NodeService nodeService;
-    private DictionaryService dictionaryService;
-    private ContentService contentService;
-    private FileFolderService fileFolderService;
 
     /**
      * Encryption constants
@@ -70,50 +55,6 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
 	public static final String PARAM_OPTIONS_LEVEL = "LevelOptions";
     
     /**
-     * Set the node service
-     * 
-     * @param nodeService
-     *            set the node service
-     */
-    public void setNodeService(NodeService nodeService)
-    {
-        this.nodeService = nodeService;
-    }
-
-    /**
-     * Set the dictionary service
-     * 
-     * @param dictionaryService
-     *            the dictionary service
-     */
-    public void setDictionaryService(DictionaryService dictionaryService)
-    {
-        this.dictionaryService = dictionaryService;
-    }
-
-    /**
-     * Set the content service
-     * 
-     * @param contentService
-     *            the content service
-     */
-    public void setContentService(ContentService contentService)
-    {
-        this.contentService = contentService;
-    }
-
-    /**
-     * Sets the FileFolderService to use
-     * 
-     * @param fileFolderService
-     *            The FileFolderService
-     */
-    public void setFileFolderService(FileFolderService fileFolderService)
-    {
-        this.fileFolderService = fileFolderService;
-    }
-
-    /**
      * Add parameter definitions
      */
     @Override
@@ -132,7 +73,7 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
     @Override
     protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
     {
-        if (this.nodeService.exists(actionedUponNodeRef) == false)
+        if (serviceRegistry.getNodeService().exists(actionedUponNodeRef) == false)
         {
             // node doesn't exist - can't do anything
             return;
@@ -240,7 +181,7 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
 	    	File alfTempDir = TempFileProvider.getTempDir();
 	    	tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
 	        tempDir.mkdir();
-	        File file = new File(tempDir, fileFolderService.getFileInfo(actionedUponNodeRef).getName());
+	        File file = new File(tempDir, serviceRegistry.getFileFolderService().getFileInfo(actionedUponNodeRef).getName());
 	        
 	    	//get the PDF input stream and create a reader for iText
 	    	PdfReader reader = new PdfReader(actionedUponContentReader.getContentInputStream());
@@ -252,7 +193,7 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
 	    	
 	    	// write out to destination
 	    	String filename = file.getName();
-            writer = getWriter(ruleAction, filename);
+            writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
             writer.putContent(file);
@@ -304,48 +245,5 @@ public class PDFEncryptionActionExecuter extends ActionExecuterAbstractBase
     	}
     	
     	return permissions;
-    }
-    
-    /**
-     * @param actionedUponNodeRef
-     * @return
-     */
-    protected ContentReader getReader(NodeRef nodeRef)
-    {
-        // First check that the node is a sub-type of content
-        QName typeQName = this.nodeService.getType(nodeRef);
-        if (this.dictionaryService.isSubClass(typeQName,
-                ContentModel.TYPE_CONTENT) == false)
-        {
-            // it is not content, so can't transform
-            return null;
-        }
-
-        // Get the content reader
-        ContentReader contentReader = this.contentService.getReader(
-                nodeRef, ContentModel.PROP_CONTENT);
-
-        return contentReader;
-    }
-
-    /**
-     * @param ruleAction
-     * @param filename
-     * @return
-     */
-    protected ContentWriter getWriter(Action ruleAction, String filename)
-    {
-        // Get the details of the copy destination
-        NodeRef destinationParent = (NodeRef) ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER);
-
-        FileInfo fileInfo = this.fileFolderService.create(destinationParent,
-                filename, ContentModel.TYPE_CONTENT);
-
-        // get the writer and set it up
-        ContentWriter contentWriter = this.contentService.getWriter(fileInfo
-                .getNodeRef(), ContentModel.PROP_CONTENT, true);
-
-        return contentWriter;
     }
 }
