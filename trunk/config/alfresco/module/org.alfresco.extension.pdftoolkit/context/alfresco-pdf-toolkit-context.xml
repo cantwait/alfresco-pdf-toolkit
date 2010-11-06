@@ -7,17 +7,8 @@
 	<bean id="pdf-split"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
 
@@ -25,17 +16,8 @@
 	<bean id="pdf-append"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFAppendActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
 
@@ -43,17 +25,8 @@
 	<bean id="pdf-split-at-page"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitAtPageActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
 
@@ -61,18 +34,6 @@
 	<bean id="pdf-watermark"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFWatermarkActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
-		</property>
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
@@ -82,17 +43,8 @@
 	<bean id="pdf-encryption"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFEncryptionActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
 	
@@ -100,17 +52,8 @@
 	<bean id="pdf-signature"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter"
 		parent="action-executer">
-		<property name="nodeService">
-			<ref bean="NodeService" />
-		</property>
-		<property name="dictionaryService">
-			<ref bean="dictionaryService" />
-		</property>
-		<property name="contentService">
-			<ref bean="ContentService" />
-		</property>
-		<property name="fileFolderService">
-			<ref bean="FileFolderService" />
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
 </beans>
