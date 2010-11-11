@@ -1,5 +1,11 @@
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
+import java.util.List;
+
+import org.alfresco.repo.action.ParameterDefinitionImpl;
+import org.alfresco.service.cmr.action.ParameterDefinition;
+import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
+
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 
@@ -19,6 +25,27 @@ public abstract class BasePDFStampActionExecuter extends BasePDFActionExecuter {
     public static final String POSITION_TOPRIGHT = "topright";
     public static final String POSITION_BOTTOMLEFT = "bottomleft";
     public static final String POSITION_BOTTOMRIGHT = "bottomright";
+    
+    public static final String PARAM_POSITION = "position";
+    public static final String PARAM_LOCATION_X = "location-x";
+    public static final String PARAM_LOCATION_Y = "location-y";
+    
+    /**
+     * Add parameter definitions
+     */
+    @Override
+    protected void addParameterDefinitions(List<ParameterDefinition> paramList)
+    {
+        paramList.add(new ParameterDefinitionImpl(PARAM_POSITION,
+                DataTypeDefinition.TEXT, false,
+                getParamDisplayLabel(PARAM_POSITION)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_LOCATION_X,
+                DataTypeDefinition.TEXT, false,
+                getParamDisplayLabel(PARAM_LOCATION_X)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_LOCATION_Y,
+                DataTypeDefinition.TEXT, false,
+                getParamDisplayLabel(PARAM_LOCATION_Y)));
+    }
     
     /**
      * Determines whether or not a watermark should be applied to a given page

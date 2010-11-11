@@ -179,17 +179,6 @@
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2" class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{msg.destination}" />:</td>
-											<td><r:ajaxFolderSelector id="spaceSelector"
-												label="#{msg.select_destination_prompt}"
-												value="#{WizardManager.bean.actionProperties.destinationLocation}"
-												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
-												styleClass="selector" /></td>
-										</tr>
-										<tr>
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
@@ -202,19 +191,8 @@
 												</h:selectOneMenu>
 											</td>
 										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfwatermark_position}" />:</td>
-											<td>
-												<h:selectOneMenu
-													id="WatermarkPosition"
- 													value="#{WizardManager.bean.actionProperties.WatermarkPosition}">
-  													<f:selectItems value="#{WizardManager.bean.actionProperties.PositionOptions}" />
-												</h:selectOneMenu>
-											</td>
-										</tr>
+										<!--  include the positioning elements -->
+										<%@ include file="pdf-positioning.jsp" %>
 										<tr>
 											<td class="paddingRow"></td>
 										</tr>
@@ -226,6 +204,17 @@
   													<f:selectItems value="#{WizardManager.bean.actionProperties.DepthOptions}" />
 												</h:selectOneRadio>
 											</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{msg.destination}" />:</td>
+											<td><r:ajaxFolderSelector id="spaceSelector"
+												label="#{msg.select_destination_prompt}"
+												value="#{WizardManager.bean.actionProperties.destinationLocation}"
+												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
+												styleClass="selector" /></td>
 										</tr>
 										<tr>
 											<td class="paddingRow"></td>
