@@ -45,8 +45,6 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
     public static final String PARAM_LOCATION = "location";
     public static final String PARAM_REASON = "reason";
     public static final String PARAM_KEY_PASSWORD = "key-password";
-    public static final String PARAM_LOCATION_X = "location-x";
-    public static final String PARAM_LOCATION_Y = "location-y";
     public static final String PARAM_WIDTH = "width";
     public static final String PARAM_HEIGHT = "height";
     public static final String PARAM_KEY_TYPE = "key-type";
@@ -63,6 +61,8 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
+    	super.addParameterDefinitions(paramList);
+    	
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
                 DataTypeDefinition.NODE_REF, true,
                 getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
@@ -163,7 +163,7 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
 			PdfStamper stamp = PdfStamper.createSignature(reader, fout, '\0');
 			PdfSignatureAppearance sap = stamp.getSignatureAppearance();
 			sap.setCrypto(key, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
-
+		
 			// set reason for signature and location of signer
 			sap.setReason(reason);
 			sap.setLocation(location);

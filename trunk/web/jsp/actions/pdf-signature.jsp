@@ -186,24 +186,6 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<tr>
-											<td><h:outputText value="#{customMsg.pdfsignature_location_x}" />:</td>
-											<td><h:inputText id="location_x" size="4" 
-												value="#{WizardManager.bean.actionProperties.LocationX}"/>
-											</td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
-											<td><h:outputText value="#{customMsg.pdfsignature_location_y}" />:</td>
-											<td><h:inputText id="location_y" size="4" 
-												value="#{WizardManager.bean.actionProperties.LocationY}"/>
-											</td>
-										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
 											<td><h:outputText value="#{customMsg.pdfsignature_width}" />:</td>
 											<td><h:inputText id="width" size="4" 
 												value="#{WizardManager.bean.actionProperties.Width}"/>
@@ -220,7 +202,9 @@
 										</tr>
 										<tr>
 											<td class="paddingRow"></td>
-										</tr>							
+										</tr>
+										<!--  include the positioning elements -->
+										<%@ include file="pdf-positioning.jsp" %>							
 										<tr>
 											<td><h:outputText value="#{msg.destination}" />:</td>
 											<td><r:ajaxFolderSelector id="spaceSelector"

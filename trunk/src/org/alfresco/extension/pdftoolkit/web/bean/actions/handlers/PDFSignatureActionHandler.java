@@ -14,7 +14,7 @@ import org.alfresco.web.bean.actions.handlers.BaseActionHandler;
 import org.alfresco.web.bean.repository.Repository;
 import org.alfresco.web.bean.wizard.IWizardBean;
 
-public class PDFSignatureActionHandler extends BaseActionHandler 
+public class PDFSignatureActionHandler extends BasePDFStampActionHandler 
 {
 	protected static final HashMap<String, String> OPTIONS_VISIBLE = new HashMap<String, String>();
 	protected static final HashMap<String, String> OPTIONS_KEY_TYPE = new HashMap<String, String>();
@@ -25,11 +25,8 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	protected static final String PROP_LOCATION = "Location";
 	protected static final String PROP_REASON = "Reason";
 	protected static final String PROP_KEY_PASSWORD = "KeyPassword";
-	protected static final String PROP_LOCATION_X = "LocationX";
-	protected static final String PROP_LOCATION_Y = "LocationY";
 	protected static final String PROP_WIDTH = "Width";
 	protected static final String PROP_HEIGHT = "Height";
-	
 	protected static final String PROP_OPTIONS_VISIBLE = "VisibilityOptions";
 	protected static final String PROP_OPTIONS_KEY_TYPE = "KeyTypeOptions";
 	
@@ -41,6 +38,8 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	public void prepareForSave(Map<String, Serializable> actionProps,
 			Map<String, Serializable> repoProps) 
 	{	
+		super.prepareForSave(actionProps, repoProps);
+		
 		// add the destination space id to the action properties
 		NodeRef destNodeRef = (NodeRef) actionProps.get(PROP_DESTINATION);
 		repoProps.put(PDFSignatureActionExecuter.PARAM_DESTINATION_FOLDER,
@@ -66,12 +65,6 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 		
 		String keyPassword = (String)actionProps.get(PROP_KEY_PASSWORD);
 		repoProps.put(PDFSignatureActionExecuter.PARAM_KEY_PASSWORD, keyPassword);
-		
-		String locationX = (String)actionProps.get(PROP_LOCATION_X);
-		repoProps.put(PDFSignatureActionExecuter.PARAM_LOCATION_X, locationX);
-		
-		String locationY = (String)actionProps.get(PROP_LOCATION_Y);
-		repoProps.put(PDFSignatureActionExecuter.PARAM_LOCATION_Y, locationY);
 		
 		String height = (String)actionProps.get(PROP_HEIGHT);
 		repoProps.put(PDFSignatureActionExecuter.PARAM_HEIGHT, height);
@@ -111,12 +104,6 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 		String keyPassword = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_KEY_PASSWORD);
 		actionProps.put(PROP_KEY_PASSWORD, keyPassword);
 
-		String locationX = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_LOCATION_X);
-		actionProps.put(PROP_LOCATION_X, locationX);
-
-		String locationY = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_LOCATION_Y);
-		actionProps.put(PROP_LOCATION_Y, locationY);
-
 		String height = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_HEIGHT);
 		actionProps.put(PROP_HEIGHT, height);
 
@@ -155,7 +142,7 @@ public class PDFSignatureActionHandler extends BaseActionHandler
 	/**
 	 * Populates lists for UI 
 	 */
-	private void populateLists() {
+	protected void populateLists() {
 		
 		OPTIONS_VISIBLE.clear();
 		OPTIONS_KEY_TYPE.clear();

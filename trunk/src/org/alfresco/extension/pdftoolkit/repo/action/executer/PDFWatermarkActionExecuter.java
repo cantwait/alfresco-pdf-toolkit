@@ -59,7 +59,6 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     public static final String PARAM_WATERMARK_IMAGE="watermark-image";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
     public static final String PARAM_WATERMARK_PAGES = "watermark-pages";
-    public static final String PARAM_WATERMARK_POSITION = "watermark-position";
     public static final String PARAM_WATERMARK_DEPTH = "watermark-depth";
     public static final String PARAM_WATERMARK_TYPE = "watermark-type";
     public static final String PARAM_WATERMARK_TEXT = "watermark-text";
@@ -97,6 +96,8 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
+    	super.addParameterDefinitions(paramList);
+    	
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
                 DataTypeDefinition.NODE_REF, true,
                 getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
@@ -106,9 +107,6 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_PAGES,
                 DataTypeDefinition.TEXT, true,
                 getParamDisplayLabel(PARAM_WATERMARK_PAGES)));
-        paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_POSITION,
-                DataTypeDefinition.TEXT, true,
-                getParamDisplayLabel(PARAM_WATERMARK_POSITION)));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_DEPTH,
                 DataTypeDefinition.TEXT, true,
                 getParamDisplayLabel(PARAM_WATERMARK_DEPTH)));
@@ -169,8 +167,8 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
                 .getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_WATERMARK_PAGES, ruleAction.
         		getParameterValue(PARAM_WATERMARK_PAGES));
-        options.put(PARAM_WATERMARK_POSITION, ruleAction.
-        		getParameterValue(PARAM_WATERMARK_POSITION));
+        options.put(PARAM_POSITION, ruleAction.
+        		getParameterValue(PARAM_POSITION));
         options.put(PARAM_WATERMARK_DEPTH, ruleAction.
         		getParameterValue(PARAM_WATERMARK_DEPTH));
         
@@ -248,7 +246,7 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
         	
         	//get the PDF pages and position
         	String pages = (String) options.get(PARAM_WATERMARK_PAGES);
-        	String position = (String) options.get(PARAM_WATERMARK_POSITION);
+        	String position = (String) options.get(PARAM_POSITION);
         	String depth = (String) options.get(PARAM_WATERMARK_DEPTH);
         	
         	// image requires absolute positioning or an exception will be thrown
@@ -361,7 +359,7 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
         	
         	//get the PDF pages and position
         	String pages = (String) options.get(PARAM_WATERMARK_PAGES);
-        	String position = (String) options.get(PARAM_WATERMARK_POSITION);
+        	String position = (String) options.get(PARAM_POSITION);
         	String depth = (String) options.get(PARAM_WATERMARK_DEPTH);
        
         	//create the base font for the text stamp
