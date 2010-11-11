@@ -191,6 +191,9 @@
 												</h:selectOneMenu>
 											</td>
 										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
 										<!--  include the positioning elements -->
 										<%@ include file="pdf-positioning.jsp" %>
 										<tr>

@@ -1,7 +1,4 @@
 										<tr>
-											<td class="paddingRow"></td>
-										</tr>
-										<tr>
 											<td><h:outputText value="#{customMsg.pdfstamp_position}" />:</td>
 											<td>
 												<h:selectOneMenu
@@ -10,6 +7,9 @@
   													<f:selectItems value="#{WizardManager.bean.actionProperties.PositionOptions}" />
 												</h:selectOneMenu>
 											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow">OR:</td>
 										</tr>
 										<tr>
 											<td><h:outputText value="#{customMsg.pdfstamp_location_x}" />:</td>
@@ -26,6 +26,4 @@
 												value="#{WizardManager.bean.actionProperties.LocationY}"/>
 											</td>
 										</tr>
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>
+
