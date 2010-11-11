@@ -204,7 +204,10 @@
 											<td class="paddingRow"></td>
 										</tr>
 										<!--  include the positioning elements -->
-										<%@ include file="pdf-positioning.jsp" %>							
+										<%@ include file="pdf-positioning.jsp" %>	
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>						
 										<tr>
 											<td><h:outputText value="#{msg.destination}" />:</td>
 											<td><r:ajaxFolderSelector id="spaceSelector"

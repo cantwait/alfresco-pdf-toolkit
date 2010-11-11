@@ -78,6 +78,8 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	{		
 		populateLists();
 		
+		super.prepareForEdit(actionProps, repoProps);
+		
 		//add lists
 		actionProps.put(PROP_OPTIONS_VISIBLE, OPTIONS_VISIBLE);
 		actionProps.put(PROP_OPTIONS_KEY_TYPE, OPTIONS_KEY_TYPE);
@@ -143,6 +145,8 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	 * Populates lists for UI 
 	 */
 	protected void populateLists() {
+		
+		super.populateLists();
 		
 		OPTIONS_VISIBLE.clear();
 		OPTIONS_KEY_TYPE.clear();
