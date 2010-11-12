@@ -2,7 +2,7 @@
 											<td><h:outputText value="#{customMsg.pdfstamp_position}" />:</td>
 											<td>
 												<h:selectOneMenu
-													id="WatermarkPosition"
+													id="StampPosition"
  													value="#{WizardManager.bean.actionProperties.StampPosition}">
   													<f:selectItems value="#{WizardManager.bean.actionProperties.PositionOptions}" />
 												</h:selectOneMenu>
