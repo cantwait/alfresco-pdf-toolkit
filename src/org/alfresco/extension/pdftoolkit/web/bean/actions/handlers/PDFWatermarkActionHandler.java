@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.alfresco.extension.pdftoolkit.repo.action.executer.BasePDFStampActionExecuter;
 import org.alfresco.extension.pdftoolkit.repo.action.executer.PDFWatermarkActionExecuter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.web.app.Application;
-import org.alfresco.web.bean.actions.handlers.BaseActionHandler;
 import org.alfresco.web.bean.repository.Repository;
 import org.alfresco.web.bean.wizard.IWizardBean;
 
@@ -138,8 +138,6 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 		populateLists();
 		
 		//add lists
-		actionProps.put(PROP_OPTIONS_PAGE, OPTIONS_PAGE);
-		actionProps.put(PROP_OPTIONS_POSITION, OPTIONS_POSITION);
 		actionProps.put(PROP_OPTIONS_DEPTH, OPTIONS_DEPTH);
 		actionProps.put(PROP_OPTIONS_TYPE, OPTIONS_TYPE);
 		actionProps.put(PROP_OPTIONS_FONT, OPTIONS_FONT);
@@ -148,7 +146,7 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 		//set defaults
 		actionProps.put(PROP_WATERMARK_TYPE, PDFWatermarkActionExecuter.TYPE_IMAGE);
 		actionProps.put(PROP_WATERMARK_DEPTH, PDFWatermarkActionExecuter.DEPTH_OVER);
-		actionProps.put(PROP_POSITION, PDFWatermarkActionExecuter.POSITION_CENTER);
+		actionProps.put(PROP_POSITION, BasePDFStampActionExecuter.POSITION_CENTER);
 		actionProps.put(PROP_WATERMARK_PAGES, PDFWatermarkActionExecuter.PAGE_ALL);
 		actionProps.put(PROP_WATERMARK_SIZE, "34");
 		actionProps.put(PROP_WATERMARK_FONT, PDFWatermarkActionExecuter.FONT_OPTION_COURIER);

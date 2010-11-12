@@ -12,7 +12,7 @@ public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 
 	protected static final String PROP_LOCATION_X = "LocationX";
 	protected static final String PROP_LOCATION_Y = "LocationY";
-	protected static final String PROP_POSITION = "WatermarkPosition";
+	protected static final String PROP_POSITION = "StampPosition";
 	
 	protected static final String PROP_OPTIONS_PAGE = "PageOptions";
 	protected static final String PROP_OPTIONS_POSITION = "PositionOptions";
@@ -46,7 +46,8 @@ public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 		actionProps.put (PROP_POSITION, position);
 	}
 	
-	protected void populateLists() {
+	protected void populateLists() 
+	{
 		
 		OPTIONS_PAGE.clear();
 		OPTIONS_POSITION.clear();
@@ -64,5 +65,11 @@ public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 		OPTIONS_POSITION.put("Center", PDFWatermarkActionExecuter.POSITION_CENTER);
 		OPTIONS_POSITION.put("Bottom left", PDFWatermarkActionExecuter.POSITION_BOTTOMLEFT);
 		OPTIONS_POSITION.put("Bottom right", PDFWatermarkActionExecuter.POSITION_BOTTOMRIGHT);
+	}
+	
+	public void setupUIDefaults(Map<String, Serializable> actionProps) 
+	{
+		actionProps.put(PROP_OPTIONS_PAGE, OPTIONS_PAGE);
+		actionProps.put(PROP_OPTIONS_POSITION, OPTIONS_POSITION);
 	}
 }
