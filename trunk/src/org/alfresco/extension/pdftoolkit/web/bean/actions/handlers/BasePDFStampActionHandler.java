@@ -10,6 +10,11 @@ import org.alfresco.web.bean.actions.handlers.BaseActionHandler;
 
 public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4612600133004443816L;
+	
 	protected static final String PROP_LOCATION_X = "LocationX";
 	protected static final String PROP_LOCATION_Y = "LocationY";
 	protected static final String PROP_POSITION = "StampPosition";
