@@ -29,6 +29,15 @@
 			<ref bean="ServiceRegistry" />
 		</property>
 	</bean>
+	
+	<!-- pdfinsertatapge -->
+	<bean id="pdf-insert-at-page"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFInsertAtPageActionExecuter"
+		parent="action-executer">
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
+		</property>
+	</bean>
 
 	<!-- pdfwatermark -->
 	<bean id="pdf-watermark"
