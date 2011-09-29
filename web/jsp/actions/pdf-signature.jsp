@@ -145,6 +145,17 @@
 										</tr>
 										<tr>
 											<td class="paddingRow"></td>
+										</tr>						
+										<tr>
+											<td><h:outputText value="#{msg.destination}" />:</td>
+											<td><r:ajaxFolderSelector id="spaceSelector"
+												label="#{msg.select_destination_prompt}"
+												value="#{WizardManager.bean.actionProperties.destinationLocation}"
+												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
+												styleClass="selector" /></td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
 										</tr>
 										<tr>
 											<td><h:outputText value="#{customMsg.pdfsignature_key_type}" /></td>
@@ -155,8 +166,27 @@
 												</h:selectOneRadio>
 											</td>
 										</tr>
+										
 										<tr>
 											<td colspan="2" class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_store_password}" /></td>
+											<td><h:inputSecret id="storePassword" size="30" 
+												value="#{WizardManager.bean.actionProperties.StorePassword}" />
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{customMsg.pdfsignature_alias}" /></td>
+											<td><h:inputText id="alias" size="30" 
+												value="#{WizardManager.bean.actionProperties.Alias}" />
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingRow"></td>
 										</tr>
 										<tr>
 											<td><h:outputText value="#{customMsg.pdfsignature_key_password}" />:</td>
@@ -205,17 +235,6 @@
 										</tr>
 										<!--  include the positioning elements -->
 										<%@ include file="pdf-positioning.jsp" %>	
-										<tr>
-											<td class="paddingRow"></td>
-										</tr>						
-										<tr>
-											<td><h:outputText value="#{msg.destination}" />:</td>
-											<td><r:ajaxFolderSelector id="spaceSelector"
-												label="#{msg.select_destination_prompt}"
-												value="#{WizardManager.bean.actionProperties.destinationLocation}"
-												initialSelection="#{NavigationBean.currentNode.nodeRefAsString}"
-												styleClass="selector" /></td>
-										</tr>
 										<tr>
 											<td class="paddingRow"></td>
 										</tr>

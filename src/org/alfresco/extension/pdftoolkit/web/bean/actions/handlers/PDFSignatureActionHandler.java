@@ -30,6 +30,9 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	protected static final String PROP_OPTIONS_VISIBLE = "VisibilityOptions";
 	protected static final String PROP_OPTIONS_KEY_TYPE = "KeyTypeOptions";
 	
+	protected static final String PROP_ALIAS = "Alias";
+	protected static final String PROP_STORE_PASSWORD = "StorePassword";
+	
 	public String getJSPPath() 
 	{
 		return getJSPPath(PDFSignatureActionExecuter.NAME);
@@ -71,6 +74,13 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 		
 		String width = (String)actionProps.get(PROP_WIDTH);
 		repoProps.put(PDFSignatureActionExecuter.PARAM_WIDTH, width);
+		
+		//Alias and storePassword added
+		String storePassword = (String) actionProps.get(PROP_STORE_PASSWORD);
+		repoProps.put(PDFSignatureActionExecuter.PARAM_STORE_PASSWORD, storePassword);
+		
+		String alias = (String) actionProps.get(PROP_ALIAS);
+		repoProps.put(PDFSignatureActionExecuter.PARAM_ALIAS, alias);
 	}
 
 	public void prepareForEdit(Map<String, Serializable> actionProps,
@@ -111,6 +121,13 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 
 		String width = (String)repoProps.get(PDFSignatureActionExecuter.PARAM_WIDTH);
 		actionProps.put(PROP_WIDTH, width);
+		
+		//alias and storePassword
+		String alias = (String) repoProps.get(PDFSignatureActionExecuter.PARAM_ALIAS);
+		actionProps.put(PROP_ALIAS, alias);
+		
+		String storePassword = (String) repoProps.get(PDFSignatureActionExecuter.PARAM_STORE_PASSWORD);
+		actionProps.put(PROP_STORE_PASSWORD, storePassword);
 	}
 
 	public String generateSummary(FacesContext context, IWizardBean wizard,

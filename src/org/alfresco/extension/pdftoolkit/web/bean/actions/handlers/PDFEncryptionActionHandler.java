@@ -34,7 +34,7 @@ public class PDFEncryptionActionHandler  extends BaseActionHandler
 	protected static final String PROP_ENCRYPTION_LEVEL = "EncryptionLevel";
 	protected static final String PROP_EXCLUDE_METADATA = "ExcludeMetadata";
 	protected static final String PROP_OPTIONS_LEVEL = "LevelOptions";
-
+	
 	public String getJSPPath() 
 	{
 		return getJSPPath(PDFEncryptionActionExecuter.NAME);
@@ -61,6 +61,8 @@ public class PDFEncryptionActionHandler  extends BaseActionHandler
 		repoProps.put (PDFEncryptionActionExecuter.PARAM_ALLOW_ASSEMBLY, (Boolean)actionProps.get(PROP_ALLOW_ASSEMBLY));
 		repoProps.put (PDFEncryptionActionExecuter.PARAM_ENCRYPTION_LEVEL, (String)actionProps.get(PROP_ENCRYPTION_LEVEL));
 		repoProps.put (PDFEncryptionActionExecuter.PARAM_EXCLUDE_METADATA, (Boolean)actionProps.get(PROP_EXCLUDE_METADATA));
+		
+//		repoProps.put(PDFEncryptionActionExecuter.PARAM_S, arg1)
 
 	}
 
