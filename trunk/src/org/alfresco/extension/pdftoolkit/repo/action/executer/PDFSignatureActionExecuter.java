@@ -49,6 +49,10 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
     public static final String PARAM_HEIGHT = "height";
     public static final String PARAM_KEY_TYPE = "key-type";
     
+    //Aditional parameters to accessing the keystore file 
+    public static final String PARAM_ALIAS = "alias";
+    public static final String PARAM_STORE_PASSWORD = "store-password";
+    
     public static final String VISIBILITY_HIDDEN = "hidden";
     public static final String VISIBILITY_VISIBLE = "visible";
 
@@ -69,6 +73,7 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_PRIVATE_KEY,
                 DataTypeDefinition.NODE_REF, false,
                 getParamDisplayLabel(PARAM_PRIVATE_KEY)));
+        
     }
 
     /**
@@ -119,12 +124,38 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
         String location = (String)ruleAction.getParameterValue(PARAM_LOCATION);
         String reason = (String)ruleAction.getParameterValue(PARAM_REASON);
         String visibility = (String)ruleAction.getParameterValue(PARAM_VISIBILITY);
-        String password = (String)ruleAction.getParameterValue(PARAM_KEY_PASSWORD);
+        String keyPassword = (String)ruleAction.getParameterValue(PARAM_KEY_PASSWORD);
         String keyType = (String)ruleAction.getParameterValue(PARAM_KEY_TYPE);
-        int locationX = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_LOCATION_X));
-        int locationY = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_LOCATION_Y));
         int height = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_HEIGHT));
         int width = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_WIDTH));
+        
+        // New keystore parameters
+        String alias = (String) ruleAction.getParameterValue(PARAM_ALIAS);
+        String storePassword = (String) ruleAction.getParameterValue(PARAM_STORE_PASSWORD);
+        
+        // Ugly and verbose, but fault-tolerant
+        String locationXStr = (String)ruleAction.getParameterValue(PARAM_LOCATION_X);
+        String locationYStr = (String)ruleAction.getParameterValue(PARAM_LOCATION_Y);
+        int locationX = 0;
+        int locationY = 0;
+        try 
+        {
+        	locationX = locationXStr != null ? 
+        			Integer.parseInt(locationXStr) : 0;
+        }
+        catch (NumberFormatException e)
+        {
+        	locationX = 0;
+        }
+        try 
+        {
+        	locationY = locationXStr != null ? 
+        			Integer.parseInt(locationYStr) : 0;
+        }
+        catch (NumberFormatException e)
+        {
+        	locationY = 0;
+        }
         
         File tempDir = null;
         ContentWriter writer = null;
@@ -142,11 +173,12 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
 
 			// open the reader to the key and load it
 			ContentReader keyReader = getReader(privateKey);
-			ks.load(keyReader.getContentInputStream(), password.toCharArray());
+			ks.load(keyReader.getContentInputStream(), storePassword.toCharArray());
 
 			// set alias
-			String alias = (String) ks.aliases().nextElement();
-			PrivateKey key = (PrivateKey) ks.getKey(alias, password.toCharArray());
+//			String alias = (String) ks.aliases().nextElement();
+			
+			PrivateKey key = (PrivateKey) ks.getKey(alias, keyPassword.toCharArray());
 			Certificate[] chain = ks.getCertificateChain(alias);
 			
 			//open original pdf
