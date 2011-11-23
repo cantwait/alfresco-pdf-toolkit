@@ -19,6 +19,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class PDFEncryptionActionHandler  extends BaseActionHandler 
 
 {
+
+	private static final long serialVersionUID = -6322014561543170858L;
+
 	protected static final HashMap<String, String> OPTIONS_LEVEL = new HashMap<String, String>();
 	
 	protected static final String PROP_USER_PASSWORD = "UserPassword";

@@ -5,9 +5,7 @@ import java.io.FileOutputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
@@ -117,9 +115,6 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
             ContentReader actionedUponContentReader)
     {
 
-        Map<String, Object> options = new HashMap<String, Object>(5);
-
-        NodeRef destination = (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER);
         NodeRef privateKey = (NodeRef)ruleAction.getParameterValue(PARAM_PRIVATE_KEY);
         String location = (String)ruleAction.getParameterValue(PARAM_LOCATION);
         String reason = (String)ruleAction.getParameterValue(PARAM_REASON);

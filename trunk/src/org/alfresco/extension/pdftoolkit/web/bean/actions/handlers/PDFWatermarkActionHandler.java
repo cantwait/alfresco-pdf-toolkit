@@ -17,6 +17,9 @@ import org.alfresco.web.bean.wizard.IWizardBean;
 public class PDFWatermarkActionHandler extends BasePDFStampActionHandler 
 
 {
+
+	private static final long serialVersionUID = 8536617341410665343L;
+	
 	protected static final HashMap<String, String> OPTIONS_DEPTH = new HashMap<String, String>();
 	protected static final HashMap<String, String> OPTIONS_TYPE = new HashMap<String, String>();
 	protected static final HashMap<String, String> OPTIONS_FONT = new HashMap<String, String>();
