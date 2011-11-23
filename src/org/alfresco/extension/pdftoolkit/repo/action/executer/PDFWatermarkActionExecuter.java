@@ -15,24 +15,16 @@ import javax.imageio.ImageIO;
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
-import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
-import org.alfresco.repo.action.scheduled.FreeMarkerWithLuceneExtensionsModelFactory;
 import org.alfresco.repo.template.FreeMarkerProcessor;
 import org.alfresco.repo.template.TemplateNode;
-import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
-import org.alfresco.service.cmr.dictionary.DictionaryService;
-import org.alfresco.service.cmr.model.FileFolderService;
-import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentReader;
-import org.alfresco.service.cmr.repository.ContentService;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
-import org.alfresco.service.cmr.repository.NodeService;
-import org.alfresco.service.namespace.QName;
 import org.alfresco.util.TempFileProvider;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,7 +60,6 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     private static final String FILE_MIMETYPE = "application/pdf";
 
     private FreeMarkerProcessor freemarkerProcessor;
-    private FreeMarkerWithLuceneExtensionsModelFactory modelFactory;
     
     /**
      * Position and page constants
@@ -342,7 +333,7 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     	ContentWriter writer = null;
     	String watermarkText;
     	StringTokenizer st;
-    	Vector<String> tokens = new Vector();
+    	Vector<String> tokens = new Vector<String>();
     	
         try
         {        	
@@ -369,7 +360,7 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
         	
         	//get watermark text and process template with model
         	String templateText = (String)options.get(PARAM_WATERMARK_TEXT);
-        	Map model = buildWatermarkTemplateModel(actionedUponNodeRef);
+        	Map<String, Object> model = buildWatermarkTemplateModel(actionedUponNodeRef);
         	StringWriter watermarkWriter = new StringWriter();
         	freemarkerProcessor.processString(templateText, model, watermarkWriter);
         	watermarkText = watermarkWriter.getBuffer().toString();

@@ -10,12 +10,13 @@ import javax.faces.context.FacesContext;
 import org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.web.app.Application;
-import org.alfresco.web.bean.actions.handlers.BaseActionHandler;
-import org.alfresco.web.bean.repository.Repository;
 import org.alfresco.web.bean.wizard.IWizardBean;
 
 public class PDFSignatureActionHandler extends BasePDFStampActionHandler 
 {
+
+	private static final long serialVersionUID = 4104223319038540508L;
+	
 	protected static final HashMap<String, String> OPTIONS_VISIBLE = new HashMap<String, String>();
 	protected static final HashMap<String, String> OPTIONS_KEY_TYPE = new HashMap<String, String>();
 	
@@ -133,9 +134,6 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	public String generateSummary(FacesContext context, IWizardBean wizard,
 			Map<String, Serializable> actionProps) 
 	{
-		NodeRef space = (NodeRef) actionProps.get(PROP_DESTINATION);
-		String name = Repository.getNameForNode(Repository.getServiceRegistry(
-				context).getNodeService(), space);
 
 		return MessageFormat.format(Application.getMessage(context,
 				"action_pdf_signature"), new Object[] {});
