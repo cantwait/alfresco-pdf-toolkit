@@ -41,12 +41,14 @@
 	</bean>
 	
 	<!-- constraints for the various types -->
+	<!-- In these constraints, the key is the paramter value, the "value" is the display text
+	for the resulting select box -->
 	<!-- visibility constraint is used by digital signatures, indicates whether sig is visible after application -->
 	<bean id="pdfc-visibility" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="Hidden" value="hidden"/>
-				<entry key="Visible" value="visible"/>
+				<entry key="hidden" value="Hidden"/>
+				<entry key="visible" value="Visible"/>
 			</map>
 		</property>
 	</bean>    
@@ -54,8 +56,8 @@
 	<bean id="pdfc-keytype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="Default" value="default"/>
-				<entry key="PKCS12" value="pkcs12"/>
+				<entry key="default" value="Default"/>
+				<entry key="pkcs12" value="PKCS12"/>
 			</map>
 		</property>
 	</bean>
@@ -63,9 +65,9 @@
 	<bean id="pdfc-encryptionlevel" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="40 bit" value="0"/>
-				<entry key="128 bit" value="1"/>
-				<entry key="128 bit AES" value="2"/>
+				<entry key="0" value="40 bit"/>
+				<entry key="1" value="128 bit"/>
+				<entry key="2" value="128 bit AES"/>
 			</map>
 		</property>
 	</bean>
@@ -73,11 +75,11 @@
 	<bean id="pdfc-page" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="All" value="all"/>
-				<entry key="First" value="odd"/>
-				<entry key="Last" value="even"/>
-				<entry key="Odd" value="first"/>
-				<entry key="Even" value="last"/>
+				<entry key="all" value="All"/>
+				<entry key="first" value="First"/>
+				<entry key="last" value="Last"/>
+				<entry key="odd" value="Odd"/>
+				<entry key="even" value="Even"/>
 			</map>
 		</property>
 	</bean>
@@ -85,11 +87,11 @@
 	<bean id="pdfc-position" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="Top left" value="topleft"/>
-				<entry key="Top right" value="topright"/>
-				<entry key="Center" value="center"/>
-				<entry key="Bottom left" value="bottomleft"/>
-				<entry key="Bottom right" value="bottomright"/>
+				<entry key="topleft" value="Top left"/>
+				<entry key="topright" value="Top right"/>
+				<entry key="center" value="Center"/>
+				<entry key="bottomleft" value="Bottom left"/>
+				<entry key="bottomright" value="Bottom right"/>
 			</map>
 		</property>
 	</bean>
@@ -98,7 +100,7 @@
 		<property name="constraintMap">
 			<map>
 				<entry key="Helvetica" value="Helvetica"/>
-				<entry key="Times Roman" value="Times-Roman"/>
+				<entry key="Times-Roman" value="Times-Roman"/>
 				<entry key="Courier" value="Courier"/>
 			</map>
 		</property>
@@ -107,8 +109,8 @@
 	<bean id="pdfc-depth" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="Over" value="over"/>
-				<entry key="Under" value="under"/>
+				<entry key="over" value="Over"/>
+				<entry key="under" value="Under"/>
 			</map>
 		</property>
 	</bean>
@@ -131,8 +133,8 @@
 	<bean id="pdfc-watermarktype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
 			<map>
-				<entry key="Image" value="image"/>
-				<entry key="Text" value="text"/>
+				<entry key="image" value="Image"/>
+				<entry key="text" value="Text"/>
 			</map>
 		</property>
 	</bean>
