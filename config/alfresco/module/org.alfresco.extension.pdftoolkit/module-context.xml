@@ -40,4 +40,108 @@
 		</property>
 	</bean>
 	
+	<!-- constraints for the various types -->
+	<!-- visibility constraint is used by digital signatures, indicates whether sig is visible after application -->
+	<bean id="pdfc-visibility" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Hidden" value="hidden"/>
+				<entry key="Visible" value="visible"/>
+			</map>
+		</property>
+	</bean>    
+	<!-- key type constraint is used by digital signatures -->
+	<bean id="pdfc-keytype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Default" value="default"/>
+				<entry key="PKCS12" value="pkcs12"/>
+			</map>
+		</property>
+	</bean>
+	<!-- encryption level constraint, used by the encryption action -->
+	<bean id="pdfc-encryptionlevel" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="40 bit" value="0"/>
+				<entry key="128 bit" value="1"/>
+				<entry key="128 bit AES" value="2"/>
+			</map>
+		</property>
+	</bean>
+	<!-- page constraint, used by watermark action -->
+	<bean id="pdfc-page" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="All" value="all"/>
+				<entry key="First" value="odd"/>
+				<entry key="Last" value="even"/>
+				<entry key="Odd" value="first"/>
+				<entry key="Even" value="last"/>
+			</map>
+		</property>
+	</bean>
+	<!--  position constraint, used by watermark and digital signature actions -->
+	<bean id="pdfc-position" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Top left" value="topleft"/>
+				<entry key="Top right" value="topright"/>
+				<entry key="Center" value="center"/>
+				<entry key="Bottom left" value="bottomleft"/>
+				<entry key="Bottom right" value="bottomright"/>
+			</map>
+		</property>
+	</bean>
+	<!-- font constraint, used in applying text watermarks -->
+	<bean id="pdfc-font" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Helvetica" value="Helvetica"/>
+				<entry key="Times Roman" value="Times-Roman"/>
+				<entry key="Courier" value="Courier"/>
+			</map>
+		</property>
+	</bean>
+	<!-- depth constraint, used by watermark action, indicates whether applied above or below page content -->
+	<bean id="pdfc-depth" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Over" value="over"/>
+				<entry key="Under" value="under"/>
+			</map>
+		</property>
+	</bean>
+	<!-- font size constraint, used by text watermarks -->
+	<bean id="pdfc-fontsize" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="12" value="12"/>
+				<entry key="18" value="18"/>
+				<entry key="22" value="22"/>
+				<entry key="28" value="28"/>
+				<entry key="34" value="34"/>
+				<entry key="40" value="40"/>
+				<entry key="48" value="48"/>
+				<entry key="72" value="72"/>
+			</map>
+		</property>
+	</bean>
+	<!-- watermark type constraint, used by the watermark action -->
+	<bean id="pdfc-watermarktype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
+		<property name="constraintMap">
+			<map>
+				<entry key="Image" value="image"/>
+				<entry key="Text" value="text"/>
+			</map>
+		</property>
+	</bean>
+
+   	<!--  PDF Toolkit service, allows PDF actions to be used in Javascript API -->
+    <bean id="pdftoolkit" parent="baseJavaScriptExtension" 
+        class="org.alfresco.extension.pdftoolkit.service.PDFToolkitService">
+        <property name="extensionName">
+            <value>pdftoolkit</value>
+        </property>     
+    </bean>   
 </beans>

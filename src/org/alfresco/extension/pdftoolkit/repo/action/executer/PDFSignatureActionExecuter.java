@@ -2,11 +2,15 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
@@ -34,12 +38,23 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
             .getLog(PDFSignatureActionExecuter.class);
 
     /**
+     * Constraints
+     */
+    public static HashMap<String, String> visibilityConstraint = new HashMap<String, String>();
+    public static HashMap<String, String> keyTypeConstraint = new HashMap<String, String>();
+    
+    /**
      * Action constants
      */
     public static final String NAME = "pdf-signature";
     public static final String PARAM_PRIVATE_KEY="private-key";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
     public static final String PARAM_VISIBILITY = "visibility";
+    /*
+    don't confuse the location field below with the position field inherited from parent.
+    "location, in the context of a PDF signature, means the location where it was signed,
+    not the location of the signature block, which is handled by position
+    */
     public static final String PARAM_LOCATION = "location";
     public static final String PARAM_REASON = "reason";
     public static final String PARAM_KEY_PASSWORD = "key-password";
@@ -58,6 +73,20 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
     public static final String KEY_TYPE_DEFAULT = "default";
     
     /**
+     * Constraint beans
+     * @param mc
+     */
+    public void setKeyTypeConstraint(MapConstraint mc)
+    {
+    	keyTypeConstraint.putAll(mc.getAllowableValues());
+    }
+    
+    public void setVisibilityConstraint(MapConstraint mc)
+    {
+    	visibilityConstraint.putAll(mc.getAllowableValues());
+    }
+    
+    /**
      * Add parameter definitions
      */
     @Override
@@ -69,8 +98,35 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
                 DataTypeDefinition.NODE_REF, true,
                 getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
         paramList.add(new ParameterDefinitionImpl(PARAM_PRIVATE_KEY,
-                DataTypeDefinition.NODE_REF, false,
+                DataTypeDefinition.NODE_REF, true,
                 getParamDisplayLabel(PARAM_PRIVATE_KEY)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_VISIBILITY,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_VISIBILITY), false, "pdfc-visibility"));
+        paramList.add(new ParameterDefinitionImpl(PARAM_LOCATION,
+                DataTypeDefinition.TEXT, false,
+                getParamDisplayLabel(PARAM_LOCATION)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_REASON,
+                DataTypeDefinition.TEXT, false,
+                getParamDisplayLabel(PARAM_REASON)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_KEY_PASSWORD,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_KEY_PASSWORD)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_WIDTH,
+                DataTypeDefinition.INT, false,
+                getParamDisplayLabel(PARAM_WIDTH)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_HEIGHT,
+                DataTypeDefinition.INT, false,
+                getParamDisplayLabel(PARAM_HEIGHT)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_KEY_TYPE,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_KEY_TYPE), false, "pdfc-keytype"));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALIAS,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_ALIAS)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_STORE_PASSWORD,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_STORE_PASSWORD)));
         
     }
 

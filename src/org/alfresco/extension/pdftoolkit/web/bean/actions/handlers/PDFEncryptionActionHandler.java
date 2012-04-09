@@ -109,15 +109,8 @@ public class PDFEncryptionActionHandler  extends BaseActionHandler
 	public void setupUIDefaults(Map<String, Serializable> actionProps) 
 	{
 		
-		OPTIONS_LEVEL.clear();
-		
-		// set up page options list
-		OPTIONS_LEVEL.put("40 Bit", PdfWriter.STANDARD_ENCRYPTION_40 + "");
-		OPTIONS_LEVEL.put("128 Bit", PdfWriter.STANDARD_ENCRYPTION_128 + "");
-		OPTIONS_LEVEL.put("128 Bit AES", PdfWriter.ENCRYPTION_AES_128 + "");
-		
 		//add lists
-		actionProps.put(PROP_OPTIONS_LEVEL, OPTIONS_LEVEL);
+		actionProps.put(PROP_OPTIONS_LEVEL, PDFEncryptionActionExecuter.encryptionLevelConstraint);
 		
 		super.setupUIDefaults(actionProps);
 	}

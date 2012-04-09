@@ -6,63 +6,133 @@
 	<!-- pdfsplit -->
 	<bean id="pdf-split"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 
 	<!-- pdfappend -->
 	<bean id="pdf-append"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFAppendActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 
 	<!-- pdfsplitatapge -->
 	<bean id="pdf-split-at-page"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSplitAtPageActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 	
 	<!-- pdfinsertatapge -->
 	<bean id="pdf-insert-at-page"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFInsertAtPageActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 
 	<!-- pdfwatermark -->
 	<bean id="pdf-watermark"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFWatermarkActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="positionConstraint">
+			<ref bean="pdfc-position"/>
+		</property>
+		<property name="pageConstraint">
+			<ref bean="pdfc-page"/>
+		</property>
+		<property name="fontConstraint">
+			<ref bean="pdfc-font"/>
+		</property>
+		<property name="depthConstraint">
+			<ref bean="pdfc-depth"/>
+		</property>
+		<property name="typeConstraint">
+			<ref bean="pdfc-watermarktype"/>
+		</property>
+		<property name="fontSizeConstraint">
+			<ref bean="pdfc-fontsize"/>
+		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 	
 	<!-- pdfencryption -->
 	<bean id="pdf-encryption"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFEncryptionActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="encryptionLevelConstraint">
+			<ref bean="pdfc-encryptionlevel" />
+		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 	
 	<!-- pdfsignature -->
 	<bean id="pdf-signature"
 		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter"
-		parent="action-executer">
+		parent="action-executer" depends-on="pdftoolkit-messages">
 		<property name="serviceRegistry">
 			<ref bean="ServiceRegistry" />
 		</property>
+		<property name="visibilityConstraint">
+			<ref bean="pdfc-visibility"/>
+		</property>
+		<property name="keyTypeConstraint">
+			<ref bean="pdfc-keytype"/>
+		</property>
+		<property name="positionConstraint">
+			<ref bean="pdfc-position"/>
+		</property>
+		<property name="pageConstraint">
+			<ref bean="pdfc-page"/>
+		</property>
+		<!-- most of these PDF actions are only applicable to PDF documents, so lets use a
+		sensible minimum constraint in the applicable types list. -->
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
 	</bean>
 </beans>
