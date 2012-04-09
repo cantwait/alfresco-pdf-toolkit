@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.alfresco.extension.pdftoolkit.repo.action.executer.BasePDFStampActionExecuter;
 import org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter;
 import org.alfresco.extension.pdftoolkit.repo.action.executer.PDFWatermarkActionExecuter;
 import org.alfresco.web.bean.actions.handlers.BaseActionHandler;
@@ -21,9 +22,6 @@ public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 	
 	protected static final String PROP_OPTIONS_PAGE = "PageOptions";
 	protected static final String PROP_OPTIONS_POSITION = "PositionOptions";
-	
-	protected static final HashMap<String, String> OPTIONS_PAGE = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_POSITION = new HashMap<String, String>();
 	
 	public void prepareForSave(Map<String, Serializable> actionProps,
 			Map<String, Serializable> repoProps) 
@@ -51,30 +49,9 @@ public abstract class BasePDFStampActionHandler extends BaseActionHandler {
 		actionProps.put (PROP_POSITION, position);
 	}
 	
-	protected void populateLists() 
-	{
-		
-		OPTIONS_PAGE.clear();
-		OPTIONS_POSITION.clear();
-		
-		// set up page options list
-		OPTIONS_PAGE.put("All", PDFWatermarkActionExecuter.PAGE_ALL);
-		OPTIONS_PAGE.put("First", PDFWatermarkActionExecuter.PAGE_FIRST);
-		OPTIONS_PAGE.put("Last", PDFWatermarkActionExecuter.PAGE_LAST);
-		OPTIONS_PAGE.put("Odd", PDFWatermarkActionExecuter.PAGE_ODD);
-		OPTIONS_PAGE.put("Even", PDFWatermarkActionExecuter.PAGE_EVEN);
-		
-		//set up position options list
-		OPTIONS_POSITION.put("Top left", PDFWatermarkActionExecuter.POSITION_TOPLEFT);
-		OPTIONS_POSITION.put("Top right", PDFWatermarkActionExecuter.POSITION_TOPRIGHT);
-		OPTIONS_POSITION.put("Center", PDFWatermarkActionExecuter.POSITION_CENTER);
-		OPTIONS_POSITION.put("Bottom left", PDFWatermarkActionExecuter.POSITION_BOTTOMLEFT);
-		OPTIONS_POSITION.put("Bottom right", PDFWatermarkActionExecuter.POSITION_BOTTOMRIGHT);
-	}
-	
 	public void setupUIDefaults(Map<String, Serializable> actionProps) 
 	{
-		actionProps.put(PROP_OPTIONS_PAGE, OPTIONS_PAGE);
-		actionProps.put(PROP_OPTIONS_POSITION, OPTIONS_POSITION);
+		actionProps.put(PROP_OPTIONS_PAGE, BasePDFStampActionExecuter.pageConstraint);
+		actionProps.put(PROP_OPTIONS_POSITION, BasePDFStampActionExecuter.positionConstraint);
 	}
 }

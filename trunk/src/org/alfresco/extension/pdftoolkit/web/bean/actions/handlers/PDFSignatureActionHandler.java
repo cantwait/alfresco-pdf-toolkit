@@ -2,11 +2,8 @@ package org.alfresco.extension.pdftoolkit.web.bean.actions.handlers;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.Map;
-
 import javax.faces.context.FacesContext;
-
 import org.alfresco.extension.pdftoolkit.repo.action.executer.PDFSignatureActionExecuter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.web.app.Application;
@@ -16,9 +13,6 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 {
 
 	private static final long serialVersionUID = 4104223319038540508L;
-	
-	protected static final HashMap<String, String> OPTIONS_VISIBLE = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_KEY_TYPE = new HashMap<String, String>();
 	
 	protected static final String PROP_PRIVATE_KEY = "PrivateKey";
 	protected static final String PROP_KEY_TYPE = "KeyType";
@@ -87,13 +81,12 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	public void prepareForEdit(Map<String, Serializable> actionProps,
 			Map<String, Serializable> repoProps) 
 	{		
-		populateLists();
 		
 		super.prepareForEdit(actionProps, repoProps);
 		
 		//add lists
-		actionProps.put(PROP_OPTIONS_VISIBLE, OPTIONS_VISIBLE);
-		actionProps.put(PROP_OPTIONS_KEY_TYPE, OPTIONS_KEY_TYPE);
+		actionProps.put(PROP_OPTIONS_VISIBLE, PDFSignatureActionExecuter.visibilityConstraint);
+		actionProps.put(PROP_OPTIONS_KEY_TYPE, PDFSignatureActionExecuter.keyTypeConstraint);
 		
 		NodeRef destNodeRef = (NodeRef) repoProps.get(PDFSignatureActionExecuter.PARAM_DESTINATION_FOLDER);
 		actionProps.put(PROP_DESTINATION, destNodeRef);
@@ -143,36 +136,15 @@ public class PDFSignatureActionHandler extends BasePDFStampActionHandler
 	@Override
 	public void setupUIDefaults(Map<String, Serializable> actionProps) {
 		
-		populateLists();
-		
 		//add lists
-		actionProps.put(PROP_OPTIONS_VISIBLE, OPTIONS_VISIBLE);
-		actionProps.put(PROP_OPTIONS_KEY_TYPE, OPTIONS_KEY_TYPE);
+		actionProps.put(PROP_OPTIONS_VISIBLE, PDFSignatureActionExecuter.visibilityConstraint);
+		actionProps.put(PROP_OPTIONS_KEY_TYPE, PDFSignatureActionExecuter.keyTypeConstraint);
 		
 		//set defaults
 		actionProps.put(PROP_VISIBILITY, PDFSignatureActionExecuter.VISIBILITY_HIDDEN);
 		actionProps.put(PROP_KEY_TYPE, PDFSignatureActionExecuter.KEY_TYPE_DEFAULT);
 		
 		super.setupUIDefaults(actionProps);
-	}
-	
-	/**
-	 * Populates lists for UI 
-	 */
-	protected void populateLists() {
-		
-		super.populateLists();
-		
-		OPTIONS_VISIBLE.clear();
-		OPTIONS_KEY_TYPE.clear();
-		
-		// set up visibility options
-		OPTIONS_VISIBLE.put("Visible", PDFSignatureActionExecuter.VISIBILITY_VISIBLE);
-		OPTIONS_VISIBLE.put("Hidden", PDFSignatureActionExecuter.VISIBILITY_HIDDEN);
-		
-		//set up valid key type options
-		OPTIONS_KEY_TYPE.put("Default", PDFSignatureActionExecuter.KEY_TYPE_DEFAULT);
-		OPTIONS_KEY_TYPE.put("PKCS12", PDFSignatureActionExecuter.KEY_TYPE_PKCS12);
 	}
 }
 

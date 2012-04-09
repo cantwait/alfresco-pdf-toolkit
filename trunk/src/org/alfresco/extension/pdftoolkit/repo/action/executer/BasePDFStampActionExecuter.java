@@ -1,7 +1,9 @@
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
@@ -10,7 +12,10 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 
 public abstract class BasePDFStampActionExecuter extends BasePDFActionExecuter {
-
+	
+	public static final HashMap<String, String> pageConstraint = new HashMap<String, String>();
+	public static final HashMap<String, String> positionConstraint = new HashMap<String, String>();
+	
 	/*
 	 * Page and position constants
 	 */
@@ -31,6 +36,19 @@ public abstract class BasePDFStampActionExecuter extends BasePDFActionExecuter {
     public static final String PARAM_LOCATION_Y = "location-y";
     
     /**
+     * Constraints
+     */
+    public void setPositionConstraint(MapConstraint mc)
+    {
+    	positionConstraint.putAll(mc.getAllowableValues());
+    }
+    
+    public void setPageConstraint(MapConstraint mc)
+    {
+    	pageConstraint.putAll(mc.getAllowableValues());
+    }
+    
+    /**
      * Add parameter definitions
      */
     @Override
@@ -38,7 +56,7 @@ public abstract class BasePDFStampActionExecuter extends BasePDFActionExecuter {
     {
         paramList.add(new ParameterDefinitionImpl(PARAM_POSITION,
                 DataTypeDefinition.TEXT, false,
-                getParamDisplayLabel(PARAM_POSITION)));
+                getParamDisplayLabel(PARAM_POSITION), false, "pdfc-position"));
         paramList.add(new ParameterDefinitionImpl(PARAM_LOCATION_X,
                 DataTypeDefinition.TEXT, false,
                 getParamDisplayLabel(PARAM_LOCATION_X)));

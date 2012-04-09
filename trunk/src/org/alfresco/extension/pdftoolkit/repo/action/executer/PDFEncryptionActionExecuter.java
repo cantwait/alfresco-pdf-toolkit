@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
+import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
@@ -32,6 +33,11 @@ public class PDFEncryptionActionExecuter extends BasePDFActionExecuter
             .getLog(PDFEncryptionActionExecuter.class);
 
     /**
+     * Constraints
+     */
+    public static HashMap<String, String> encryptionLevelConstraint = new HashMap<String, String>();
+    
+    /**
      * Action constants
      */
     public static final String NAME = "pdf-encryption";
@@ -40,20 +46,28 @@ public class PDFEncryptionActionExecuter extends BasePDFActionExecuter
     /**
      * Encryption constants
      */
-	public static final String PARAM_USER_PASSWORD = "UserPassword";
-	public static final String PARAM_OWNER_PASSWORD = "OwnerPassword";
-	public static final String PARAM_ALLOW_PRINT = "AllowPrint";
-	public static final String PARAM_ALLOW_COPY = "AllowCopy";
-	public static final String PARAM_ALLOW_CONTENT_MODIFICATION = "AllowContentModification";
-	public static final String PARAM_ALLOW_ANNOTATION_MODIFICATION = "AllowAnnotationModification";
-	public static final String PARAM_ALLOW_FORM_FILL = "AllowFormFill";
-	public static final String PARAM_ALLOW_SCREEN_READER = "AllowScreenReader";
-	public static final String PARAM_ALLOW_DEGRADED_PRINT = "AllowDegradedPrint";
-	public static final String PARAM_ALLOW_ASSEMBLY = "AllowAssembly";
-	public static final String PARAM_ENCRYPTION_LEVEL = "EncryptionLevel";
-	public static final String PARAM_EXCLUDE_METADATA = "ExcludeMetadata";
-	public static final String PARAM_OPTIONS_LEVEL = "LevelOptions";
+	public static final String PARAM_USER_PASSWORD = "user-password";
+	public static final String PARAM_OWNER_PASSWORD = "owner-password";
+	public static final String PARAM_ALLOW_PRINT = "allow-print";
+	public static final String PARAM_ALLOW_COPY = "allow-copy";
+	public static final String PARAM_ALLOW_CONTENT_MODIFICATION = "allow-content-modification";
+	public static final String PARAM_ALLOW_ANNOTATION_MODIFICATION = "allow-annotation-modification";
+	public static final String PARAM_ALLOW_FORM_FILL = "allow-form-fill";
+	public static final String PARAM_ALLOW_SCREEN_READER = "allow-screen-reader";
+	public static final String PARAM_ALLOW_DEGRADED_PRINT = "allow-degraded-print";
+	public static final String PARAM_ALLOW_ASSEMBLY = "allow-assembly";
+	public static final String PARAM_ENCRYPTION_LEVEL = "encryption-level";
+	public static final String PARAM_EXCLUDE_METADATA = "exclude-metadata";
+	public static final String PARAM_OPTIONS_LEVEL = "level-options";
     
+	/**
+	 * Setter for constraint bean
+	 * @param encryptionLevelConstraint
+	 */
+	public void setEncryptionLevelConstraint(MapConstraint mc) {
+		encryptionLevelConstraint.putAll(mc.getAllowableValues());
+	}
+	
     /**
      * Add parameter definitions
      */
@@ -64,9 +78,45 @@ public class PDFEncryptionActionExecuter extends BasePDFActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
                 DataTypeDefinition.NODE_REF, true,
                 getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_USER_PASSWORD,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_USER_PASSWORD)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_OWNER_PASSWORD,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_OWNER_PASSWORD)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_PRINT,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_PRINT)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_COPY,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_COPY)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_CONTENT_MODIFICATION,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_CONTENT_MODIFICATION)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_ANNOTATION_MODIFICATION,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_ANNOTATION_MODIFICATION)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_FORM_FILL,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_FORM_FILL)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_SCREEN_READER,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_SCREEN_READER)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_DEGRADED_PRINT,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_DEGRADED_PRINT)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ALLOW_ASSEMBLY,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_ALLOW_ASSEMBLY)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_ENCRYPTION_LEVEL,
+                DataTypeDefinition.TEXT, true,
+                getParamDisplayLabel(PARAM_ENCRYPTION_LEVEL), false, "pdfc-encryptionlevel"));
+        paramList.add(new ParameterDefinitionImpl(PARAM_EXCLUDE_METADATA,
+                DataTypeDefinition.BOOLEAN, true,
+                getParamDisplayLabel(PARAM_EXCLUDE_METADATA)));
     }
 
-    /**
+	/**
      * @see org.alfresco.repo.action.executer.ActionExecuterAbstractBase#executeImpl(org.alfresco.service.cmr.repository.NodeRef,
      *      org.alfresco.service.cmr.repository.NodeRef)
      */

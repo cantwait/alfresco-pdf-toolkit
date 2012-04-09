@@ -20,12 +20,6 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 
 	private static final long serialVersionUID = 8536617341410665343L;
 	
-	protected static final HashMap<String, String> OPTIONS_DEPTH = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_TYPE = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_FONT = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_DATA = new HashMap<String, String>();
-	protected static final HashMap<String, String> OPTIONS_SIZE = new HashMap<String, String>();
-	
 	protected static final String PROP_WATERMARK_IMAGE = "WatermarkImage";
 	protected static final String PROP_WATERMARK_PAGES = "WatermarkPages";
 
@@ -83,17 +77,15 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 	public void prepareForEdit(Map<String, Serializable> actionProps,
 			Map<String, Serializable> repoProps) 
 	{	
-		//call setupUIDefaults first to make sure maps are initialized and populated
-		populateLists();
 		
 		super.prepareForEdit(actionProps, repoProps);
 		
-		actionProps.put(PROP_OPTIONS_PAGE, OPTIONS_PAGE);
-		actionProps.put(PROP_OPTIONS_POSITION, OPTIONS_POSITION);
-		actionProps.put(PROP_OPTIONS_DEPTH, OPTIONS_DEPTH);
-		actionProps.put(PROP_OPTIONS_TYPE, OPTIONS_TYPE);
-		actionProps.put(PROP_OPTIONS_FONT, OPTIONS_FONT);
-		actionProps.put(PROP_OPTIONS_SIZE, OPTIONS_SIZE);
+		actionProps.put(PROP_OPTIONS_PAGE, BasePDFStampActionExecuter.pageConstraint);
+		actionProps.put(PROP_OPTIONS_POSITION, BasePDFStampActionExecuter.positionConstraint);
+		actionProps.put(PROP_OPTIONS_DEPTH, PDFWatermarkActionExecuter.depthConstraint);
+		actionProps.put(PROP_OPTIONS_TYPE, PDFWatermarkActionExecuter.typeConstraint);
+		actionProps.put(PROP_OPTIONS_FONT, PDFWatermarkActionExecuter.fontConstraint);
+		actionProps.put(PROP_OPTIONS_SIZE, PDFWatermarkActionExecuter.fontSizeConstraint);
 		
 		NodeRef destNodeRef = (NodeRef) repoProps.get(PDFWatermarkActionExecuter.PARAM_DESTINATION_FOLDER);
 		actionProps.put(PROP_DESTINATION, destNodeRef);
@@ -138,13 +130,11 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 	@Override
 	public void setupUIDefaults(Map<String, Serializable> actionProps) {
 		
-		populateLists();
-		
 		//add lists
-		actionProps.put(PROP_OPTIONS_DEPTH, OPTIONS_DEPTH);
-		actionProps.put(PROP_OPTIONS_TYPE, OPTIONS_TYPE);
-		actionProps.put(PROP_OPTIONS_FONT, OPTIONS_FONT);
-		actionProps.put(PROP_OPTIONS_SIZE, OPTIONS_SIZE);
+		actionProps.put(PROP_OPTIONS_DEPTH, PDFWatermarkActionExecuter.depthConstraint);
+		actionProps.put(PROP_OPTIONS_TYPE, PDFWatermarkActionExecuter.typeConstraint);
+		actionProps.put(PROP_OPTIONS_FONT, PDFWatermarkActionExecuter.fontConstraint);
+		actionProps.put(PROP_OPTIONS_SIZE, PDFWatermarkActionExecuter.fontSizeConstraint);
 		
 		//set defaults
 		actionProps.put(PROP_WATERMARK_TYPE, PDFWatermarkActionExecuter.TYPE_IMAGE);
@@ -155,41 +145,5 @@ public class PDFWatermarkActionHandler extends BasePDFStampActionHandler
 		actionProps.put(PROP_WATERMARK_FONT, PDFWatermarkActionExecuter.FONT_OPTION_COURIER);
 		
 		super.setupUIDefaults(actionProps);
-	}
-	
-	/**
-	 * Populates lists for UI 
-	 */
-	protected void populateLists() {
-		
-		super.populateLists();
-		
-		OPTIONS_DEPTH.clear();
-		OPTIONS_TYPE.clear();
-		OPTIONS_FONT.clear();
-		OPTIONS_SIZE.clear();
-
-		//set up depth options
-		OPTIONS_DEPTH.put("Over", PDFWatermarkActionExecuter.DEPTH_OVER);
-		OPTIONS_DEPTH.put("Under", PDFWatermarkActionExecuter.DEPTH_UNDER);
-		
-		//set up type options (text and image for now)
-		OPTIONS_TYPE.put("Image", PDFWatermarkActionExecuter.TYPE_IMAGE);
-		OPTIONS_TYPE.put("Text", PDFWatermarkActionExecuter.TYPE_TEXT);
-		
-		//set up font options
-		OPTIONS_FONT.put("Helvetica", PDFWatermarkActionExecuter.FONT_OPTION_HELVETICA);
-		OPTIONS_FONT.put("Times Roman", PDFWatermarkActionExecuter.FONT_OPTION_TIMES_ROMAN);
-		OPTIONS_FONT.put("Courier", PDFWatermarkActionExecuter.FONT_OPTION_COURIER);
-		
-		//set up size options
-		OPTIONS_SIZE.put("12", "12");
-		OPTIONS_SIZE.put("18", "18");
-		OPTIONS_SIZE.put("22", "22");
-		OPTIONS_SIZE.put("28", "28");
-		OPTIONS_SIZE.put("34", "34");
-		OPTIONS_SIZE.put("40", "40");
-		OPTIONS_SIZE.put("48", "48");
-		OPTIONS_SIZE.put("72", "72");
 	}
 }

@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 
 import org.alfresco.error.AlfrescoRuntimeException;
+import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.repo.template.FreeMarkerProcessor;
@@ -44,6 +45,11 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     private static Log logger = LogFactory
             .getLog(PDFWatermarkActionExecuter.class);
 
+	public static HashMap<String, String> fontConstraint = new HashMap<String, String>();
+    public static HashMap<String, String> depthConstraint = new HashMap<String, String>();
+    public static HashMap<String, String> typeConstraint = new HashMap<String, String>();
+    public static HashMap<String, String> fontSizeConstraint = new HashMap<String, String>();
+    
     /**
      * Action constants
      */
@@ -82,6 +88,26 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     }
     
     /**
+     * setters for constraint beans
+     * @param fontConstraint
+     */
+	public void setFontConstraint(MapConstraint mc) {
+		fontConstraint.putAll(mc.getAllowableValues());
+	}
+
+	public void setDepthConstraint(MapConstraint mc) {
+		depthConstraint.putAll(mc.getAllowableValues());
+	}
+
+	public void setTypeConstraint(MapConstraint mc) {
+		typeConstraint.putAll(mc.getAllowableValues());
+	}
+
+	public void setFontSizeConstraint(MapConstraint mc) {
+		fontSizeConstraint.putAll(mc.getAllowableValues());
+	}
+	
+    /**
      * Add parameter definitions
      */
     @Override
@@ -97,19 +123,19 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
                 getParamDisplayLabel(PARAM_WATERMARK_IMAGE)));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_PAGES,
                 DataTypeDefinition.TEXT, true,
-                getParamDisplayLabel(PARAM_WATERMARK_PAGES)));
+                getParamDisplayLabel(PARAM_WATERMARK_PAGES), false, "pdfc-page"));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_DEPTH,
                 DataTypeDefinition.TEXT, true,
-                getParamDisplayLabel(PARAM_WATERMARK_DEPTH)));
+                getParamDisplayLabel(PARAM_WATERMARK_DEPTH), false, "pdfc-depth"));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_TEXT,
                 DataTypeDefinition.TEXT, false,
                 getParamDisplayLabel(PARAM_WATERMARK_TEXT)));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_FONT,
                 DataTypeDefinition.TEXT, false,
-                getParamDisplayLabel(PARAM_WATERMARK_FONT)));
+                getParamDisplayLabel(PARAM_WATERMARK_FONT), false, "pdfc-font"));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_SIZE,
                 DataTypeDefinition.TEXT, false,
-                getParamDisplayLabel(PARAM_WATERMARK_SIZE)));
+                getParamDisplayLabel(PARAM_WATERMARK_SIZE), false, "pdfc-fontsize"));
     }
 
     /**
