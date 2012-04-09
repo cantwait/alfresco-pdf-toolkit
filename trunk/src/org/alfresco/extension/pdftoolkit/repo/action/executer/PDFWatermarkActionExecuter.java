@@ -113,7 +113,6 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
-    	super.addParameterDefinitions(paramList);
     	
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
                 DataTypeDefinition.NODE_REF, true,
@@ -136,6 +135,8 @@ public class PDFWatermarkActionExecuter extends BasePDFStampActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_SIZE,
                 DataTypeDefinition.TEXT, false,
                 getParamDisplayLabel(PARAM_WATERMARK_SIZE), false, "pdfc-fontsize"));
+        
+        super.addParameterDefinitions(paramList);
     }
 
     /**
