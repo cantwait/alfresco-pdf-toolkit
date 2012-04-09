@@ -92,7 +92,6 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
-    	super.addParameterDefinitions(paramList);
     	
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
                 DataTypeDefinition.NODE_REF, true,
@@ -127,6 +126,8 @@ public class PDFSignatureActionExecuter extends BasePDFStampActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_STORE_PASSWORD,
                 DataTypeDefinition.TEXT, true,
                 getParamDisplayLabel(PARAM_STORE_PASSWORD)));
+        
+        super.addParameterDefinitions(paramList);
         
     }
 
