@@ -54,6 +54,7 @@
 			<fileset dir="${project.dir}" includes="config/**/*.*,web/**/*.*" excludes="**/module.properties" />
 			<fileset dir="${project.dir}/config/" includes="module.properties" />
 		</zip>
+		<copy file="${amp.file}" todir="${deploy.path}"></copy>
 	</target>
 
 	<!-- <target name="update-war" depends="package-amp" description="Update the WAR file.  Set -Dwar.file=..." >
