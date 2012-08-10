@@ -16,7 +16,7 @@ public class PDFToolkitService extends BaseProcessorExtension{
 
     /**
      * Wrapper for the encrypt PDF method.  This will call the same underlying code as
-     * the PDFEncryptionActionExecuter once the actual PDF encrytion code is refactored into
+     * the PDFEncryptionActionExecuter once the actual PDF encryption code is refactored into
      * a new class.
      */
     public String encryptPDF() {

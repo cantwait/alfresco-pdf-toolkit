@@ -21,17 +21,6 @@ public class MapConstraint extends BaseParameterConstraint {
 		return cm;
 	}
 	
-	public String getValueDisplayLabel(String value)
-	{
-
-		for (Map.Entry<String, String> entry : cm.entrySet()) {
-			if (value.equals(entry.getValue())) {
-				return entry.getKey();
-		    }
-		}
-		return "Undefined";
-	}
-	
 	@Override
 	protected Map<String, String> getAllowableValuesImpl() {
 		// TODO Auto-generated method stub
