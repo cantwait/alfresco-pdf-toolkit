@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
- * As a special exception to the terms and conditions of version 2.0 of 
- * the GPL, you may redistribute this Program in connection with Free/Libre 
- * and Open Source Software ("FLOSS") applications as described in Alfresco's 
- * FLOSS exception.  You should have recieved a copy of the text describing 
- * the FLOSS exception, and it is also available here: 
- * http://www.alfresco.com/legal/licensing"
+ * Copyright 2008-2012 Alfresco Software Limited.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * This file is part of an unsupported extension to Alfresco.
  */
 
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +44,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFMergerUtility;
 import org.apache.pdfbox.util.Splitter;
 
+
 /**
  * Insert PDF action executer
  * 
@@ -57,221 +52,239 @@ import org.apache.pdfbox.util.Splitter;
  * 
  */
 
-public class PDFInsertAtPageActionExecuter extends BasePDFActionExecuter
+public class PDFInsertAtPageActionExecuter
+    extends BasePDFActionExecuter
 
 {
 
-	/**
-	 * The logger
-	 */
-	private static Log logger = LogFactory
-			.getLog(PDFInsertAtPageActionExecuter.class);
+    /**
+     * The logger
+     */
+    private static Log         logger                   = LogFactory.getLog(PDFInsertAtPageActionExecuter.class);
 
-	/**
-	 * Action constants
-	 */
-	public static final String NAME = "pdf-insert-at-page";
-	public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
-	public static final String PARAM_INSERT_AT_PAGE = "insert-at-page";
-	public static final String PARAM_DESTINATION_NAME = "destination-name";
-	public static final String PARAM_INSERT_CONTENT = "insert-content";
+    /**
+     * Action constants
+     */
+    public static final String NAME                     = "pdf-insert-at-page";
+    public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
+    public static final String PARAM_INSERT_AT_PAGE     = "insert-at-page";
+    public static final String PARAM_DESTINATION_NAME   = "destination-name";
+    public static final String PARAM_INSERT_CONTENT     = "insert-content";
 
-	/**
-	 * Add parameter definitions
-	 */
-	@Override
-	protected void addParameterDefinitions(List<ParameterDefinition> paramList) {
-		paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
-				DataTypeDefinition.NODE_REF, true,
-				getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
-		paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_AT_PAGE,
-				DataTypeDefinition.TEXT, false,
-				getParamDisplayLabel(PARAM_INSERT_AT_PAGE)));
-		paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_CONTENT,
-				DataTypeDefinition.NODE_REF, true,
-				getParamDisplayLabel(PARAM_INSERT_CONTENT)));
-	}
 
-	/**
-	 * @see org.alfresco.repo.action.executer.ActionExecuterAbstractBase#executeImpl(org.alfresco.service.cmr.repository.NodeRef,
-	 *      org.alfresco.service.cmr.repository.NodeRef)
-	 */
-	@Override
-	protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef) {
-		if (serviceRegistry.getNodeService().exists(actionedUponNodeRef) == false) {
-			// node doesn't exist - can't do anything
-			return;
-		}
+    /**
+     * Add parameter definitions
+     */
+    @Override
+    protected void addParameterDefinitions(List<ParameterDefinition> paramList)
+    {
+        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_AT_PAGE, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_INSERT_AT_PAGE)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_CONTENT, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_INSERT_CONTENT)));
+    }
 
-		ContentReader contentReader = getReader(actionedUponNodeRef);
 
-		ContentReader insertContentReader = getReader((NodeRef) ruleAction
-				.getParameterValue(PARAM_INSERT_CONTENT));
+    /**
+     * @see org.alfresco.repo.action.executer.ActionExecuterAbstractBase#executeImpl(org.alfresco.service.cmr.repository.NodeRef,
+     * org.alfresco.service.cmr.repository.NodeRef)
+     */
+    @Override
+    protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
+    {
+        if (serviceRegistry.getNodeService().exists(actionedUponNodeRef) == false)
+        {
+            // node doesn't exist - can't do anything
+            return;
+        }
 
-		if (contentReader != null) {
-			// Do the work....insert the PDF
-			doInsert(ruleAction, actionedUponNodeRef, contentReader,
-					insertContentReader);
+        ContentReader contentReader = getReader(actionedUponNodeRef);
 
-			{
-				if (logger.isDebugEnabled()) {
-					logger.debug("Can't execute rule: \n" + "   node: "
-							+ actionedUponNodeRef + "\n" + "   reader: "
-							+ contentReader + "\n" + "   action: " + this);
-				}
-			}
-		}
-	}
+        ContentReader insertContentReader = getReader((NodeRef)ruleAction.getParameterValue(PARAM_INSERT_CONTENT));
 
-	/**
-	 * 
-	 * Build out the insert call
-	 * 
-	 */
-	protected void doInsert(Action ruleAction, NodeRef actionedUponNodeRef,
-			ContentReader contentReader, ContentReader insertContentReader) {
-		Map<String, Object> options = new HashMap<String, Object>(5);
-		options.put(PARAM_DESTINATION_NAME, ruleAction
-				.getParameterValue(PARAM_DESTINATION_NAME));
-		options.put(PARAM_DESTINATION_FOLDER, ruleAction
-				.getParameterValue(PARAM_DESTINATION_FOLDER));
-		options.put(PARAM_INSERT_AT_PAGE, ruleAction
-				.getParameterValue(PARAM_INSERT_AT_PAGE));
+        if (contentReader != null)
+        {
+            // Do the work....insert the PDF
+            doInsert(ruleAction, actionedUponNodeRef, contentReader, insertContentReader);
 
-		try {
-			this.action(ruleAction, actionedUponNodeRef, contentReader,
-					insertContentReader, options);
-		} catch (AlfrescoRuntimeException e) {
-			e.printStackTrace();
-		}
-	}
+            {
+                if (logger.isDebugEnabled())
+                {
+                    logger.debug("Can't execute rule: \n" + "   node: " + actionedUponNodeRef + "\n" + "   reader: "
+                                 + contentReader + "\n" + "   action: " + this);
+                }
+            }
+        }
+    }
 
-	/**
-	 * @param reader
-	 * @param writer
-	 * @param options
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	protected final void action(Action ruleAction, NodeRef actionedUponNodeRef,
-			ContentReader reader, ContentReader insertReader,
-			Map<String, Object> options) throws AlfrescoRuntimeException {
-		PDDocument pdf = null;
-		PDDocument insertContentPDF = null;
-		InputStream is = null;
-		InputStream cis = null;
-		File tempDir = null;
-		ContentWriter writer = null;
 
-		try {
+    /**
+     * 
+     * Build out the insert call
+     * 
+     */
+    protected void doInsert(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader contentReader,
+            ContentReader insertContentReader)
+    {
+        Map<String, Object> options = new HashMap<String, Object>(5);
+        options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));
+        options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+        options.put(PARAM_INSERT_AT_PAGE, ruleAction.getParameterValue(PARAM_INSERT_AT_PAGE));
 
-			int insertAt = new Integer(((String) options.get(PARAM_INSERT_AT_PAGE))).intValue();
+        try
+        {
+            this.action(ruleAction, actionedUponNodeRef, contentReader, insertContentReader, options);
+        }
+        catch (AlfrescoRuntimeException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-			// Get contentReader inputStream
-			is = reader.getContentInputStream();
-			// Get insertContentReader inputStream
-			cis = insertReader.getContentInputStream();
-			// stream the target document in
-			pdf = PDDocument.load(is);
-			// stream the insert content document in
-			insertContentPDF = PDDocument.load(cis);
 
-			// split the PDF and put the pages in a list
-			Splitter splitter = new Splitter();
-			// Need to adjust the input value to get the split at the right page
-			splitter.setSplitAtPage(insertAt - 1);
+    /**
+     * @param reader
+     * @param writer
+     * @param options
+     * @throws Exception
+     */
+    protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader reader, ContentReader insertReader,
+            Map<String, Object> options)
+        throws AlfrescoRuntimeException
+    {
+        PDDocument pdf = null;
+        PDDocument insertContentPDF = null;
+        InputStream is = null;
+        InputStream cis = null;
+        File tempDir = null;
+        ContentWriter writer = null;
 
-			// Split the pages
-			List pdfs = splitter.split(pdf);
+        try
+        {
 
-			// Build the output PDF
-			PDFMergerUtility merger = new PDFMergerUtility();
-			merger.appendDocument((PDDocument) pdfs.get(0), insertContentPDF);
-			merger.appendDocument((PDDocument) pdfs.get(0), (PDDocument) pdfs
-					.get(1));
-			merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME)
-					.toString());
-			merger.mergeDocuments();
+            int insertAt = new Integer(((String)options.get(PARAM_INSERT_AT_PAGE))).intValue();
 
-			// build a temp dir, name based on the ID of the noderef we are
-			// importing
-			File alfTempDir = TempFileProvider.getTempDir();
-			tempDir = new File(alfTempDir.getPath() + File.separatorChar
-					+ actionedUponNodeRef.getId());
-			tempDir.mkdir();
+            // Get contentReader inputStream
+            is = reader.getContentInputStream();
+            // Get insertContentReader inputStream
+            cis = insertReader.getContentInputStream();
+            // stream the target document in
+            pdf = PDDocument.load(is);
+            // stream the insert content document in
+            insertContentPDF = PDDocument.load(cis);
 
-			String fileName = options.get(PARAM_DESTINATION_NAME).toString();
+            // split the PDF and put the pages in a list
+            Splitter splitter = new Splitter();
+            // Need to adjust the input value to get the split at the right page
+            splitter.setSplitAtPage(insertAt - 1);
 
-			PDDocument completePDF = (PDDocument) pdfs.get(0);
+            // Split the pages
+            List<PDDocument> pdfs = splitter.split(pdf);
 
-			completePDF.save(tempDir + "" + File.separatorChar + fileName
-					+ FILE_EXTENSION);
+            // Build the output PDF
+            PDFMergerUtility merger = new PDFMergerUtility();
+            merger.appendDocument((PDDocument)pdfs.get(0), insertContentPDF);
+            merger.appendDocument((PDDocument)pdfs.get(0), (PDDocument)pdfs.get(1));
+            merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME).toString());
+            merger.mergeDocuments();
 
-			if (completePDF != null) {
-				try {
-					completePDF.close();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
+            // build a temp dir, name based on the ID of the noderef we are
+            // importing
+            File alfTempDir = TempFileProvider.getTempDir();
+            tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
+            tempDir.mkdir();
 
-			for (File file : tempDir.listFiles()) {
-				try {
-					if (file.isFile()) {
-						// What is the file name?
-						String filename = file.getName();
+            String fileName = options.get(PARAM_DESTINATION_NAME).toString();
 
-						// Get a writer and prep it for putting it back into the
-						// repo
-						writer = getWriter(filename, (NodeRef) ruleAction
-								.getParameterValue(PARAM_DESTINATION_FOLDER));
-						writer.setEncoding(reader.getEncoding()); // original
-						// encoding
-						writer.setMimetype(FILE_MIMETYPE);
+            PDDocument completePDF = (PDDocument)pdfs.get(0);
 
-						// Put it in the repo
-						writer.putContent(file);
+            completePDF.save(tempDir + "" + File.separatorChar + fileName + FILE_EXTENSION);
 
-						// Clean up
-						file.delete();
-					}
-				} catch (FileExistsException e) {
-					throw new AlfrescoRuntimeException(
-							"Failed to process file.", e);
-				}
-			}
-		}
-		// TODO add better handling
-		catch (COSVisitorException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            if (completePDF != null)
+            {
+                try
+                {
+                    completePDF.close();
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
+            }
 
-		finally {
-			if (pdf != null) {
-				try {
-					pdf.close();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-			if (is != null) {
-				try {
-					is.close();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
+            for (File file : tempDir.listFiles())
+            {
+                try
+                {
+                    if (file.isFile())
+                    {
+                        // What is the file name?
+                        String filename = file.getName();
 
-			if (tempDir != null) {
-				tempDir.delete();
-			}
-		}
+                        // Get a writer and prep it for putting it back into the
+                        // repo
+                        writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+                        writer.setEncoding(reader.getEncoding()); // original
+                        // encoding
+                        writer.setMimetype(FILE_MIMETYPE);
 
-		// TODO add debug
-		if (logger.isDebugEnabled()) {
+                        // Put it in the repo
+                        writer.putContent(file);
 
-		}
-	}
+                        // Clean up
+                        file.delete();
+                    }
+                }
+                catch (FileExistsException e)
+                {
+                    throw new AlfrescoRuntimeException("Failed to process file.", e);
+                }
+            }
+        }
+        // TODO add better handling
+        catch (COSVisitorException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        finally
+        {
+            if (pdf != null)
+            {
+                try
+                {
+                    pdf.close();
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null)
+            {
+                try
+                {
+                    is.close();
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            if (tempDir != null)
+            {
+                tempDir.delete();
+            }
+        }
+
+        // TODO add debug
+        if (logger.isDebugEnabled())
+        {
+
+        }
+    }
 }
