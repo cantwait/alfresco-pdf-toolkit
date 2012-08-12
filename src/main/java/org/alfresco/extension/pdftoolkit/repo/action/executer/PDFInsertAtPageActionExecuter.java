@@ -136,7 +136,7 @@ public class PDFInsertAtPageActionExecuter
         }
         catch (AlfrescoRuntimeException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
     }
 
@@ -205,7 +205,7 @@ public class PDFInsertAtPageActionExecuter
             }
             catch (Throwable e)
             {
-                e.printStackTrace();
+                throw new AlfrescoRuntimeException(e.getMessage(), e);
             }
 
 
@@ -241,11 +241,11 @@ public class PDFInsertAtPageActionExecuter
         // TODO add better handling
         catch (COSVisitorException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
 
         finally
@@ -258,7 +258,7 @@ public class PDFInsertAtPageActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
             if (is != null)
@@ -269,7 +269,7 @@ public class PDFInsertAtPageActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
 
@@ -277,12 +277,6 @@ public class PDFInsertAtPageActionExecuter
             {
                 tempDir.delete();
             }
-        }
-
-        // TODO add debug
-        if (logger.isDebugEnabled())
-        {
-
         }
     }
 }

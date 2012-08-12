@@ -177,7 +177,7 @@ public class PDFEncryptionActionExecuter
         }
         catch (AlfrescoRuntimeException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
     }
 
@@ -243,9 +243,10 @@ public class PDFEncryptionActionExecuter
                 }
                 catch (Exception ex)
                 {
+                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
                 }
             }
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         finally
         {
@@ -257,6 +258,7 @@ public class PDFEncryptionActionExecuter
                 }
                 catch (Exception ex)
                 {
+                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
                 }
             }
         }
