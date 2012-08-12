@@ -222,16 +222,13 @@ public class PDFSplitActionExecuter
                     page++;
                 }
 
-                if (splitpdf != null)
+                try
                 {
-                    try
-                    {
-                        splitpdf.close();
-                    }
-                    catch (Throwable e)
-                    {
-                        e.printStackTrace();
-                    }
+                    splitpdf.close();
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
                 }
 
             }

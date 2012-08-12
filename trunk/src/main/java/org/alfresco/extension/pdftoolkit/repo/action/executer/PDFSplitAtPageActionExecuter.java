@@ -202,17 +202,15 @@ public class PDFSplitAtPageActionExecuter
             String fileNameSansExt = getFilenameSansExt(actionedUponNodeRef, FILE_EXTENSION);
             firstPDF.save(tempDir + "" + File.separatorChar + fileNameSansExt + pg + page + lastPage + FILE_EXTENSION);
 
-            if (firstPDF != null)
+            try
             {
-                try
-                {
-                    firstPDF.close();
-                }
-                catch (Throwable e)
-                {
-                    e.printStackTrace();
-                }
+                firstPDF.close();
             }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+
             // FLAG: Like I said: "_UGLY_" ..... and it gets worse
             PDDocument secondPDF = null;
 
@@ -236,17 +234,16 @@ public class PDFSplitAtPageActionExecuter
                     // merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME).toString());
                     merger.mergeDocuments();
 
-                    if (splitpdf != null)
+
+                    try
                     {
-                        try
-                        {
-                            splitpdf.close();
-                        }
-                        catch (Throwable e)
-                        {
-                            e.printStackTrace();
-                        }
+                        splitpdf.close();
                     }
+                    catch (Throwable e)
+                    {
+                        e.printStackTrace();
+                    }
+
                 }
                 else
                 {

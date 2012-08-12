@@ -199,17 +199,15 @@ public class PDFInsertAtPageActionExecuter
 
             completePDF.save(tempDir + "" + File.separatorChar + fileName + FILE_EXTENSION);
 
-            if (completePDF != null)
+            try
             {
-                try
-                {
-                    completePDF.close();
-                }
-                catch (Throwable e)
-                {
-                    e.printStackTrace();
-                }
+                completePDF.close();
             }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+
 
             for (File file : tempDir.listFiles())
             {
