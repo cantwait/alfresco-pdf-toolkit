@@ -129,7 +129,7 @@ public class PDFSplitActionExecuter
         }
         catch (AlfrescoRuntimeException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
     }
 
@@ -228,7 +228,7 @@ public class PDFSplitActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
 
             }
@@ -262,14 +262,13 @@ public class PDFSplitActionExecuter
                 }
             }
         }
-        // TODO add better handling
         catch (COSVisitorException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
 
         finally
@@ -282,7 +281,7 @@ public class PDFSplitActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
             if (is != null)
@@ -293,7 +292,7 @@ public class PDFSplitActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
 
@@ -301,12 +300,6 @@ public class PDFSplitActionExecuter
             {
                 tempDir.delete();
             }
-        }
-
-        // TODO add debug
-        if (logger.isDebugEnabled())
-        {
-
         }
     }
 

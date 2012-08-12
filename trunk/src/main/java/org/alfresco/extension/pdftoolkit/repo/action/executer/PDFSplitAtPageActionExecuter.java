@@ -130,7 +130,7 @@ public class PDFSplitAtPageActionExecuter
         }
         catch (AlfrescoRuntimeException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
     }
 
@@ -157,10 +157,14 @@ public class PDFSplitAtPageActionExecuter
             String splitFrequencyString = options.get(PARAM_SPLIT_AT_PAGE).toString();
             if (!splitFrequencyString.equals(""))
             {
-                splitFrequency = new Integer(splitFrequencyString);
-
-                // TODO add error handling
-
+                try
+                {
+                    splitFrequency = new Integer(splitFrequencyString);
+                }
+                catch (NumberFormatException e)
+                {
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
+                }
             }
 
             // Get contentReader inputStream
@@ -208,7 +212,7 @@ public class PDFSplitAtPageActionExecuter
             }
             catch (Throwable e)
             {
-                e.printStackTrace();
+                throw new AlfrescoRuntimeException(e.getMessage(), e);
             }
 
             // FLAG: Like I said: "_UGLY_" ..... and it gets worse
@@ -241,7 +245,7 @@ public class PDFSplitAtPageActionExecuter
                     }
                     catch (Throwable e)
                     {
-                        e.printStackTrace();
+                        throw new AlfrescoRuntimeException(e.getMessage(), e);
                     }
 
                 }
@@ -299,14 +303,13 @@ public class PDFSplitAtPageActionExecuter
                 }
             }
         }
-        // TODO add better handling
         catch (COSVisitorException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
 
         finally
@@ -319,7 +322,7 @@ public class PDFSplitAtPageActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
             if (is != null)
@@ -330,7 +333,7 @@ public class PDFSplitAtPageActionExecuter
                 }
                 catch (Throwable e)
                 {
-                    e.printStackTrace();
+                    throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
 
@@ -338,12 +341,6 @@ public class PDFSplitAtPageActionExecuter
             {
                 tempDir.delete();
             }
-        }
-
-        // TODO add debug
-        if (logger.isDebugEnabled())
-        {
-
         }
     }
 

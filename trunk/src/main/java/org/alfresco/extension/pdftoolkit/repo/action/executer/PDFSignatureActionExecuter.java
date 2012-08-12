@@ -27,6 +27,7 @@ import java.security.cert.Certificate;
 import java.util.HashMap;
 import java.util.List;
 
+import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
@@ -225,7 +226,7 @@ public class PDFSignatureActionExecuter
             }
             else
             {
-                throw new Exception("Unknown key type " + keyType + " specified");
+                throw new AlfrescoRuntimeException("Unknown key type " + keyType + " specified");
             }
 
             // open the reader to the key and load it
@@ -273,7 +274,7 @@ public class PDFSignatureActionExecuter
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         finally
         {
@@ -285,6 +286,7 @@ public class PDFSignatureActionExecuter
                 }
                 catch (Exception ex)
                 {
+                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
                 }
             }
         }
