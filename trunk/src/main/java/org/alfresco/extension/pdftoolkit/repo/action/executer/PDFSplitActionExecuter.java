@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
- * As a special exception to the terms and conditions of version 2.0 of 
- * the GPL, you may redistribute this Program in connection with Free/Libre 
- * and Open Source Software ("FLOSS") applications as described in Alfresco's 
- * FLOSS exception.  You should have recieved a copy of the text describing 
- * the FLOSS exception, and it is also available here: 
- * http://www.alfresco.com/legal/licensing"
+ * Copyright 2008-2012 Alfresco Software Limited.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * This file is part of an unsupported extension to Alfresco.
  */
 
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +44,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.Splitter;
 
+
 /**
  * Split PDF action executer
  * 
@@ -57,21 +52,23 @@ import org.apache.pdfbox.util.Splitter;
  * 
  */
 
-public class PDFSplitActionExecuter extends BasePDFActionExecuter
+public class PDFSplitActionExecuter
+    extends BasePDFActionExecuter
 
 {
 
     /**
      * The logger
      */
-    private static Log logger = LogFactory.getLog(PDFSplitActionExecuter.class);
+    private static Log         logger                   = LogFactory.getLog(PDFSplitActionExecuter.class);
 
     /**
      * Action constants
      */
-    public static final String NAME = "pdf-split";
+    public static final String NAME                     = "pdf-split";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
-    public static final String PARAM_SPLIT_FREQUENCY = "split-frequency";
+    public static final String PARAM_SPLIT_FREQUENCY    = "split-frequency";
+
 
     /**
      * Add parameter definitions
@@ -79,17 +76,14 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
-        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
-                DataTypeDefinition.NODE_REF, true,
-                getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
-        paramList.add(new ParameterDefinitionImpl(PARAM_SPLIT_FREQUENCY,
-                DataTypeDefinition.TEXT, false,
-                getParamDisplayLabel(PARAM_SPLIT_FREQUENCY)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_SPLIT_FREQUENCY, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_SPLIT_FREQUENCY)));
     }
+
 
     /**
      * @see org.alfresco.repo.action.executer.ActionExecuterAbstractBase#executeImpl(org.alfresco.service.cmr.repository.NodeRef,
-     *      org.alfresco.service.cmr.repository.NodeRef)
+     * org.alfresco.service.cmr.repository.NodeRef)
      */
     @Override
     protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
@@ -110,37 +104,35 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
             {
                 if (logger.isDebugEnabled())
                 {
-                    logger.debug("Can't execute rule: \n" + "   node: "
-                            + actionedUponNodeRef + "\n" + "   reader: "
-                            + contentReader + "\n" + "   action: " + this);
+                    logger.debug("Can't execute rule: \n" + "   node: " + actionedUponNodeRef + "\n" + "   reader: "
+                                 + contentReader + "\n" + "   action: " + this);
                 }
             }
         }
     }
 
+
     /**
      * @see org.alfresco.repo.action.executer.TransformActionExecuter#doTransform(org.alfresco.service.cmr.action.Action,
-     *      org.alfresco.service.cmr.repository.ContentReader, org.alfresco.service.cmr.repository.ContentWriter)
+     * org.alfresco.service.cmr.repository.ContentReader,
+     * org.alfresco.service.cmr.repository.ContentWriter)
      */
-    protected void doSplit(Action ruleAction, NodeRef actionedUponNodeRef,
-            ContentReader contentReader)
+    protected void doSplit(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader contentReader)
     {
         Map<String, Object> options = new HashMap<String, Object>(5);
-        options.put(PARAM_DESTINATION_FOLDER, ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER));
-        options.put(PARAM_SPLIT_FREQUENCY, ruleAction
-                .getParameterValue(PARAM_SPLIT_FREQUENCY));
+        options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+        options.put(PARAM_SPLIT_FREQUENCY, ruleAction.getParameterValue(PARAM_SPLIT_FREQUENCY));
 
         try
         {
-            this
-                    .action(ruleAction, actionedUponNodeRef, contentReader,
-                            options);
-        } catch (AlfrescoRuntimeException e)
+            this.action(ruleAction, actionedUponNodeRef, contentReader, options);
+        }
+        catch (AlfrescoRuntimeException e)
         {
             e.printStackTrace();
         }
     }
+
 
     /**
      * @param reader
@@ -148,10 +140,8 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
      * @param options
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
-    protected final void action(Action ruleAction, NodeRef actionedUponNodeRef,
-            ContentReader reader, Map<String, Object> options)
-            throws AlfrescoRuntimeException
+    protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader reader, Map<String, Object> options)
+        throws AlfrescoRuntimeException
     {
         PDDocument pdf = null;
         InputStream is = null;
@@ -163,8 +153,7 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
             // Get the split frequency
             int splitFrequency = 0;
 
-            String splitFrequencyString = options.get(PARAM_SPLIT_FREQUENCY)
-                    .toString();
+            String splitFrequencyString = options.get(PARAM_SPLIT_FREQUENCY).toString();
             if (!splitFrequencyString.equals(""))
             {
                 splitFrequency = new Integer(splitFrequencyString);
@@ -176,25 +165,26 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
             pdf = PDDocument.load(is);
             // split the PDF and put the pages in a list
             Splitter splitter = new Splitter();
-            // if the default split is not every page, then set it to the right frequency
+            // if the default split is not every page, then set it to the right
+            // frequency
             if (splitFrequency > 0)
             {
                 splitter.setSplitAtPage(splitFrequency);
             }
             // Split the pages
-            List pdfs = splitter.split(pdf);
+            List<PDDocument> pdfs = splitter.split(pdf);
 
             // Lets get reading to walk the list
-            Iterator it = pdfs.iterator();
+            Iterator<PDDocument> it = pdfs.iterator();
 
             // Start page split numbering at
             int page = 1;
             int endPage = 0;
 
-            // build a temp dir name based on the ID of the noderef we are importing
+            // build a temp dir name based on the ID of the noderef we are
+            // importing
             File alfTempDir = TempFileProvider.getTempDir();
-            tempDir = new File(alfTempDir.getPath() + File.separatorChar
-                    + actionedUponNodeRef.getId());
+            tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
             tempDir.mkdir();
 
             while (it.hasNext())
@@ -203,8 +193,9 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                 String pagePlus = "";
                 String pg = "_pg";
 
-                // Get the split document and save it into the temp dir with new name
-                PDDocument splitpdf = (PDDocument) it.next();
+                // Get the split document and save it into the temp dir with new
+                // name
+                PDDocument splitpdf = (PDDocument)it.next();
 
                 int pagesInPDF = splitpdf.getNumberOfPages();
 
@@ -218,17 +209,15 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                 }
 
                 // put together the name and save the PDF
-                String fileNameSansExt = getFilenameSansExt(
-                        actionedUponNodeRef, FILE_EXTENSION);
-                splitpdf.save(tempDir + "" + File.separatorChar
-                        + fileNameSansExt + pg + page + pagePlus
-                        + FILE_EXTENSION);
+                String fileNameSansExt = getFilenameSansExt(actionedUponNodeRef, FILE_EXTENSION);
+                splitpdf.save(tempDir + "" + File.separatorChar + fileNameSansExt + pg + page + pagePlus + FILE_EXTENSION);
 
                 // increment page count
                 if (splitFrequency > 0)
                 {
                     page = (page++) + pagesInPDF;
-                } else
+                }
+                else
                 {
                     page++;
                 }
@@ -238,7 +227,8 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                     try
                     {
                         splitpdf.close();
-                    } catch (Throwable e)
+                    }
+                    catch (Throwable e)
                     {
                         e.printStackTrace();
                     }
@@ -255,9 +245,11 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                         // What is the file name?
                         String filename = file.getName();
 
-                        // Get a writer and prep it for putting it back into the repo
-                        writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
-                        writer.setEncoding(reader.getEncoding()); // original encoding
+                        // Get a writer and prep it for putting it back into the
+                        // repo
+                        writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+                        writer.setEncoding(reader.getEncoding()); // original
+                                                                  // encoding
                         writer.setMimetype(FILE_MIMETYPE);
 
                         // Put it in the repo
@@ -266,10 +258,10 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                         // Clean up
                         file.delete();
                     }
-                } catch (FileExistsException e)
+                }
+                catch (FileExistsException e)
                 {
-                    throw new AlfrescoRuntimeException(
-                            "Failed to process file.", e);
+                    throw new AlfrescoRuntimeException("Failed to process file.", e);
                 }
             }
         }
@@ -277,7 +269,8 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
         catch (COSVisitorException e)
         {
             e.printStackTrace();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -289,7 +282,8 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                 try
                 {
                     pdf.close();
-                } catch (Throwable e)
+                }
+                catch (Throwable e)
                 {
                     e.printStackTrace();
                 }
@@ -299,7 +293,8 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
                 try
                 {
                     is.close();
-                } catch (Throwable e)
+                }
+                catch (Throwable e)
                 {
                     e.printStackTrace();
                 }
@@ -317,6 +312,7 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
 
         }
     }
+
 
     /**
      * @param fileName
@@ -340,21 +336,20 @@ public class PDFSplitActionExecuter extends BasePDFActionExecuter
         return fileName;
     }
 
+
     protected String getFilename(NodeRef actionedUponNodeRef)
     {
-        FileInfo fileInfo = serviceRegistry.getFileFolderService()
-                .getFileInfo(actionedUponNodeRef);
+        FileInfo fileInfo = serviceRegistry.getFileFolderService().getFileInfo(actionedUponNodeRef);
         String filename = fileInfo.getName();
 
         return filename;
     }
 
-    protected String getFilenameSansExt(NodeRef actionedUponNodeRef,
-            String extension)
+
+    protected String getFilenameSansExt(NodeRef actionedUponNodeRef, String extension)
     {
         String filenameSansExt;
-        filenameSansExt = removeExtension(getFilename(actionedUponNodeRef),
-                extension);
+        filenameSansExt = removeExtension(getFilename(actionedUponNodeRef), extension);
 
         return filenameSansExt;
     }

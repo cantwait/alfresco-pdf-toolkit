@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
- * As a special exception to the terms and conditions of version 2.0 of 
- * the GPL, you may redistribute this Program in connection with Free/Libre 
- * and Open Source Software ("FLOSS") applications as described in Alfresco's 
- * FLOSS exception.  You should have recieved a copy of the text describing 
- * the FLOSS exception, and it is also available here: 
- * http://www.alfresco.com/legal/licensing"
+ * Copyright 2008-2012 Alfresco Software Limited.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * This file is part of an unsupported extension to Alfresco.
  */
 
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +42,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFMergerUtility;
 
+
 /**
  * Append PDF action executer
  * 
@@ -55,44 +50,40 @@ import org.apache.pdfbox.util.PDFMergerUtility;
  * 
  */
 
-public class PDFAppendActionExecuter extends BasePDFActionExecuter
+public class PDFAppendActionExecuter
+    extends BasePDFActionExecuter
 
 {
 
     /**
      * The logger
      */
-    private static Log logger = LogFactory
-            .getLog(PDFAppendActionExecuter.class);
+    private static Log         logger                   = LogFactory.getLog(PDFAppendActionExecuter.class);
 
     /**
      * Action constants
      */
-    public static final String NAME = "pdf-append";
-    public static final String PARAM_TARGET_NODE = "target-node";
+    public static final String NAME                     = "pdf-append";
+    public static final String PARAM_TARGET_NODE        = "target-node";
     public static final String PARAM_DESTINATION_FOLDER = "destination-folder";
-    public static final String PARAM_DESTINATION_NAME = "destination-name";
-   
+    public static final String PARAM_DESTINATION_NAME   = "destination-name";
+
+
     /**
      * Add parameter definitions
      */
     @Override
     protected void addParameterDefinitions(List<ParameterDefinition> paramList)
     {
-        paramList.add(new ParameterDefinitionImpl(PARAM_TARGET_NODE,
-                DataTypeDefinition.NODE_REF, true,
-                getParamDisplayLabel(PARAM_TARGET_NODE)));
-        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER,
-                DataTypeDefinition.NODE_REF, true,
-                getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
-        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_NAME,
-                DataTypeDefinition.TEXT, true,
-                getParamDisplayLabel(PARAM_DESTINATION_NAME)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_TARGET_NODE, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_TARGET_NODE)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_NAME, DataTypeDefinition.TEXT, true, getParamDisplayLabel(PARAM_DESTINATION_NAME)));
     }
+
 
     /**
      * @see org.alfresco.repo.action.executer.ActionExecuterAbstractBase#executeImpl(org.alfresco.service.cmr.repository.NodeRef,
-     *      org.alfresco.service.cmr.repository.NodeRef)
+     * org.alfresco.service.cmr.repository.NodeRef)
      */
     @Override
     protected void executeImpl(Action ruleAction, NodeRef actionedUponNodeRef)
@@ -103,8 +94,7 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
             return;
         }
 
-        NodeRef targetNodeRef = (NodeRef) ruleAction
-                .getParameterValue(PARAM_TARGET_NODE);
+        NodeRef targetNodeRef = (NodeRef)ruleAction.getParameterValue(PARAM_TARGET_NODE);
 
         if (serviceRegistry.getNodeService().exists(targetNodeRef) == false)
         {
@@ -118,46 +108,43 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
         if (contentReader != null && targetContentReader != null)
         {
             // Do the work....split the PDF
-            doAppend(ruleAction, actionedUponNodeRef, targetNodeRef,
-                    contentReader, targetContentReader);
+            doAppend(ruleAction, actionedUponNodeRef, targetNodeRef, contentReader, targetContentReader);
 
             {
                 if (logger.isDebugEnabled())
                 {
-                    logger.debug("Can't execute rule: \n" + "   node: "
-                            + actionedUponNodeRef + "\n" + "   reader: "
-                            + contentReader + "\n" + "   action: " + this);
+                    logger.debug("Can't execute rule: \n" + "   node: " + actionedUponNodeRef + "\n" + "   reader: "
+                                 + contentReader + "\n" + "   action: " + this);
                 }
             }
         }
     }
 
+
     /**
      * @see org.alfresco.repo.action.executer.TransformActionExecuter#doTransform(org.alfresco.service.cmr.action.Action,
-     *      org.alfresco.service.cmr.repository.ContentReader, org.alfresco.service.cmr.repository.ContentWriter)
+     * org.alfresco.service.cmr.repository.ContentReader,
+     * org.alfresco.service.cmr.repository.ContentWriter)
      */
-    protected void doAppend(Action ruleAction, NodeRef actionedUponNodeRef,
-            NodeRef targetNodeRef, ContentReader contentReader,
+    protected void doAppend(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef targetNodeRef, ContentReader contentReader,
             ContentReader targetContentReader)
     {
 
         Map<String, Object> options = new HashMap<String, Object>(5);
-        options.put(PARAM_TARGET_NODE, ruleAction
-                .getParameterValue(PARAM_TARGET_NODE));
-        options.put(PARAM_DESTINATION_FOLDER, ruleAction
-                .getParameterValue(PARAM_DESTINATION_FOLDER));
-        options.put(PARAM_DESTINATION_NAME, ruleAction
-                .getParameterValue(PARAM_DESTINATION_NAME));
+        options.put(PARAM_TARGET_NODE, ruleAction.getParameterValue(PARAM_TARGET_NODE));
+        options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+        options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));
 
         try
         {
-            this.action(ruleAction, actionedUponNodeRef, targetNodeRef,
-                    contentReader, targetContentReader, options);
-        } catch (AlfrescoRuntimeException e)
+            this.action(ruleAction, actionedUponNodeRef, targetNodeRef, contentReader, targetContentReader, options);
+        }
+        catch (AlfrescoRuntimeException e)
         {
             e.printStackTrace();
         }
     }
+
 
     /**
      * @param reader
@@ -165,10 +152,9 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
      * @param options
      * @throws Exception
      */
-    protected final void action(Action ruleAction, NodeRef actionedUponNodeRef,
-            NodeRef targetNodeRef, ContentReader reader,
+    protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef targetNodeRef, ContentReader reader,
             ContentReader targetContentReader, Map<String, Object> options)
-            throws AlfrescoRuntimeException
+        throws AlfrescoRuntimeException
     {
         PDDocument pdf = null;
         PDDocument pdfTarget = null;
@@ -187,19 +173,17 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
             // Append the PDFs
             PDFMergerUtility merger = new PDFMergerUtility();
             merger.appendDocument(pdfTarget, pdf);
-            merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME)
-                    .toString());
+            merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME).toString());
             merger.mergeDocuments();
 
-            // build a temp dir name based on the ID of the noderef we are importing
+            // build a temp dir name based on the ID of the noderef we are
+            // importing
             File alfTempDir = TempFileProvider.getTempDir();
-            tempDir = new File(alfTempDir.getPath() + File.separatorChar
-                    + actionedUponNodeRef.getId());
+            tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
             tempDir.mkdir();
 
             String fileName = options.get(PARAM_DESTINATION_NAME).toString();
-            pdfTarget.save(tempDir + "" + File.separatorChar + fileName
-                    + FILE_EXTENSION);
+            pdfTarget.save(tempDir + "" + File.separatorChar + fileName + FILE_EXTENSION);
 
             for (File file : tempDir.listFiles())
             {
@@ -210,9 +194,11 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
                         // What is the file name?
                         String filename = file.getName();
 
-                        // Get a writer and prep it for putting it back into the repo
-                        writer = getWriter(filename, (NodeRef) ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
-                        writer.setEncoding(reader.getEncoding()); // original encoding
+                        // Get a writer and prep it for putting it back into the
+                        // repo
+                        writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+                        writer.setEncoding(reader.getEncoding()); // original
+                                                                  // encoding
                         writer.setMimetype(FILE_MIMETYPE);
 
                         // Put it in the repo
@@ -221,10 +207,10 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
                         // Clean up
                         file.delete();
                     }
-                } catch (FileExistsException e)
+                }
+                catch (FileExistsException e)
                 {
-                    throw new AlfrescoRuntimeException(
-                            "Failed to process file.", e);
+                    throw new AlfrescoRuntimeException("Failed to process file.", e);
                 }
             }
         }
@@ -232,7 +218,8 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
         catch (COSVisitorException e)
         {
             e.printStackTrace();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -244,7 +231,8 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
                 try
                 {
                     pdf.close();
-                } catch (Throwable e)
+                }
+                catch (Throwable e)
                 {
                     e.printStackTrace();
                 }
@@ -254,7 +242,8 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
                 try
                 {
                     pdfTarget.close();
-                } catch (Throwable e)
+                }
+                catch (Throwable e)
                 {
                     e.printStackTrace();
                 }
@@ -264,7 +253,8 @@ public class PDFAppendActionExecuter extends BasePDFActionExecuter
                 try
                 {
                     is.close();
-                } catch (Throwable e)
+                }
+                catch (Throwable e)
                 {
                     e.printStackTrace();
                 }
