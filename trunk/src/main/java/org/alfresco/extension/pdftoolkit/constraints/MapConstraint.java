@@ -38,7 +38,7 @@ public class MapConstraint
     }
 
 
-    public void setConstraintMap(Map m)
+    public void setConstraintMap(Map<String, String> m)
     {
         cm.putAll(m);
     }
