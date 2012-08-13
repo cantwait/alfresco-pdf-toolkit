@@ -316,7 +316,7 @@ public class PDFSplitActionExecuter
             // Where does the extension start?
             int extensionStartsAt = fileName.indexOf(extension);
             // Get the Filename sans the extension
-            fileName = fileName.substring(0, extensionStartsAt);
+            return fileName.substring(0, extensionStartsAt);
         }
 
         return fileName;
