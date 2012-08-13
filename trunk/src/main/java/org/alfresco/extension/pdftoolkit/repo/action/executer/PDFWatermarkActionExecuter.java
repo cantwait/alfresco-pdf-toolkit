@@ -250,7 +250,7 @@ public class PDFWatermarkActionExecuter
      * @param options
      * @throws Exception
      */
-    private final void imageAction(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef watermarkNodeRef,
+    private void imageAction(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef watermarkNodeRef,
             ContentReader actionedUponContentReader, ContentReader watermarkContentReader, Map<String, Object> options)
         throws AlfrescoRuntimeException
     {
@@ -389,7 +389,7 @@ public class PDFWatermarkActionExecuter
      * @param options
      * @throws Exception
      */
-    private final void textAction(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader,
+    private void textAction(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader,
             Map<String, Object> options)
         throws AlfrescoRuntimeException
     {
