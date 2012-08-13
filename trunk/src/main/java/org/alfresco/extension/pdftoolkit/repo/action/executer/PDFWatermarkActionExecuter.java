@@ -529,8 +529,8 @@ public class PDFWatermarkActionExecuter
         float centerX = 0, startY = 0;
         for (int i = 0; i < tokens.size(); i++)
         {
-            if (pcb.getEffectiveStringWidth(tokens.get(i).toString(), false) > width)
-                width = pcb.getEffectiveStringWidth(tokens.get(i).toString(), false);
+            if (pcb.getEffectiveStringWidth(tokens.get(i), false) > width)
+                width = pcb.getEffectiveStringWidth(tokens.get(i), false);
         }
 
         // now that we have the width and height, we can calculate the center
@@ -567,7 +567,7 @@ public class PDFWatermarkActionExecuter
 
         for (int t = 0; t < tokens.size(); t++)
         {
-            pcb.showTextAligned(PdfContentByte.ALIGN_CENTER, tokens.get(t).toString(), centerX, startY - (size * t), 0);
+            pcb.showTextAligned(PdfContentByte.ALIGN_CENTER, tokens.get(t), centerX, startY - (size * t), 0);
         }
 
         pcb.endText();
