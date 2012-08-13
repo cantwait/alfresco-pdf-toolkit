@@ -21,6 +21,7 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -233,7 +235,11 @@ public class PDFEncryptionActionExecuter
             writer.putContent(file);
             file.delete();
         }
-        catch (Exception e)
+        catch (IOException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (DocumentException e)
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }

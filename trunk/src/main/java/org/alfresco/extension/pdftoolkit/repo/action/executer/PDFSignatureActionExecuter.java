@@ -21,9 +21,14 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +38,7 @@ import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
+import org.alfresco.service.cmr.repository.ContentIOException;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -40,6 +46,7 @@ import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
@@ -272,7 +279,31 @@ public class PDFSignatureActionExecuter
 
             file.delete();
         }
-        catch (Exception e)
+        catch (IOException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (KeyStoreException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (ContentIOException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (CertificateException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (UnrecoverableKeyException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (DocumentException e)
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
