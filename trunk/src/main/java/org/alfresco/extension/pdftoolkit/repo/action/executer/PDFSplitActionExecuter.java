@@ -311,16 +311,13 @@ public class PDFSplitActionExecuter
      */
     public String removeExtension(String fileName, String extension)
     {
-        if (fileName != null)
+        // Does the file have the extension?
+        if (fileName != null && fileName.contains(extension))
         {
-            // Does the file have the extension?
-            if (fileName.contains(extension))
-            {
-                // Where does the extension start?
-                int extensionStartsAt = fileName.indexOf(extension);
-                // Get the Filename sans the extension
-                fileName = fileName.substring(0, extensionStartsAt);
-            }
+            // Where does the extension start?
+            int extensionStartsAt = fileName.indexOf(extension);
+            // Get the Filename sans the extension
+            fileName = fileName.substring(0, extensionStartsAt);
         }
 
         return fileName;
