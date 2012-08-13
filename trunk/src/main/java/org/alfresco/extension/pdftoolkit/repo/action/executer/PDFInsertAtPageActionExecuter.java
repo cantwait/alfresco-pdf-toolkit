@@ -125,7 +125,7 @@ public class PDFInsertAtPageActionExecuter
     protected void doInsert(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader contentReader,
             ContentReader insertContentReader)
     {
-        Map<String, Object> options = new HashMap<String, Object>(5);
+        Map<String, Object> options = new HashMap<String, Object>(INITIAL_OPTIONS);
         options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_INSERT_AT_PAGE, ruleAction.getParameterValue(PARAM_INSERT_AT_PAGE));
