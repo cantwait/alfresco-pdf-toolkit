@@ -160,7 +160,7 @@ public class PDFInsertAtPageActionExecuter
         try
         {
 
-            int insertAt = new Integer(((String)options.get(PARAM_INSERT_AT_PAGE))).intValue();
+            int insertAt = Integer.valueOf((String)options.get(PARAM_INSERT_AT_PAGE)).intValue();
 
             // Get contentReader inputStream
             is = reader.getContentInputStream();

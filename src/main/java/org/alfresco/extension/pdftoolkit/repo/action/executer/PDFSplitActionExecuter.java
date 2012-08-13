@@ -155,7 +155,7 @@ public class PDFSplitActionExecuter
             String splitFrequencyString = options.get(PARAM_SPLIT_FREQUENCY).toString();
             if (!splitFrequencyString.equals(""))
             {
-                splitFrequency = new Integer(splitFrequencyString);
+                splitFrequency = Integer.valueOf(splitFrequencyString);
             }
 
             // Get contentReader inputStream
