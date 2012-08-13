@@ -203,7 +203,7 @@ public class PDFInsertAtPageActionExecuter
             {
                 completePDF.close();
             }
-            catch (Throwable e)
+            catch (IOException e)
             {
                 throw new AlfrescoRuntimeException(e.getMessage(), e);
             }
@@ -256,7 +256,7 @@ public class PDFInsertAtPageActionExecuter
                 {
                     pdf.close();
                 }
-                catch (Throwable e)
+                catch (IOException e)
                 {
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
@@ -267,7 +267,7 @@ public class PDFInsertAtPageActionExecuter
                 {
                     is.close();
                 }
-                catch (Throwable e)
+                catch (IOException e)
                 {
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
