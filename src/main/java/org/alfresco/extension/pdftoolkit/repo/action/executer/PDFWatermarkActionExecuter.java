@@ -21,6 +21,7 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
@@ -347,7 +349,11 @@ public class PDFWatermarkActionExecuter
             // delete the temp file
             file.delete();
         }
-        catch (Exception e)
+        catch (IOException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (DocumentException e)
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
@@ -480,7 +486,11 @@ public class PDFWatermarkActionExecuter
             // delete the temp file
             file.delete();
         }
-        catch (Exception e)
+        catch (IOException e)
+        {
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (DocumentException e)
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
