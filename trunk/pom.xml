@@ -105,6 +105,7 @@
 				<version>3.0.4</version>
 				<extensions>true</extensions>
 				<configuration>
+					<mAmpJarIncludes>**/*</mAmpJarIncludes>
 					<mAmpJarExcludes>alfresco/module/**,alfresco/extension/**,alfresco/messages/**</mAmpJarExcludes>
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
