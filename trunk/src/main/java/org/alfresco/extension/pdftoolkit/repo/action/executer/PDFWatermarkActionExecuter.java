@@ -529,7 +529,9 @@ public class PDFWatermarkActionExecuter
         for (int i = 0; i < tokens.size(); i++)
         {
             if (pcb.getEffectiveStringWidth(tokens.get(i), false) > width)
+            {
                 width = pcb.getEffectiveStringWidth(tokens.get(i), false);
+            }
         }
 
         // now that we have the width and height, we can calculate the center
