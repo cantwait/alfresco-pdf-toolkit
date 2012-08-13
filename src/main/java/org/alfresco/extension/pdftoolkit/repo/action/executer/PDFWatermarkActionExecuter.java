@@ -349,17 +349,6 @@ public class PDFWatermarkActionExecuter
         }
         catch (Exception e)
         {
-            if (stamp != null)
-            {
-                try
-                {
-                    stamp.close();
-                }
-                catch (Exception ex)
-                {
-                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
-                }
-            }
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         finally
@@ -369,6 +358,18 @@ public class PDFWatermarkActionExecuter
                 try
                 {
                     tempDir.delete();
+                }
+                catch (Exception ex)
+                {
+                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
+                }
+            }
+
+            if (stamp != null)
+            {
+                try
+                {
+                    stamp.close();
                 }
                 catch (Exception ex)
                 {
@@ -481,17 +482,6 @@ public class PDFWatermarkActionExecuter
         }
         catch (Exception e)
         {
-            if (stamp != null)
-            {
-                try
-                {
-                    stamp.close();
-                }
-                catch (Exception ex)
-                {
-                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
-                }
-            }
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         finally
@@ -501,6 +491,18 @@ public class PDFWatermarkActionExecuter
                 try
                 {
                     tempDir.delete();
+                }
+                catch (Exception ex)
+                {
+                    throw new AlfrescoRuntimeException(ex.getMessage(), ex);
+                }
+            }
+
+            if (stamp != null)
+            {
+                try
+                {
+                    stamp.close();
                 }
                 catch (Exception ex)
                 {
