@@ -432,7 +432,9 @@ public class PDFWatermarkActionExecuter
             // to vector for re-use
             st = new StringTokenizer(watermarkText, "\r\n", false);
             while (st.hasMoreTokens())
+            {
                 tokens.add(st.nextToken());
+            }
 
             // stamp each page
             int numpages = reader.getNumberOfPages();
