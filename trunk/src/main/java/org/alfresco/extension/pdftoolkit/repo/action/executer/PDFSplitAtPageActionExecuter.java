@@ -158,7 +158,7 @@ public class PDFSplitAtPageActionExecuter
             {
                 try
                 {
-                    splitFrequency = new Integer(splitFrequencyString);
+                    splitFrequency = Integer.valueOf(splitFrequencyString);
                 }
                 catch (NumberFormatException e)
                 {
