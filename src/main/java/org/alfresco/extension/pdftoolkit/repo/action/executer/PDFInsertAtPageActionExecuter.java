@@ -149,7 +149,6 @@ public class PDFInsertAtPageActionExecuter
      */
     protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader reader, ContentReader insertReader,
             Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
         PDDocument pdf = null;
         PDDocument insertContentPDF = null;

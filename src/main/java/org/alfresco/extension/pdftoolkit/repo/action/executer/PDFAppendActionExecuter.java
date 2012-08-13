@@ -154,7 +154,6 @@ public class PDFAppendActionExecuter
      */
     protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef targetNodeRef, ContentReader reader,
             ContentReader targetContentReader, Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
         PDDocument pdf = null;
         PDDocument pdfTarget = null;

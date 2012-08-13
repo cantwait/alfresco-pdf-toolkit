@@ -252,7 +252,6 @@ public class PDFWatermarkActionExecuter
      */
     private void imageAction(Action ruleAction, NodeRef actionedUponNodeRef, NodeRef watermarkNodeRef,
             ContentReader actionedUponContentReader, ContentReader watermarkContentReader, Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
 
         PdfStamper stamp = null;
@@ -387,11 +386,9 @@ public class PDFWatermarkActionExecuter
      * @param reader
      * @param writer
      * @param options
-     * @throws Exception
      */
     private void textAction(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader,
             Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
 
         PdfStamper stamp = null;

@@ -190,7 +190,6 @@ public class PDFEncryptionActionExecuter
      */
     protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader,
             Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
 
         PdfStamper stamp = null;
