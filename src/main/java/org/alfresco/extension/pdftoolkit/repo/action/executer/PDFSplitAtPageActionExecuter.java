@@ -197,7 +197,6 @@ public class PDFSplitAtPageActionExecuter
 
             if (pagesInFirstPDF > 1)
             {
-                // lastPage = String.valueOf(pagesInFirstPDF);
                 pg = "_pgs";
                 lastPage = "-" + pagesInFirstPDF;
             }
@@ -234,7 +233,6 @@ public class PDFSplitAtPageActionExecuter
 
                     PDFMergerUtility merger = new PDFMergerUtility();
                     merger.appendDocument(secondPDF, splitpdf);
-                    // merger.setDestinationFileName(options.get(PARAM_DESTINATION_NAME).toString());
                     merger.mergeDocuments();
 
 
