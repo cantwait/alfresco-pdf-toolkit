@@ -142,7 +142,6 @@ public class PDFSplitAtPageActionExecuter
      * @throws Exception
      */
     protected final void action(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader reader, Map<String, Object> options)
-        throws AlfrescoRuntimeException
     {
         PDDocument pdf = null;
         InputStream is = null;
