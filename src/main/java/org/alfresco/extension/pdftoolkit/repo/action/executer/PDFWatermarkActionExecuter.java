@@ -100,7 +100,7 @@ public class PDFWatermarkActionExecuter
     public static final String            FONT_OPTION_COURIER      = BaseFont.COURIER;
     public static final String            FONT_OPTION_TIMES_ROMAN  = BaseFont.TIMES_ROMAN;
 
-    private static final float            pad                      = 15;
+    private static final float            PAD                      = 15;
 
 
     public PDFWatermarkActionExecuter()
@@ -538,23 +538,23 @@ public class PDFWatermarkActionExecuter
         // the rectangle that will contain our text.
         if (position.equals(POSITION_BOTTOMLEFT))
         {
-            centerX = width / 2 + pad;
-            startY = 0 + pad + height;
+            centerX = width / 2 + PAD;
+            startY = 0 + PAD + height;
         }
         else if (position.equals(POSITION_BOTTOMRIGHT))
         {
-            centerX = r.getWidth() - (width / 2) - pad;
-            startY = 0 + pad + height;
+            centerX = r.getWidth() - (width / 2) - PAD;
+            startY = 0 + PAD + height;
         }
         else if (position.equals(POSITION_TOPLEFT))
         {
-            centerX = width / 2 + pad;
-            startY = r.getHeight() - (pad * 2);
+            centerX = width / 2 + PAD;
+            startY = r.getHeight() - (PAD * 2);
         }
         else if (position.equals(POSITION_TOPRIGHT))
         {
-            centerX = r.getWidth() - (width / 2) - pad;
-            startY = r.getHeight() - (pad * 2);
+            centerX = r.getWidth() - (width / 2) - PAD;
+            startY = r.getHeight() - (PAD * 2);
         }
         else if (position.equals(POSITION_CENTER))
         {

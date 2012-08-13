@@ -35,8 +35,8 @@ public abstract class BasePDFStampActionExecuter
     extends BasePDFActionExecuter
 {
 
-    public static final HashMap<String, String> pageConstraint       = new HashMap<String, String>();
-    public static final HashMap<String, String> positionConstraint   = new HashMap<String, String>();
+    public static HashMap<String, String> pageConstraint       = new HashMap<String, String>();
+    public static HashMap<String, String> positionConstraint   = new HashMap<String, String>();
 
     /*
      * Page and position constants
