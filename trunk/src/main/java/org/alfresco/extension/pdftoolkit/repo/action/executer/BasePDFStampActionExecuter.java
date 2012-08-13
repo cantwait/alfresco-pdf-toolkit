@@ -124,7 +124,6 @@ public abstract class BasePDFStampActionExecuter
             if (current == numpages)
             {
                 markPage = true;
-                ;
             }
         }
         else
