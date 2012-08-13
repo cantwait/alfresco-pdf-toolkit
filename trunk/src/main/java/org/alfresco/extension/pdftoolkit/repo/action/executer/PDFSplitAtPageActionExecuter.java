@@ -210,7 +210,7 @@ public class PDFSplitAtPageActionExecuter
             {
                 firstPDF.close();
             }
-            catch (Throwable e)
+            catch (IOException e)
             {
                 throw new AlfrescoRuntimeException(e.getMessage(), e);
             }
@@ -243,7 +243,7 @@ public class PDFSplitAtPageActionExecuter
                     {
                         splitpdf.close();
                     }
-                    catch (Throwable e)
+                    catch (IOException e)
                     {
                         throw new AlfrescoRuntimeException(e.getMessage(), e);
                     }
@@ -320,7 +320,7 @@ public class PDFSplitAtPageActionExecuter
                 {
                     pdf.close();
                 }
-                catch (Throwable e)
+                catch (IOException e)
                 {
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
@@ -331,7 +331,7 @@ public class PDFSplitAtPageActionExecuter
                 {
                     is.close();
                 }
-                catch (Throwable e)
+                catch (IOException e)
                 {
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
