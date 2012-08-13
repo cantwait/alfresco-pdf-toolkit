@@ -198,7 +198,7 @@ public class PDFWatermarkActionExecuter
     protected void doWatermark(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader)
     {
 
-        Map<String, Object> options = new HashMap<String, Object>(5);
+        Map<String, Object> options = new HashMap<String, Object>(INITIAL_OPTIONS);
 
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_WATERMARK_PAGES, ruleAction.getParameterValue(PARAM_WATERMARK_PAGES));

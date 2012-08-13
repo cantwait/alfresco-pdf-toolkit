@@ -119,7 +119,7 @@ public class PDFSplitActionExecuter
      */
     protected void doSplit(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader contentReader)
     {
-        Map<String, Object> options = new HashMap<String, Object>(5);
+        Map<String, Object> options = new HashMap<String, Object>(INITIAL_OPTIONS);
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_SPLIT_FREQUENCY, ruleAction.getParameterValue(PARAM_SPLIT_FREQUENCY));
 

@@ -36,6 +36,9 @@ public abstract class BasePDFActionExecuter
     protected static final String FILE_EXTENSION = ".pdf";
     protected static final String FILE_MIMETYPE  = "application/pdf";
     protected ServiceRegistry     serviceRegistry;
+    
+    //Default number of map entries at creation 
+    protected static final int INITIAL_OPTIONS = 5;
 
 
     /**

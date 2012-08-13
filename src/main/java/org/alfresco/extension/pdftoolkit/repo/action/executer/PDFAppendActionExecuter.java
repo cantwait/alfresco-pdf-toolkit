@@ -130,7 +130,7 @@ public class PDFAppendActionExecuter
             ContentReader targetContentReader)
     {
 
-        Map<String, Object> options = new HashMap<String, Object>(5);
+        Map<String, Object> options = new HashMap<String, Object>(INITIAL_OPTIONS);
         options.put(PARAM_TARGET_NODE, ruleAction.getParameterValue(PARAM_TARGET_NODE));
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));

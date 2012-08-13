@@ -154,7 +154,7 @@ public class PDFEncryptionActionExecuter
     protected void doEncrypt(Action ruleAction, NodeRef actionedUponNodeRef, ContentReader actionedUponContentReader)
     {
 
-        Map<String, Object> options = new HashMap<String, Object>(5);
+        Map<String, Object> options = new HashMap<String, Object>(INITIAL_OPTIONS);
 
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_USER_PASSWORD, ruleAction.getParameterValue(PARAM_USER_PASSWORD));
