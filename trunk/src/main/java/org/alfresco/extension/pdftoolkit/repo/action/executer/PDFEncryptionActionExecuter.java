@@ -21,6 +21,7 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -221,7 +222,7 @@ public class PDFEncryptionActionExecuter
             stamp = new PdfStamper(reader, new FileOutputStream(file));
 
             // encrypt PDF
-            stamp.setEncryption(userPassword.getBytes(), ownerPassword.getBytes(), permissions, encryptionType);
+            stamp.setEncryption(userPassword.getBytes(Charset.forName("UTF-8")), ownerPassword.getBytes(Charset.forName("UTF-8")), permissions, encryptionType);
             stamp.close();
 
             // write out to destination
