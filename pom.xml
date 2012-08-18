@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.alfresco.extension</groupId>
 	<artifactId>alfresco-pdf-toolkit</artifactId>
-	<version>0.98.27-SNAPSHOT</version>
+	<version>0.98.28-SNAPSHOT</version>
 	<packaging>amp</packaging>
 	<name>Alfresco PDF Toolkit</name>
 	<pluginRepositories>
@@ -134,5 +134,6 @@ Split At -- Split PDF into two PDFs at a specific page, generating two new PDFs.
 Insert PDF -- Insert PDF at a specific Page
 PDF Watermarking
 PDF Encryption
-Digital Signatures</description>
+Digital Signatures
+plaintext to PDF transformer using iText</description>
 </project>

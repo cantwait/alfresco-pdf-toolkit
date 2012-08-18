@@ -6,6 +6,9 @@
 	
 	<!-- Bean action definitions -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/alfresco-pdf-toolkit-context.xml" />
+	
+	<!--  iText transformer -->
+	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/service-context.xml" />
 
 	<!-- Load the UI customizations -->
 	<bean id="pdftoolkit_configBootstrap" class="org.alfresco.web.config.WebClientConfigBootstrap"
