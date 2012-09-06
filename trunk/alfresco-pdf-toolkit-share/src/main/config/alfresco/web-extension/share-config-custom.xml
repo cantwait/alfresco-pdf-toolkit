@@ -1,0 +1,71 @@
+<alfresco-config>
+	<!--<config evaluator="string-compare" condition="">
+	</config-->
+
+	<config evaluator="string-compare" condition="DocLibActions">
+		<actions>
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"
+				type="javascript"
+				label="actions.pdftoolkit.mergePDF">
+				
+			</action>
+			
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"
+				type="javascript"
+				label="actions.pdftoolkit.encryptPDF">
+				
+			</action>
+			
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"
+				type="javascript"
+				label="actions.pdftoolkit.insertPDF">
+				
+			</action>
+			
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"
+				type="javascript"
+				label="actions.pdftoolkit.splitPDF">
+				
+			</action>
+			
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.signPDF"
+				type="javascript"
+				label="actions.pdftoolkit.signPDF">
+				
+			</action>
+			
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"
+				type="javascript"
+				label="actions.pdftoolkit.watermarkPDF">
+				
+			</action>
+		</actions>
+		
+		<actionGroups>
+			<actionGroup id="document-browse">
+				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"/>
+				<action index="501" id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"/>
+				<action index="502" id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"/>
+				<action index="503" id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"/>
+				<action index="504" id="org.alfresco.extension.pdftoolkit.doclib.action.signPDF"/>
+				<action index="505" id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"/>
+			</actionGroup>
+			<actionGroup id="document-details">
+				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"/>
+				<action index="501" id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"/>
+				<action index="502" id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"/>
+				<action index="503" id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"/>
+				<action index="504" id="org.alfresco.extension.pdftoolkit.doclib.action.signPDF"/>
+				<action index="505" id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"/>
+			</actionGroup>
+		</actionGroups>
+	
+	</config>
+	
+	<config evaluator="string-compare" condition="DocLibCustom">
+		<dependencies>
+			<js src="components/pdftoolkit/pdftoolkit-doclib-actions.js" />
+		</dependencies>
+	</config>
+	
+</alfresco-config>
