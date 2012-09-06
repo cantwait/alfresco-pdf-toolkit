@@ -1,8 +1,7 @@
 <alfresco-config>
-	<!--<config evaluator="string-compare" condition="">
-	</config-->
 
-	<config evaluator="string-compare" condition="DocLibActions">
+	<!-- Share config elemnts for the doclib actions, coming soon! -->
+	<!--<config evaluator="string-compare" condition="DocLibActions">
 		<actions>
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"
 				type="javascript"
@@ -66,6 +65,6 @@
 		<dependencies>
 			<js src="components/pdftoolkit/pdftoolkit-doclib-actions.js" />
 		</dependencies>
-	</config>
+	</config>-->
 	
 </alfresco-config>
