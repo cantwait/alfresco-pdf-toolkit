@@ -24,4 +24,16 @@
       </property>
    </bean>
  
+    <bean id="transformer.iText.TiffToPdf"
+         class="org.alfresco.extension.pdftoolkit.transformer.ITextTransformerTIFFToPDF"
+         parent="baseContentTransformer" >
+      <property name="explicitTransformations">
+         <list>
+            <bean class="org.alfresco.repo.content.transform.ExplictTransformationDetails" >
+                <constructor-arg><value>image/tiff</value></constructor-arg>
+                <constructor-arg><value>application/pdf</value></constructor-arg>
+            </bean>
+         </list>
+      </property>
+   </bean>
 </beans>
