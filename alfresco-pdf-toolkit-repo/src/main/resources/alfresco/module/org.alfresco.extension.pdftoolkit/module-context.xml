@@ -14,7 +14,7 @@
 	<bean id="pdftoolkit-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<property name="models">
 			<list>
-				<value>alfresco/module/${artifactId}/model/pdftoolkitModel.xml</value>
+				<value>alfresco/module/org.alfresco.extension.pdftoolkit/model/pdftoolkitModel.xml</value>
 			</list>
 		</property>
 	</bean>
