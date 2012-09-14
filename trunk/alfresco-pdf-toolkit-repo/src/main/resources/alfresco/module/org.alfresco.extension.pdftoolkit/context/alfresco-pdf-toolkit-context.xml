@@ -134,5 +134,8 @@
                 <value>{http://www.alfresco.org/model/content/1.0}content</value>
             </list>
         </property>
+        <property name="useAspect">
+        	<value>true</value>
+        </property>
 	</bean>
 </beans>

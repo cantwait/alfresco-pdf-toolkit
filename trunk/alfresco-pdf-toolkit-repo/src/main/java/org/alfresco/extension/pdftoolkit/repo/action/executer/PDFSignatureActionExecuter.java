@@ -34,10 +34,13 @@ import java.util.List;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
+import org.alfresco.extension.pdftoolkit.model.PDFToolkitModel;
+import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
+import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentIOException;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
@@ -63,6 +66,11 @@ public class PDFSignatureActionExecuter
      */
     private static Log                    logger                   = LogFactory.getLog(PDFSignatureActionExecuter.class);
 
+    /**
+     * Flag for use of "pdft:signed" aspect, enable search by signature metadata
+     */
+    private boolean useAspect									   = true;
+    
     /**
      * Constraints
      */
@@ -116,7 +124,11 @@ public class PDFSignatureActionExecuter
         visibilityConstraint.putAll(mc.getAllowableValues());
     }
 
-
+    public void setUseAspect(boolean useAspect)
+    {
+    	this.useAspect = useAspect;
+    }
+    
     /**
      * Add parameter definitions
      */
@@ -187,34 +199,15 @@ public class PDFSignatureActionExecuter
         String visibility = (String)ruleAction.getParameterValue(PARAM_VISIBILITY);
         String keyPassword = (String)ruleAction.getParameterValue(PARAM_KEY_PASSWORD);
         String keyType = (String)ruleAction.getParameterValue(PARAM_KEY_TYPE);
-        int height = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_HEIGHT));
-        int width = Integer.parseInt((String)ruleAction.getParameterValue(PARAM_WIDTH));
+        int height = getInteger(ruleAction.getParameterValue(PARAM_HEIGHT));
+        int width = getInteger(ruleAction.getParameterValue(PARAM_WIDTH));
 
         // New keystore parameters
         String alias = (String)ruleAction.getParameterValue(PARAM_ALIAS);
         String storePassword = (String)ruleAction.getParameterValue(PARAM_STORE_PASSWORD);
-
-        // Ugly and verbose, but fault-tolerant
-        String locationXStr = (String)ruleAction.getParameterValue(PARAM_LOCATION_X);
-        String locationYStr = (String)ruleAction.getParameterValue(PARAM_LOCATION_Y);
-        int locationX = 0;
-        int locationY = 0;
-        try
-        {
-            locationX = locationXStr != null ? Integer.parseInt(locationXStr) : 0;
-        }
-        catch (NumberFormatException e)
-        {
-            locationX = 0;
-        }
-        try
-        {
-            locationY = locationXStr != null ? Integer.parseInt(locationYStr) : 0;
-        }
-        catch (NumberFormatException e)
-        {
-            locationY = 0;
-        }
+        
+        int locationX = getInteger(ruleAction.getParameterValue(PARAM_LOCATION_X));
+        int locationY = getInteger(ruleAction.getParameterValue(PARAM_LOCATION_Y));
 
         File tempDir = null;
         ContentWriter writer = null;
@@ -272,12 +265,26 @@ public class PDFSignatureActionExecuter
 
             stamp.close();
 
-            writer = getWriter(file.getName(), (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+            //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
+            FileInfo fileInfo = serviceRegistry.getFileFolderService()
+            		.create(((NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER)), file.getName(), ContentModel.TYPE_CONTENT);
+            writer = serviceRegistry.getContentService().getWriter(fileInfo.getNodeRef(), ContentModel.PROP_CONTENT, true);
+            
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
             writer.putContent(file);
 
             file.delete();
+            
+            //if useAspect is true, store some additional info about the signature in the props
+            if(useAspect)
+            {
+            	serviceRegistry.getNodeService().addAspect(fileInfo.getNodeRef(), PDFToolkitModel.ASPECT_SIGNED, new HashMap());
+            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_REASON, reason);
+            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_LOCATION, location);
+            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_SIGNATUREDATE, new java.util.Date());
+            }
+            
         }
         catch (IOException e)
         {
