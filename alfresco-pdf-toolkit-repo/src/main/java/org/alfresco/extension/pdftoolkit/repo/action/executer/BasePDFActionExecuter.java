@@ -19,6 +19,8 @@
 package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 
+import java.io.Serializable;
+
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.service.ServiceRegistry;
@@ -88,5 +90,21 @@ public abstract class BasePDFActionExecuter
         ContentWriter contentWriter = serviceRegistry.getContentService().getWriter(fileInfo.getNodeRef(), ContentModel.PROP_CONTENT, true);
 
         return contentWriter;
+    }
+    
+    protected int getInteger(Serializable val)
+    {
+    	if(val == null)
+    	{ 
+    		return 0;
+    	}
+    	try
+    	{
+    		return Integer.parseInt(val.toString());
+    	}
+    	catch(NumberFormatException nfe)
+    	{
+    		return 0;
+    	}
     }
 }
