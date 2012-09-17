@@ -45,7 +45,6 @@ import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.util.TempFileProvider;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -155,7 +154,7 @@ public class PDFWatermarkActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_TEXT, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_WATERMARK_TEXT)));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_FONT, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_WATERMARK_FONT), false, "pdfc-font"));
         paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_SIZE, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_WATERMARK_SIZE), false, "pdfc-fontsize"));
-
+        paramList.add(new ParameterDefinitionImpl(PARAM_WATERMARK_TYPE, DataTypeDefinition.TEXT, true, getParamDisplayLabel(PARAM_WATERMARK_TYPE), false, "pdfc-watermarktype"));
         super.addParameterDefinitions(paramList);
     }
 
@@ -335,11 +334,13 @@ public class PDFWatermarkActionExecuter
             }
 
             stamp.close();
-
-            String filename = file.getName();
-
+            
             // Get a writer and prep it for putting it back into the repo
-            writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+            //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
+            NodeRef destinationNode = createDestinationNode(file.getName(), 
+            		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+            writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
+            
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
 
@@ -473,10 +474,11 @@ public class PDFWatermarkActionExecuter
 
             stamp.close();
 
-            String filename = file.getName();
-
             // Get a writer and prep it for putting it back into the repo
-            writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+            //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
+            NodeRef destinationNode = createDestinationNode(file.getName(), 
+            		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+            writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
 

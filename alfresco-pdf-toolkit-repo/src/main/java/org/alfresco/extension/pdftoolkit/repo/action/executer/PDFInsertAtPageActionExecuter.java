@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
+import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
@@ -35,10 +36,9 @@ import org.alfresco.service.cmr.model.FileExistsException;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.alfresco.util.TempFileProvider;
-
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFMergerUtility;
@@ -81,6 +81,7 @@ public class PDFInsertAtPageActionExecuter
         paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_FOLDER, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_DESTINATION_FOLDER)));
         paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_AT_PAGE, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_INSERT_AT_PAGE)));
         paramList.add(new ParameterDefinitionImpl(PARAM_INSERT_CONTENT, DataTypeDefinition.NODE_REF, true, getParamDisplayLabel(PARAM_INSERT_CONTENT)));
+        paramList.add(new ParameterDefinitionImpl(PARAM_DESTINATION_NAME, DataTypeDefinition.TEXT, false, getParamDisplayLabel(PARAM_DESTINATION_NAME)));
     }
 
 
@@ -129,7 +130,8 @@ public class PDFInsertAtPageActionExecuter
         options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));
         options.put(PARAM_DESTINATION_FOLDER, ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
         options.put(PARAM_INSERT_AT_PAGE, ruleAction.getParameterValue(PARAM_INSERT_AT_PAGE));
-
+        options.put(PARAM_DESTINATION_NAME, ruleAction.getParameterValue(PARAM_DESTINATION_NAME));
+        
         try
         {
             this.action(ruleAction, actionedUponNodeRef, contentReader, insertContentReader, options);
@@ -214,12 +216,13 @@ public class PDFInsertAtPageActionExecuter
                 {
                     if (file.isFile())
                     {
-                        // What is the file name?
-                        String filename = file.getName();
 
                         // Get a writer and prep it for putting it back into the
                         // repo
-                        writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+                        NodeRef destinationNode = createDestinationNode(file.getName(), 
+                        		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+                        writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
+                        
                         writer.setEncoding(reader.getEncoding()); // original
                         // encoding
                         writer.setMimetype(FILE_MIMETYPE);
