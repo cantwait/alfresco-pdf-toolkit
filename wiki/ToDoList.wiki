@@ -1,0 +1,26 @@
+This is my (Nathan's) current to-do list for this project.  
+
+1.  Get folder/file selectors fixed in Share - DONE
+2.  Create document transformer for TIFF to PDF - DONE
+3.  Get lunch, I'm hungry.
+4.  Finish PDF Toolkit JavaScript root object - IN PROGRESS
+5.  Create PDF document actions, for use in share doc details page or doc lists.  Includes icon set, forms, etc.  IN PROGRESS
+6.  Write full install / use guide for toolkit 
+7.  Fix signature positioning in digital signatures module - DONE
+8.  Finish delete page action
+9.  Add 'encrypted' aspect to content model - DONE
+10.  Add custom evaluator to detect signed and encrypted aspects
+11.  Show content indicator when a doc is encrypted or signed
+12.  Add 'signer' property to signed aspect - DONE
+13.  Fix actions so content type of original node is preserved after action is run. - DONE
+14.  Add a download as PDF doclib action
+
+
+Recent improvements:
+
+New content model adds an aspect used to capture signature metadata so it can be searched
+Share customizations are in place, existing actions all work through Share.
+
+Copy vs. New as a property option in action executer
+In-place option - allows the transform to do this in place vs a copy
+if versioning is not turned on, create new version on in-place action
