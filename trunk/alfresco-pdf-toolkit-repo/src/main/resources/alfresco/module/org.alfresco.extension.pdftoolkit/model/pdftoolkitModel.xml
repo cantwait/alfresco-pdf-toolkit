@@ -19,9 +19,14 @@
     </namespaces>
 
     <aspects>
+    	<!-- applied when a PDF document is digitally signed -->
         <aspect name="pdft:signed">
             <title>Signed</title>
             <properties>
+            	<property name="pdft:signedby">
+            		<title>Signed By</title>
+            		<type>d:text</type>
+            	</property>
                 <property name="pdft:signaturedate">
                     <title>Signature Date</title>
                     <type>d:datetime</type>
@@ -33,6 +38,21 @@
                 <property name="pdft:reason">
                     <title>Reason</title>
                     <type>d:text</type>
+                </property>
+            </properties>
+        </aspect>
+        
+        <!-- applied when a PDF document is encrypted -->
+        <aspect name="pdft:encrypted">
+            <title>Encrypted</title>
+            <properties>
+            	<property name="pdft:encryptedby">
+            		<title>Encrypted By</title>
+            		<type>d:text</type>
+            	</property>
+                <property name="pdft:encryptiondate">
+                    <title>Encryption Date</title>
+                    <type>d:datetime</type>
                 </property>
             </properties>
         </aspect>

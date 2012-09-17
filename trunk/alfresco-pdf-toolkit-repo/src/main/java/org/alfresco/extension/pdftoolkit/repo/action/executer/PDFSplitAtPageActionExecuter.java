@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
+import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
@@ -277,12 +278,12 @@ public class PDFSplitAtPageActionExecuter
                 {
                     if (file.isFile())
                     {
-                        // What is the file name?
-                        String filename = file.getName();
-
                         // Get a writer and prep it for putting it back into the
                         // repo
-                        writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+                        NodeRef destinationNode = createDestinationNode(file.getName(), 
+                        		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+                        writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
+
                         writer.setEncoding(reader.getEncoding()); // original
                                                                   // encoding
                         writer.setMimetype(FILE_MIMETYPE);

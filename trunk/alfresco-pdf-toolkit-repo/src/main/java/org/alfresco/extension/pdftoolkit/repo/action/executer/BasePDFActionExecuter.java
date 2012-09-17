@@ -20,14 +20,17 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentReader;
-import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.QName;
 
 
@@ -81,15 +84,31 @@ public abstract class BasePDFActionExecuter
      * @param filename
      * @return
      */
-    protected ContentWriter getWriter(String filename, NodeRef destinationParent)
+    protected NodeRef createDestinationNode(String filename, NodeRef destinationParent, NodeRef target)
     {
 
-        FileInfo fileInfo = serviceRegistry.getFileFolderService().create(destinationParent, filename, ContentModel.TYPE_CONTENT);
-
-        // get the writer and set it up
-        ContentWriter contentWriter = serviceRegistry.getContentService().getWriter(fileInfo.getNodeRef(), ContentModel.PROP_CONTENT, true);
-
-        return contentWriter;
+    	NodeRef destinationNode;
+    	NodeService nodeService = serviceRegistry.getNodeService();
+    	
+    	//create a file in the right location, with the type of the original target node
+        FileInfo fileInfo = serviceRegistry.getFileFolderService().create(destinationParent, filename, nodeService.getType(target));
+        destinationNode = fileInfo.getNodeRef();
+        
+        /* 
+        More thought needs to be given to carrying over aspects and properties.  Some of these do not need to carry over,
+        such as the node dbid, the node uuid, the file name, etc.
+        //add any aspects present on the original node to the new node
+        Set<QName> aspects = nodeService.getAspects(target);
+        for(QName aspect : aspects)
+        {
+        	nodeService.addAspect(destinationNode, aspect, new HashMap<QName, Serializable>());
+        }
+        
+        //set the properties of the new node from the original target, after removing the name
+        Map<QName, Serializable> props = nodeService.getProperties(target);
+        nodeService.setProperties(destinationNode, nodeService.getProperties(target));
+        */
+        return destinationNode;
     }
     
     protected int getInteger(Serializable val)

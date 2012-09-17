@@ -5,6 +5,7 @@
 		<aspects>
 		    <visible>
 				<aspect name="pdft:signed" />
+				<aspect name="pdft:encrypted" />
 			</visible>
 			<addable>
 			</addable>
@@ -21,24 +22,42 @@
 					<show id="pdft:signaturedate" />
 					<show id="pdft:reason" /> 
 					<show id="pdft:location" /> 
+					<show id="pdft:signer" />
 				</field-visibility> 
 				<appearance>
 					<field id="pdft:signaturedate" label-id="prop.pdft_signaturedate" />
 					<field id="pdft:reason" label-id="prop.pdft_reason" /> 
 					<field id="pdft:location" label-id="prop.pdft_location" />
+					<field id="pdft:signer" label-id="prop.pdft_signer" />
 				</appearance>
 			</form>
-			
-			
 		</forms>
 	</config>
 
+	<!--  Configure forms for pdft:encrpyted aspect in Share -->
+	<config evaluator="aspect" condition="pdft:encrypted"> 
+		<forms>
+       		<form>
+	            <field-visibility>
+					<show id="pdft:encryptiondate" />
+					<show id="pdft:encryptedby" /> 
+				</field-visibility> 
+				<appearance>
+					<field id="pdft:encryptiondate" label-id="prop.pdft_encryptiondate" />
+					<field id="pdft:encryptedby" label-id="prop.pdft_encryptedby" /> 
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
 	<!-- Configure advanced search for pdft:signed aspect in Share -->
 	<config evaluator="string-compare" condition="AdvancedSearch">
 	    <advanced-search>
 	        <forms>
 	            <form labelId="pdftoolkit.aspect.signed.search.type" 
 	            	descriptionId="pdftoolkit.aspect.signed.search.description" id="signedpdfsearch">cm:content</form>
+	            <form labelId="pdftoolkit.aspect.encrypted.search.type" 
+	            	descriptionId="pdftoolkit.aspect.encrypted.search.description" id="encryptedpdfsearch">cm:content</form>
 	        </forms>
 	    </advanced-search>
 	</config>
@@ -46,6 +65,7 @@
 	<!-- Advanced search form for items with pdft:signed aspect -->
 	<config evaluator="model-type" condition="cm:content">
     	<forms>
+    		<!-- search for signed PDF documents -->
     		<form id="signedpdfsearch">
 				<field-visibility>
 					<show id="cm:name" force="true" />
@@ -56,6 +76,7 @@
 					<show id="pdft:signaturedate" force="true" />
 					<show id="pdft:reason" force="true" />
 					<show id="pdft:location" force="true" />
+					<show id="pdft:signer" force="true" />
 	            </field-visibility>
 	            
 	            <appearance>
@@ -76,54 +97,81 @@
 	                <field id="pdft:location" label-id="prop.pdft_location">
 	                    <control template="/org/alfresco/components/form/controls/textfield.ftl" />
 	                </field>
+	                <field id="pdft:signer" label-id="prop.pdft_signer">
+	                    <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+	                </field>
+				</appearance>
+	        </form>
+	        
+	        <!-- search for for encrypted PDF documents -->
+    		<form id="encryptedpdfsearch">
+				<field-visibility>
+					<show id="cm:name" force="true" />
+					<show id="cm:title" force="true" /> 
+					<show id="cm:description" force="true" /> 
+					<show id="cm:modified" force="true" />
+					<show id="cm:modifier" force="true" />
+					<show id="pdft:encryptiondate" force="true" />
+					<show id="pdft:encryptedby" force="true" />
+	            </field-visibility>
+	            
+	            <appearance>
+	                <field id="cm:modifier">
+	                    <control>
+	                        <control-param name="forceEditable">true</control-param>
+	                    </control>
+	                </field>
+	                <field id="cm:modified">
+	                    <control template="/org/alfresco/components/form/controls/daterange.ftl" />
+					</field>
+	                <field id="pdft:encryptiondate" label-id="prop.pdft_encryptiondate">
+	                    <control template="/org/alfresco/components/form/controls/daterange.ftl" />
+	                </field>
+	                <field id="pdft:encryptedby" label-id="prop.pdft_encryptedby">
+	                    <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+	                </field>
 				</appearance>
 	        </form>
     	</forms>
     </config>
     
-	<!-- Share config elemnts for the doclib actions, coming soon! -->
-	<!--<config evaluator="string-compare" condition="DocLibActions">
+	<!-- Share config elements for the doclib actions, coming soon! -->
+	<!-- <config evaluator="string-compare" condition="DocLibActions">
 		<actions>
-			<action id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"
+			<action id="org.alfresco.extension.pdftoolkit.doclib.action.appendPDF"
 				type="javascript"
 				label="actions.pdftoolkit.mergePDF">
-				
 			</action>
 			
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"
 				type="javascript"
 				label="actions.pdftoolkit.encryptPDF">
-				
 			</action>
 			
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"
 				type="javascript"
 				label="actions.pdftoolkit.insertPDF">
-				
 			</action>
 			
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"
 				type="javascript"
 				label="actions.pdftoolkit.splitPDF">
-				
 			</action>
 			
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.signPDF"
 				type="javascript"
 				label="actions.pdftoolkit.signPDF">
-				
 			</action>
 			
 			<action id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"
 				type="javascript"
 				label="actions.pdftoolkit.watermarkPDF">
-				
 			</action>
 		</actions>
 		
 		<actionGroups>
 			<actionGroup id="document-browse">
-				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"/>
+				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.appendPDF"/>
 				<action index="501" id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"/>
 				<action index="502" id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"/>
 				<action index="503" id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"/>
@@ -131,7 +179,7 @@
 				<action index="505" id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"/>
 			</actionGroup>
 			<actionGroup id="document-details">
-				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.mergePDF"/>
+				<action index="500" id="org.alfresco.extension.pdftoolkit.doclib.action.appendPDF"/>
 				<action index="501" id="org.alfresco.extension.pdftoolkit.doclib.action.encryptPDF"/>
 				<action index="502" id="org.alfresco.extension.pdftoolkit.doclib.action.insertPDF"/>
 				<action index="503" id="org.alfresco.extension.pdftoolkit.doclib.action.splitPDF"/>
@@ -139,13 +187,12 @@
 				<action index="505" id="org.alfresco.extension.pdftoolkit.doclib.action.watermarkPDF"/>
 			</actionGroup>
 		</actionGroups>
-	
-	</config>
+	</config>-->
 	
 	<config evaluator="string-compare" condition="DocLibCustom">
 		<dependencies>
 			<js src="components/pdftoolkit/pdftoolkit-doclib-actions.js" />
 		</dependencies>
-	</config>-->
+	</config>
 	
 </alfresco-config>

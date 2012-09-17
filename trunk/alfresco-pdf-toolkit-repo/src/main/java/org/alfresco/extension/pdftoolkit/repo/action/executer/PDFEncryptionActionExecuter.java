@@ -22,6 +22,7 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
+import org.alfresco.extension.pdftoolkit.model.PDFToolkitModel;
+import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
@@ -36,6 +39,7 @@ import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.namespace.QName;
 import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,6 +59,11 @@ public class PDFEncryptionActionExecuter
      */
     private static Log                    logger                              = LogFactory.getLog(PDFEncryptionActionExecuter.class);
 
+    /**
+     * Flag for use of "pdft:encrypted" aspect, enable search by encryption metadata
+     */
+    private boolean useAspect									   			  = true;
+    
     /**
      * Constraints
      */
@@ -94,6 +103,10 @@ public class PDFEncryptionActionExecuter
         encryptionLevelConstraint.putAll(mc.getAllowableValues());
     }
 
+    public void setUseAspect(boolean useAspect)
+    {
+    	this.useAspect = useAspect;
+    }
 
     /**
      * Add parameter definitions
@@ -228,12 +241,23 @@ public class PDFEncryptionActionExecuter
             stamp.close();
 
             // write out to destination
-            String filename = file.getName();
-            writer = getWriter(filename, (NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER));
+            NodeRef destinationNode = createDestinationNode(file.getName(), 
+            		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+            writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
+
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
             writer.putContent(file);
             file.delete();
+            
+            //if useAspect is true, store some additional info about the signature in the props
+            if(useAspect)
+            {
+            	serviceRegistry.getNodeService().addAspect(destinationNode, PDFToolkitModel.ASPECT_ENCRYPTED, new HashMap<QName, Serializable>());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTIONDATE, new java.util.Date());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTEDBY, ruleAction.getCreator());
+            }
+            
         }
         catch (IOException e)
         {

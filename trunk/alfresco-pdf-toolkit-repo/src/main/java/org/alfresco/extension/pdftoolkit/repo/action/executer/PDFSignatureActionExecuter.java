@@ -22,6 +22,7 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -40,11 +41,11 @@ import org.alfresco.repo.action.ParameterDefinitionImpl;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
-import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ContentIOException;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.namespace.QName;
 import org.alfresco.util.TempFileProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -195,6 +196,7 @@ public class PDFSignatureActionExecuter
 
         NodeRef privateKey = (NodeRef)ruleAction.getParameterValue(PARAM_PRIVATE_KEY);
         String location = (String)ruleAction.getParameterValue(PARAM_LOCATION);
+        String position = (String)ruleAction.getParameterValue(PARAM_POSITION);
         String reason = (String)ruleAction.getParameterValue(PARAM_REASON);
         String visibility = (String)ruleAction.getParameterValue(PARAM_VISIBILITY);
         String keyPassword = (String)ruleAction.getParameterValue(PARAM_KEY_PASSWORD);
@@ -260,15 +262,25 @@ public class PDFSignatureActionExecuter
 
             if (visibility.equalsIgnoreCase(PDFSignatureActionExecuter.VISIBILITY_VISIBLE))
             {
-                sap.setVisibleSignature(new Rectangle(locationX + width, locationY - height, locationX, locationY), 1, null);
+            	//create the signature rectangle using either the provided position or
+            	//the exact coordinates, if provided
+            	if(position != null && !position.trim().equalsIgnoreCase(""))
+            	{
+            		Rectangle pageRect = reader.getPageSizeWithRotation(1);
+            		sap.setVisibleSignature(positionSignature(position, pageRect, width, height), 1, null);
+            	}
+            	else
+            	{
+            		sap.setVisibleSignature(new Rectangle(locationX, locationY, locationX + width, locationY - height), 1, null);
+            	}
             }
 
             stamp.close();
 
             //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
-            FileInfo fileInfo = serviceRegistry.getFileFolderService()
-            		.create(((NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER)), file.getName(), ContentModel.TYPE_CONTENT);
-            writer = serviceRegistry.getContentService().getWriter(fileInfo.getNodeRef(), ContentModel.PROP_CONTENT, true);
+            NodeRef destinationNode = createDestinationNode(file.getName(), 
+            		(NodeRef)ruleAction.getParameterValue(PARAM_DESTINATION_FOLDER), actionedUponNodeRef);
+            writer = serviceRegistry.getContentService().getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
             
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
@@ -279,10 +291,11 @@ public class PDFSignatureActionExecuter
             //if useAspect is true, store some additional info about the signature in the props
             if(useAspect)
             {
-            	serviceRegistry.getNodeService().addAspect(fileInfo.getNodeRef(), PDFToolkitModel.ASPECT_SIGNED, new HashMap());
-            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_REASON, reason);
-            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_LOCATION, location);
-            	serviceRegistry.getNodeService().setProperty(fileInfo.getNodeRef(), PDFToolkitModel.PROP_SIGNATUREDATE, new java.util.Date());
+            	serviceRegistry.getNodeService().addAspect(destinationNode, PDFToolkitModel.ASPECT_SIGNED, new HashMap<QName, Serializable>());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_REASON, reason);
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_LOCATION, location);
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_SIGNATUREDATE, new java.util.Date());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_SIGNER, ruleAction.getCreator());
             }
             
         }
@@ -328,5 +341,46 @@ public class PDFSignatureActionExecuter
                 }
             }
         }
+    }
+
+    /**
+     * Create a rectangle for the visible signature using the selected position and signature size
+     * 
+     * @param position
+     * @param width
+     * @param height
+     * @return
+     */
+    private Rectangle positionSignature(String position, Rectangle pageRect, int width, int height)
+    {
+
+    	float pageHeight = pageRect.getHeight();
+    	float pageWidth = pageRect.getWidth();
+    	
+    	Rectangle r = null;
+    	
+    	if (position.equals(POSITION_BOTTOMLEFT))
+    	{
+    		r = new Rectangle(0, height, width, 0);
+    	}
+    	else if (position.equals(POSITION_BOTTOMRIGHT))
+    	{
+    		r = new Rectangle(pageWidth - width, pageHeight, pageWidth, pageHeight - height);
+    	}
+    	else if (position.equals(POSITION_TOPLEFT))
+    	{
+    		r = new Rectangle(0, pageHeight, width, pageHeight - height);
+    	}
+    	else if (position.equals(POSITION_TOPRIGHT))
+    	{
+    		r = new Rectangle(pageWidth - width, height, pageWidth, 0);
+    	}
+    	else if (position.equals(POSITION_CENTER))
+    	{
+    		r = new Rectangle((pageWidth / 2) - (width / 2), (pageHeight / 2) - (height / 2),
+    				(pageWidth / 2) + (width / 2), (pageHeight / 2) + (height / 2));
+    	}
+
+    	return r;
     }
 }
