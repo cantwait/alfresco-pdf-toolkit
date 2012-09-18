@@ -22,13 +22,13 @@
 					<show id="pdft:signaturedate" />
 					<show id="pdft:reason" /> 
 					<show id="pdft:location" /> 
-					<show id="pdft:signer" />
+					<show id="pdft:signedby" />
 				</field-visibility> 
 				<appearance>
 					<field id="pdft:signaturedate" label-id="prop.pdft_signaturedate" />
 					<field id="pdft:reason" label-id="prop.pdft_reason" /> 
 					<field id="pdft:location" label-id="prop.pdft_location" />
-					<field id="pdft:signer" label-id="prop.pdft_signer" />
+					<field id="pdft:signedby" label-id="prop.pdft_signedby" />
 				</appearance>
 			</form>
 		</forms>

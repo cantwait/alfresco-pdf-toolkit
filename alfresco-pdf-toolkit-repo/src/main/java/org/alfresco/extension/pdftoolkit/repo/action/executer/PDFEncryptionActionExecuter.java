@@ -33,6 +33,7 @@ import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.extension.pdftoolkit.model.PDFToolkitModel;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
@@ -255,7 +256,7 @@ public class PDFEncryptionActionExecuter
             {
             	serviceRegistry.getNodeService().addAspect(destinationNode, PDFToolkitModel.ASPECT_ENCRYPTED, new HashMap<QName, Serializable>());
             	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTIONDATE, new java.util.Date());
-            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTEDBY, ruleAction.getCreator());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTEDBY, AuthenticationUtil.getRunAsUser());
             }
             
         }

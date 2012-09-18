@@ -12,7 +12,7 @@ public interface PDFToolkitModel
 	static final QName PROP_SIGNATUREDATE = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "signaturedate");
 	static final QName PROP_REASON = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "reason");
 	static final QName PROP_LOCATION = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "location");
-	static final QName PROP_SIGNER = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "signer");
+	static final QName PROP_SIGNEDBY = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "signedby");
 	
 	//encrypted aspect and properties
 	static final QName ASPECT_ENCRYPTED = QName.createQName(PDFTOOLKIT_MODEL_1_0_URI, "encrypted");

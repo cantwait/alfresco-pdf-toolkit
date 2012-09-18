@@ -38,6 +38,7 @@ import org.alfresco.extension.pdftoolkit.constraints.MapConstraint;
 import org.alfresco.extension.pdftoolkit.model.PDFToolkitModel;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.ParameterDefinitionImpl;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.service.cmr.action.Action;
 import org.alfresco.service.cmr.action.ParameterDefinition;
 import org.alfresco.service.cmr.dictionary.DataTypeDefinition;
@@ -295,7 +296,7 @@ public class PDFSignatureActionExecuter
             	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_REASON, reason);
             	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_LOCATION, location);
             	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_SIGNATUREDATE, new java.util.Date());
-            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_SIGNER, ruleAction.getCreator());
+            	serviceRegistry.getNodeService().setProperty(destinationNode, PDFToolkitModel.PROP_SIGNEDBY, AuthenticationUtil.getRunAsUser());
             }
             
         }
