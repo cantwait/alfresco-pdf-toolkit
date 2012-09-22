@@ -288,6 +288,32 @@ if(typeof PDFToolkit == "undefined" || !PDFToolkit)
 
 					return configDef;
 				}
+			},
+			
+			PDFDeletePage:
+			{
+				text: function(configDef, ruleConfig, configEl)
+				{
+					// Display as path
+					this._getParamDef(configDef, "destination-folder")._type = "path";
+					return configDef;
+				},
+				edit: function(configDef, ruleConfig, configEl)
+				{
+					// Hide parameters that have another renderer defined
+					this._getParamDef(configDef, "destination-folder")._type = "hidden";
+				
+					// add custom renderers for hidden fields
+					configDef.parameterDefinitions.splice(0,0,
+					{
+						type: "pdftoolkit:destination-dialog-button",
+						displayLabel: this.msg("pdftoolkit.destination-folder"),
+						_buttonLabel: this.msg("pdftoolkit.select-folder"),
+						_destinationParam: "destination-folder"
+					});
+
+					return configDef;
+				}
 			}
 		},
 
