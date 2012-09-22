@@ -141,4 +141,18 @@
         	<value>true</value>
         </property>
 	</bean>
+	
+	<!-- pdfdelete -->
+	<bean id="pdf-delete-page"
+		class="org.alfresco.extension.pdftoolkit.repo.action.executer.PDFDeletePageActionExecuter"
+		parent="action-executer" depends-on="pdftoolkit-messages">
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry" />
+		</property>
+		<property name="applicableTypes">
+            <list>
+                <value>{http://www.alfresco.org/model/content/1.0}content</value>
+            </list>
+        </property>
+	</bean>
 </beans>

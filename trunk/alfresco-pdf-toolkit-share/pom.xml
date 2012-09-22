@@ -31,7 +31,7 @@
 		below as the AMP module version. Instead we use the
 		buildnumber-maven-plugin. This requires a scm connection.
 	-->
-	<version>0.98.28-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<description>Alfresco PDF Toolkit Share Extensions</description>
 	<repositories>
 		<repository>

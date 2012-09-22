@@ -68,6 +68,7 @@
       <group>
 	      <action name="pdf-append"/>
 	      <action name="pdf-split-at-page"/>
+	      <action name="pdf-delete-page"/>
 	      <action name="pdf-signature"/>
 	      <action name="pdf-split"/>
 	      <action name="pdf-insert-at-page"/>
@@ -94,6 +95,7 @@
       <action name="import">Import</action>
       <action name="pdf-append">PDFAppend</action>
       <action name="pdf-split-at-page">PDFSplitAtPage</action>
+      <actoin name="pdf-delete-page">PDFDeletePage</actoin>
       <action name="pdf-signature">PDFSignature</action>
       <action name="pdf-split">PDFSplit</action>
       <action name="pdf-insert-at-page">PDFInsertAtPage</action>

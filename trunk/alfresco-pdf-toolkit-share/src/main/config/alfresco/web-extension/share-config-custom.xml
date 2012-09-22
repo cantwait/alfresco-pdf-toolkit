@@ -242,26 +242,44 @@
         		
         		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 			</action>
+
+			<action id="pdf-delete-page"
+				type="javascript"
+				label="actions.pdftoolkit.deletePDFpages">
+				
+        		<param name="function">onActionFormDialog</param>
+        		<param name="itemKind">action</param>
+        		<param name="itemId">pdf-delete-page</param>
+        		<param name="mode">create</param>
+        		<param name="destination">{node.nodeRef}</param>
+        		<param name="successMessage">message.pdf-delete-page.success</param>
+        		<param name="failureMessage">message.pdf-delete-page.failure</param>
+        		
+        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
+			</action>
+			
 		</actions>
 		
 		<actionGroups>
 			<actionGroup id="document-browse">
 				<action index="500" id="pdf-append"/>
-				<action index="501" id="pdf-encryption"/>
+				<action index="501" id="pdf-delete-page"/>
 				<action index="502" id="pdf-insert-at-page"/>
 				<action index="503" id="pdf-split"/>
 				<action index="504" id="pdf-split-at-page"/>
 				<action index="505" id="pdf-signature"/>
 				<action index="506" id="pdf-watermark"/>
+				<action index="507" id="pdf-encryption"/>
 			</actionGroup>
 			<actionGroup id="document-details">
 				<action index="500" id="pdf-append"/>
-				<action index="501" id="pdf-encryption"/>
+				<action index="501" id="pdf-delete-page"/>
 				<action index="502" id="pdf-insert-at-page"/>
 				<action index="503" id="pdf-split"/>
 				<action index="504" id="pdf-split-at-page"/>
 				<action index="505" id="pdf-signature"/>
 				<action index="506" id="pdf-watermark"/>
+				<action index="507" id="pdf-encryption"/>
 			</actionGroup>
 		</actionGroups>
 	</config>
