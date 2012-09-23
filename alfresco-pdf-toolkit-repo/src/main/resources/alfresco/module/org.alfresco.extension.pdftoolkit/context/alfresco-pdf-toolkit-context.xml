@@ -114,7 +114,7 @@
         <property name="useAspect">
         	<value>true</value>
         </property>
-        <property name="createNew" value="false"/>
+        <property name="createNew" value="true"/>
 	</bean>
 	
 	<!-- pdfsignature -->
