@@ -20,14 +20,13 @@ package org.alfresco.extension.pdftoolkit.repo.action.executer;
 
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
+import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.action.executer.ActionExecuterAbstractBase;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.model.FileInfo;
+import org.alfresco.service.cmr.model.FileNotFoundException;
 import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
@@ -37,7 +36,8 @@ import org.alfresco.service.namespace.QName;
 public abstract class BasePDFActionExecuter
     extends ActionExecuterAbstractBase
 {
-
+	private boolean createNew = true;
+	
     protected static final String FILE_EXTENSION = ".pdf";
     protected static final String FILE_MIMETYPE  = "application/pdf";
     protected ServiceRegistry     serviceRegistry;
@@ -57,7 +57,17 @@ public abstract class BasePDFActionExecuter
         this.serviceRegistry = serviceRegistry;
     }
 
-
+    /**
+     * Sets whether a PDF action creates a new empty node or copies the source node, preserving
+     * the content type, applied aspects and properties
+     * 
+     * @param createNew
+     */
+    public void setCreateNew(boolean createNew)
+    {
+    	this.createNew = createNew;
+    }
+    
     /**
      * @param actionedUponNodeRef
      * @return
@@ -78,7 +88,6 @@ public abstract class BasePDFActionExecuter
         return contentReader;
     }
 
-
     /**
      * @param ruleAction
      * @param filename
@@ -88,26 +97,26 @@ public abstract class BasePDFActionExecuter
     {
 
     	NodeRef destinationNode;
-    	NodeService nodeService = serviceRegistry.getNodeService();
     	
-    	//create a file in the right location, with the type of the original target node
-        FileInfo fileInfo = serviceRegistry.getFileFolderService().create(destinationParent, filename, nodeService.getType(target));
-        destinationNode = fileInfo.getNodeRef();
-        
-        /* 
-        More thought needs to be given to carrying over aspects and properties.  Some of these do not need to carry over,
-        such as the node dbid, the node uuid, the file name, etc.
-        //add any aspects present on the original node to the new node
-        Set<QName> aspects = nodeService.getAspects(target);
-        for(QName aspect : aspects)
-        {
-        	nodeService.addAspect(destinationNode, aspect, new HashMap<QName, Serializable>());
-        }
-        
-        //set the properties of the new node from the original target, after removing the name
-        Map<QName, Serializable> props = nodeService.getProperties(target);
-        nodeService.setProperties(destinationNode, nodeService.getProperties(target));
-        */
+    	if(createNew)
+    	{
+	    	//create a file in the right location, with the type of the original target node
+	        FileInfo fileInfo = serviceRegistry.getFileFolderService().create(destinationParent, filename, ContentModel.TYPE_CONTENT);
+	        destinationNode = fileInfo.getNodeRef();
+    	}
+    	else
+    	{
+    		try 
+    		{
+    		FileInfo fileInfo = serviceRegistry.getFileFolderService().copy(target, destinationParent, filename);
+    		destinationNode = fileInfo.getNodeRef();
+    		}
+    		catch(FileNotFoundException fnf)
+    		{
+    			throw new AlfrescoRuntimeException(fnf.getMessage(), fnf);
+    		}
+    	}
+
         return destinationNode;
     }
     

@@ -88,15 +88,14 @@ public class PDFDeletePageActionExecuter extends BasePDFActionExecuter {
 	 */
 	private void doDelete(Action action, NodeRef actionedUponNodeRef, ContentReader reader)
 	{
-        PDDocument pdf = null;
-        InputStream is = null;
+		InputStream is = null;
         File tempDir = null;
         ContentWriter writer = null;
+        PdfReader pdfReader = null;
 
         try
         {
             is = reader.getContentInputStream();
-            pdf = PDDocument.load(is);
 
             File alfTempDir = TempFileProvider.getTempDir();
             tempDir = new File(alfTempDir.getPath() + File.separatorChar + actionedUponNodeRef.getId());
@@ -105,7 +104,7 @@ public class PDFDeletePageActionExecuter extends BasePDFActionExecuter {
             String fileName = action.getParameterValue(PARAM_DESTINATION_NAME).toString();
             File file = new File(tempDir, serviceRegistry.getFileFolderService().getFileInfo(actionedUponNodeRef).getName());
 
-            PdfReader pdfReader = new PdfReader(is);
+            pdfReader = new PdfReader(is);
             Document doc = new Document(pdfReader.getPageSizeWithRotation(1));
             PdfCopy copy = new PdfCopy(doc, new FileOutputStream(file));
             doc.open();
@@ -148,16 +147,9 @@ public class PDFDeletePageActionExecuter extends BasePDFActionExecuter {
         }
         finally
         {
-            if (pdf != null)
+            if (pdfReader != null)
             {
-                try
-                {
-                    pdf.close();
-                }
-                catch (IOException e)
-                {
-                    throw new AlfrescoRuntimeException(e.getMessage(), e);
-                }
+            	pdfReader.close();
             }
             if (is != null)
             {
