@@ -9,14 +9,17 @@ This is my (Nathan's) current to-do list for this project.
   #  Fix signature positioning in digital signatures module - DONE
   #  Finish delete page action
   #  Add 'encrypted' aspect to content model - DONE
-  #  Add custom evaluator to detect signed and encrypted aspects
-  #  Show content indicator when a doc is encrypted or signed
+  #  Add custom evaluator to detect signed and encrypted aspects - not required, OOTB evaluator works.
+  #  Show content indicator when a doc is encrypted or signed - DONE
   #  Add 'signer' property to signed aspect - DONE
   #  Fix actions so content type of original node is preserved after action is run. - DONE
   #  Add a download as PDF doclib action
+  #  Copy vs. New as a property option in action executer - DONE
 
 TBD:
 
-Copy vs. New as a property option in action executer
+
 In-place option - allows the transform to do this in place vs a copy
 if versioning is not turned on, create new version on in-place action
+Implement new form template to hide unused options, as described here:
+http://blogs.alfresco.com/wp/rfernandes/2012/02/06/form-control-dependency-in-alfresco-share/
