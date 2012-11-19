@@ -10,6 +10,9 @@
 	<!--  iText transformers -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/service-context.xml" />
 
+	<!-- form overrides -->
+	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/custom-form-services-context.xml" />
+	
 	<!-- load the custom content model -->
 	<bean id="pdftoolkit-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<property name="models">

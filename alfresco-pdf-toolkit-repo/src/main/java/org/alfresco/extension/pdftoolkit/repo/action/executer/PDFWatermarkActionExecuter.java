@@ -180,12 +180,13 @@ public class PDFWatermarkActionExecuter
             // Add the watermark to the image
             doWatermark(ruleAction, actionedUponNodeRef, actionedUponContentReader);
 
+        }
+        else
+        {
+            if (logger.isDebugEnabled())
             {
-                if (logger.isDebugEnabled())
-                {
-                    logger.debug("Can't execute rule: \n" + "   node: " + actionedUponNodeRef + "\n" + "   reader: "
-                                 + actionedUponContentReader + "\n" + "   action: " + this);
-                }
+                logger.debug("Can't execute rule: \n" + "   node: " + actionedUponNodeRef + "\n" + "   reader: "
+                             + actionedUponContentReader + "\n" + "   action: " + this);
             }
         }
     }
@@ -609,6 +610,9 @@ public class PDFWatermarkActionExecuter
         model.put("space", new TemplateNode(parent, serviceRegistry, null));
         model.put("date", new Date());
 
+        //also add all of the node properties to the model
+        model.put("properties", serviceRegistry.getNodeService().getProperties(ref));
+        
         return model;
     }
 }
