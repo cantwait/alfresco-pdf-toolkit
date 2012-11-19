@@ -109,6 +109,9 @@ public class PDFSplitActionExecuter
                                  + contentReader + "\n" + "   action: " + this);
                 }
             }
+            
+            //set a noderef as the result
+            ruleAction.setParameterValue(PARAM_RESULT, actionedUponNodeRef);
         }
     }
 

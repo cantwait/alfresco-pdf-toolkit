@@ -100,7 +100,7 @@ public abstract class BasePDFActionExecuter
     	
     	if(createNew)
     	{
-	    	//create a file in the right location, with the type of the original target node
+	    	//create a file in the right location
 	        FileInfo fileInfo = serviceRegistry.getFileFolderService().create(destinationParent, filename, ContentModel.TYPE_CONTENT);
 	        destinationNode = fileInfo.getNodeRef();
     	}
@@ -108,8 +108,8 @@ public abstract class BasePDFActionExecuter
     	{
     		try 
     		{
-    		FileInfo fileInfo = serviceRegistry.getFileFolderService().copy(target, destinationParent, filename);
-    		destinationNode = fileInfo.getNodeRef();
+	    		FileInfo fileInfo = serviceRegistry.getFileFolderService().copy(target, destinationParent, filename);
+	    		destinationNode = fileInfo.getNodeRef();
     		}
     		catch(FileNotFoundException fnf)
     		{
