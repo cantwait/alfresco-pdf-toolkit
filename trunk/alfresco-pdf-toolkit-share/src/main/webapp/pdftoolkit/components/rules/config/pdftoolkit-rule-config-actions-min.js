@@ -234,7 +234,7 @@ if(typeof PDFToolkit == "undefined" || !PDFToolkit)
 				{
 					// Display as path
 					this._getParamDef(configDef, "destination-folder")._type = "path";
-					this._getParamDef(configDef, "watermark-image")._type = "hidden";
+					this._getParamDef(configDef, "watermark-image")._type = "path";
 					return configDef;
 				},
 				edit: function(configDef, ruleConfig, configEl)
