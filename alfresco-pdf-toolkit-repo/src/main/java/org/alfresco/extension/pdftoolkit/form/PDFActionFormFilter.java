@@ -62,8 +62,8 @@ public class PDFActionFormFilter extends AbstractFilter<Object, ActionFormResult
 				{
 					/*
 					 * set the field value = to the destination folder.  This value isn't
-					 * actually used, it is just required to get the form validated.  Is this a bug?
-					 * should non-mandatory fields require a valid NodeRef?  
+					 * actually used, it is just required to get the form validated.  Is this an
+					 * Alfresco bug?  Should non-mandatory fields require a valid NodeRef?  
 					 */
 					FieldData dest = formData.getFieldData(DESTINATION_FOLDER_FIELD);
 					formData.addFieldData(WATERMARK_IMAGE_FIELD, dest.getValue(), true);

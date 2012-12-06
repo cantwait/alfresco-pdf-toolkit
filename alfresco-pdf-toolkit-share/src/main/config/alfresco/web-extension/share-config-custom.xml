@@ -143,7 +143,7 @@
 				label="actions.pdftoolkit.mergePDF">
 				
         		<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-append</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -158,7 +158,7 @@
 				label="actions.pdftoolkit.encryptPDF">
 				
 				<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-encryption</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -173,7 +173,7 @@
 				label="actions.pdftoolkit.insertPDF">
 				
 				<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-insert-at-page</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -188,7 +188,7 @@
 				label="actions.pdftoolkit.splitPDF">
 				
         		<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-split</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -203,7 +203,7 @@
 				label="actions.pdftoolkit.splitPDFatpage">
 				
         		<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-split-at-page</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -218,7 +218,7 @@
 				label="actions.pdftoolkit.signPDF">
 				
 				<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-signature</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -233,7 +233,7 @@
 				label="actions.pdftoolkit.watermarkPDF">
 				
         		<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-watermark</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>
@@ -248,7 +248,7 @@
 				label="actions.pdftoolkit.deletePDFpages">
 				
         		<param name="function">onActionFormDialog</param>
-        		<param name="itemKind">action</param>
+        		<param name="itemKind">pdf-action</param>
         		<param name="itemId">pdf-delete-page</param>
         		<param name="mode">create</param>
         		<param name="destination">{node.nodeRef}</param>

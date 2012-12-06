@@ -5,7 +5,11 @@
    	<!-- define an action filter registry -->
    	<bean id="pdfActionFilterRegistry" class="org.alfresco.repo.forms.processor.FilterRegistry" />
    
-  	<!-- override the actionFormProcessor bean and add the actionFilterRegistry -->
+  	<!-- 
+  	override the actionFormProcessor bean and add the actionFilterRegistry
+  	doing this because the ootb action form processor does not have a filter registry
+  	and I don't want to modify any core objects if I can avoid it.
+  	 -->
    	<bean id="pdfActionFormProcessor" class="org.alfresco.repo.forms.processor.action.ActionFormProcessor" init-method="register">
       	<property name="processorRegistry" ref="formProcessorRegistry" />
     	<property name="filterRegistry" ref="pdfActionFilterRegistry" />
