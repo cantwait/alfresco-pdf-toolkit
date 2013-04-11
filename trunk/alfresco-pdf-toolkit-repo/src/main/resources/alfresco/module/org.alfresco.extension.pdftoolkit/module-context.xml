@@ -3,6 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- Bootstrap example files.  Uncomment this import to load the sample rules, assets and scritps -->
+	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/bootstrap-context.xml" />
 	
 	<!-- Bean action definitions -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/alfresco-pdf-toolkit-context.xml" />
@@ -21,7 +23,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- Load the UI customizations -->
 	<bean id="pdftoolkit_configBootstrap" class="org.alfresco.web.config.WebClientConfigBootstrap"
 		init-method="init">
@@ -172,4 +174,12 @@
         </property>     
         <property name="serviceRegistry" ref="ServiceRegistry"/>
     </bean>   
+    
+    <bean id="pdftoolkit.properties" parent="common-placeholder-configurer">
+        <property name="locations">
+            <list>
+                <value>classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/pdftoolkit-config.properties</value>
+            </list>
+        </property>
+    </bean>
 </beans>

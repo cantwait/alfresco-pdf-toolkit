@@ -45,4 +45,4 @@
 <!-- Alfresco PDF Toolkit additions, requires document picker -->
 <@script type="text/javascript" src="${page.url.context}/res/modules/document-picker/document-picker.js"></@script>
 <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/modules/document-picker/document-picker.css" />
-<@script type="text/javascript" src="${page.url.context}/pdftoolkit/components/rules/config/pdftoolkit-rule-config-actions.js"></@script>
+<@script type="text/javascript" src="${page.url.context}/res/pdftoolkit/components/rules/config/pdftoolkit-rule-config-actions.js"></@script>

@@ -358,7 +358,28 @@ if(typeof PDFToolkit == "undefined" || !PDFToolkit)
 									
 									// Need to force the component loaded call to ensure setup gets completed.
 									parent.widgets.selectedFileDialog.onComponentsLoaded();
-								},
+								}
+							},
+							failureCallback:
+							{
+								//if the call fails, then we'll try to get the repo root
+								//probably means this is being used from a repo folder, not a site folder
+								fn: function(response)
+								{
+									var parentNodeRef = "alfresco://company/home";
+									parent.widgets.selectedFileDialog.setOptions(
+									{
+										displayMode: "items",
+										itemFamily: "node",
+										itemType: "cm:content",
+										multipleSelectMode: false,
+										parentNodeRef: parentNodeRef,
+										restrictParentNavigationToDocLib: false
+									});
+										
+									// Need to force the component loaded call to ensure setup gets completed.
+									parent.widgets.selectedFileDialog.onComponentsLoaded();
+								}
 							}
 						});
 					}
