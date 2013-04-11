@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+    
+    <!-- bootstrap load the example rules folders and test assets from ACP file -->
+	<bean id="pdftoolkit.bootstrapExamples" parent="spacesStoreImporter" singleton="true">
+        <property name="useExistingStore">
+       		<value>${pdftoolkit.bootstrap.data.examples}</value>
+   		</property>
+        <property name="bootstrapViews">
+            <list>
+            	<props>
+            	    <!-- switch to UPDATE_EXISTING if this is an upgrade to the example data -->
+            	    <!--<prop key="uuidBinding">UPDATE_EXISTING</prop>-->
+          		    <prop key="uuidBinding">CREATE_NEW_WITH_UUID</prop>
+                    <prop key="path">/${spaces.company_home.childname}</prop>
+                    <prop key="location">alfresco/module/org.alfresco.extension.pdftoolkit/bootstrap/pdftoolkit-examples.acp</prop>
+            	</props>
+            </list>
+        </property>
+    </bean>
+    
+	<!-- bootstrap load the example scripts from the filesystem into Data Dictionary/Scripts -->
+	<bean id="pdftoolkit.bootstrapScripts" parent="spacesStoreImporter" singleton="true" >
+   		<property name="useExistingStore">
+       		<value>${pdftoolkit.bootstrap.data.scripts}</value>
+   		</property>
+   		<property name="bootstrapViews">
+      		<list>
+          		<props>
+          		    <!-- switch to UPDATE_EXISTING if this is an upgrade to the example data -->
+          		    <!--<prop key="uuidBinding">UPDATE_EXISTING</prop>-->
+          		    <prop key="uuidBinding">CREATE_NEW_WITH_UUID</prop>
+              		<prop key="path">/${spaces.company_home.childname}/${spaces.dictionary.childname}/${spaces.scripts.childname}</prop>
+               		<prop key="location">alfresco/module/org.alfresco.extension.pdftoolkit/bootstrap/bootstrap-scripts.xml</prop>
+           		</props>
+      		</list>
+   		</property>
+	</bean>
+	
+</beans>
