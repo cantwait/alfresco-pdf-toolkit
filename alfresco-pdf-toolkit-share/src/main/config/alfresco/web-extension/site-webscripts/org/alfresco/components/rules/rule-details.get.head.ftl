@@ -18,5 +18,5 @@
 <@script type="text/javascript" src="${page.url.context}/res/components/object-finder/object-finder.js"></@script>
 <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/modules/document-picker/document-picker.css" />
 <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/object-finder/object-finder.css" />
-<@script type="text/javascript" src="${page.url.context}/pdftoolkit/components/rules/config/pdftoolkit-rule-config-actions.js"></@script>
+<@script type="text/javascript" src="${page.url.context}/res/pdftoolkit/components/rules/config/pdftoolkit-rule-config-actions.js"></@script>
 

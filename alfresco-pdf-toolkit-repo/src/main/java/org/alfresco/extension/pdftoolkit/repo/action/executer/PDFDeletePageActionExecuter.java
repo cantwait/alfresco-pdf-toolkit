@@ -66,7 +66,7 @@ public class PDFDeletePageActionExecuter extends BasePDFActionExecuter {
 
         if (contentReader != null)
         {
-            // Do the work....split the PDF
+            // Delete the selected pages from the PDF doc
             doDelete(action, actionedUponNodeRef, contentReader);
 
             {

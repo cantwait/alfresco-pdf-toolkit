@@ -135,7 +135,7 @@
     	</forms>
     </config>
     
-	<!-- Share config elements for the doclib actions, coming soon! -->
+	<!-- Share config elements for the doclib actions -->
 	<config evaluator="string-compare" condition="DocLibActions">
 		<actions>
 			<action id="pdf-append"
@@ -304,7 +304,7 @@
     </config>
     
 	<!-- forms for each of the actions, these may not be needed as the default form is pretty good -->
-	<!--
+    <!-- 
 	<config evaluator="string-compare" condition="pdf-append">
     	<forms>
         	<form>
@@ -315,18 +315,56 @@
             </form>
         </forms>
     </config>
-    
+     -->
+     
+    <!-- 
+    	possible bug in Alfresco?  If a MapConstraint is defined on a field and the field does not
+    	have a config element, the following NPE is thrown:
+    	
+    	Caused by: java.lang.NullPointerException
+			at org.alfresco.web.scripts.forms.FormUIGet.processFieldConstraintControl(FormUIGet.java:1956)
+			at org.alfresco.web.scripts.forms.FormUIGet.generateConstraintModel(FormUIGet.java:1816)
+			at org.alfresco.web.scripts.forms.FormUIGet.processFieldConstraints(FormUIGet.java:1701)
+			
+		Simply having an empty field in the appearance section seems to fix the issue (Community 4.2c)
+     -->
 	<config evaluator="string-compare" condition="pdf-encryption">
     	<forms>
         	<form>
-            	<field-visibility>
-                </field-visibility>
                 <appearance>
+                    <field id="encryption-level"></field>
                 </appearance>
             </form>
         </forms>
     </config>
-
+    
+	<config evaluator="string-compare" condition="pdf-signature">
+    	<forms>
+        	<form>
+                <appearance>
+                    <field id="visibility"></field>
+                    <field id="key-type"></field>
+                    <field id="position"></field>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+    
+	<config evaluator="string-compare" condition="pdf-watermark">
+    	<forms>
+        	<form>
+                <appearance>
+                    <field id="position"></field>
+                    <field id="watermark-pages"></field>
+                    <field id="watermark-depth"></field>
+                    <field id="watermark-type"></field>
+                    <field id="watermark-font"></field>
+                    <field id="watermark-size"></field>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+    <!-- 
 	<config evaluator="string-compare" condition="pdf-insert-at-page">
     	<forms>
         	<form>
